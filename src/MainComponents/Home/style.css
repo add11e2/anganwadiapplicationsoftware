@@ -1,0 +1,66 @@
+.customnav {
+  border-radius: 5px;
+  background-color: #275dad !important;
+  margin-top: 20px;
+  box-shadow: 0px 0px 10px rgb(5, 5, 5);
+}
+
+.logofunc {
+  height: 90vh;
+}
+
+.logofunc h3 {
+  text-align: center;
+  border-bottom: 2px solid red;
+  padding-bottom: 1%;
+}
+
+.logoimg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.func {
+  margin-top: 7vh;
+}
+
+.func p {
+  text-align: justify;
+}
+
+.funexp {
+  text-align: center;
+  height: 100vh;
+}
+
+.funexp h3 {
+  border-bottom: 2px solid red;
+  padding-bottom: 1%;
+}
+
+.dwnloadapp {
+  height: 100vh;
+  text-align: center;
+}
+
+.dwnloadapp img {
+  height: 100vh;
+  padding: 6%;
+}
+
+.blue {
+  background-color: #275dad;
+  color: white;
+}
+
+.blue a {
+  color: white;
+}
+
+.btndown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
