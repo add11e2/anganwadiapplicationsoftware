@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import { Toolbar } from "@material-ui/core";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+//import { fade } from "@material-ui/core/styles/colorManipulator";
 import { withStyles } from "@material-ui/core/styles";
 import firebase from "../../../Firebase";
 const styles = theme => ({
