@@ -114,9 +114,12 @@ class Create extends Component {
             }
           }
         }
+      })
+      .catch(error => {
+        console.error("Error : ", error);
       });
+
   };
-  //handleChange1 = value1 => this.setState({ value1 });
   handleChange2 = value2 => this.setState({ value2 });
 
   firebaseLooper = snapshot => {

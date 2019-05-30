@@ -149,7 +149,15 @@ export default class Infrastructure extends Component {
       selectedTableoption: "",
       selecteddatatypeoption: "",
       options: "",
-      infradata: []
+      infradata: [],
+      water: 0,
+      play: 0,
+      toilet: 0,
+      power: 0,
+      winfant: 0,
+      wmother: 0,
+      medicine: 0,
+      btype: 0
     };
   }
   componentWillMount() {
@@ -169,32 +177,17 @@ export default class Infrastructure extends Component {
         var i;
         for (i = 0; i < data.length; i++) {
           if (
-            //  data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-            data[i].anganwadidetails.villagename
+            // data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo &&
+            data[i].anganwadidetails.awcplace
           ) {
             options[j] = {};
-            options[j].value = data[i].anganwadidetails.villagename;
-            options[j].label = data[i].anganwadidetails.villagename;
+            options[j].value = data[i].anganwadidetails.awcplace;
+            options[j].label = data[i].anganwadidetails.awcplace;
             j++;
           }
         }
-        var array = [];
-        var index = 0;
-        var options1 = [];
-        for (i = 0; i < options.length; i++) {
-          if (array.indexOf(options[i].value) === -1) {
-            array.push(options[i].value);
-            options1[index] = {};
-            options1[index].value = options[i].value;
-            options1[index].label = options[i].value;
-            index++;
-          }
-        }
-        this.setState({ options: options1 });
-
-        console.log(array);
+        this.setState({ options: options });
       });
-    //console.log('hai 2');
   }
 
   callDataTableInfra() {
@@ -224,6 +217,14 @@ export default class Infrastructure extends Component {
   handleChangeYear = selectedOption => {
     this.setState({ selectedOption });
     let infradata = [];
+    var water = 0;
+    var play = 0;
+    var toilet = 0;
+    var power = 0;
+    var winfant = 0;
+    var wmother = 0;
+    var medicine = 0;
+    var btype = 0;
     var watercountYes = 0;
     var watercountNo = 0;
     var powercountYes = 0;
@@ -240,15 +241,16 @@ export default class Infrastructure extends Component {
     var playcountNo = 0;
     var medicinecountYes = 0;
     var medicinecountNo = 0;
-    var punchaythcountYes = 0;
-    var wellcountYes = 0;
-    var borecoutYes = 0;
-    var punchaythcountNo = 0;
-    var wellcountNo = 0;
-    var borecoutNo = 0;
-    var bstatusRent = 0;
-    var bstatusGift = 0;
-    var bstatusOwn = 0;
+    var borecount = 0;
+    var wellcount = 0;
+    var punchayathcount = 0;
+    var bore = false;
+    var well = false;
+    var punch = false;
+    var giftcount = 0;
+    var owncount = 0;
+    var rentcount = 0;
+    var bstatus = "";
     firebase
       .database()
       .ref(`users`)
@@ -262,7 +264,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -272,30 +274,29 @@ export default class Infrastructure extends Component {
                   watercountNo++;
                 }
               }
+              // }
             }
-            // }
           }
         } else if (
           this.state.selecteddatatypeoption.value === "Chart" &&
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 1
         ) {
-          console.log("comming here");
+          water = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Water === "Yes") {
-                    watercountYes++;
-                  } else if (subdata[index].Water === "No") {
-                    watercountNo++;
-                  }
+            //   if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Water === "Yes"
+                ) {
+                  water++;
                 }
               }
-              // }
+              //}
             }
           }
         } else if (
@@ -305,7 +306,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -315,8 +316,8 @@ export default class Infrastructure extends Component {
                   playcountNo++;
                 }
               }
+              //}
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -324,22 +325,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 2
         ) {
+          play = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Play === "Yes") {
-                    playcountYes++;
-                  } else if (subdata[index].Play === "No") {
-                    playcountNo++;
-                  }
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Play === "Yes"
+                ) {
+                  play++;
                 }
+                //    }
               }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -349,7 +350,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //   if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -359,8 +360,8 @@ export default class Infrastructure extends Component {
                   toiletcountNo++;
                 }
               }
+              // }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -368,22 +369,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 3
         ) {
+          toilet = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Toilet === "Yes") {
-                    toiletcountYes++;
-                  } else if (subdata[index].Toilet === "No") {
-                    toiletcountNo++;
-                  }
+            //  if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Toilet === "Yes"
+                ) {
+                  toilet++;
                 }
               }
+              // }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -393,7 +394,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -403,8 +404,8 @@ export default class Infrastructure extends Component {
                   powercountNo++;
                 }
               }
+              //  }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -412,22 +413,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 4
         ) {
+          power = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Power === "Yes") {
-                    powercountYes++;
-                  } else if (subdata[index].Power === "No") {
-                    powercountNo++;
-                  }
+            //if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Power === "Yes"
+                ) {
+                  power++;
                 }
               }
+              //}
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -437,7 +438,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -447,8 +448,8 @@ export default class Infrastructure extends Component {
                   weighingscaleinfantcountNo++;
                 }
               }
+              //  }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -456,22 +457,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 5
         ) {
+          winfant = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Infant === "Yes") {
-                    weighingscaleinfantcountYes++;
-                  } else if (subdata[index].Infant === "No") {
-                    weighingscaleinfantcountNo++;
-                  }
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Infant === "Yes"
+                ) {
+                  winfant++;
                 }
+                //    }
               }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -481,18 +482,18 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
-                if (subdata[index].Infant === "Yes") {
-                  weighingscaleinfantcountYes++;
-                } else if (subdata[index].Infant === "No") {
-                  weighingscaleinfantcountNo++;
+                if (subdata[index].Mother === "Yes") {
+                  weighingscalemothercountYes++;
+                } else if (subdata[index].Mother === "No") {
+                  weighingscalemothercountNo++;
                 }
               }
             }
-            // }
+            //  }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -500,22 +501,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 6
         ) {
+          wmother = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Infant === "Yes") {
-                    weighingscaleinfantcountYes++;
-                  } else if (subdata[index].Infant === "No") {
-                    weighingscaleinfantcountNo++;
-                  }
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Mother === "Yes"
+                ) {
+                  wmother++;
                 }
+                //   }
               }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -525,7 +526,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //   if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -535,8 +536,8 @@ export default class Infrastructure extends Component {
                   medicinecountNo++;
                 }
               }
+              //   }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -544,22 +545,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 7
         ) {
+          medicine = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Medicine === "Yes") {
-                    medicinecountYes++;
-                  } else if (subdata[index].Medicine === "No") {
-                    medicinecountNo++;
-                  }
+            //   if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Medicine === "Yes"
+                ) {
+                  medicine++;
                 }
+                //      }
               }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -569,7 +570,7 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //  if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
@@ -579,8 +580,8 @@ export default class Infrastructure extends Component {
                   countRCC++;
                 }
               }
+              //    }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
@@ -588,22 +589,22 @@ export default class Infrastructure extends Component {
           selectedOption.value !== "All Places" &&
           this.state.selectedchartoption.value === 8
         ) {
+          btype = 0;
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Btype === "Tile") {
-                    countTile++;
-                  } else if (subdata[index].Btype === "RCC") {
-                    countRCC++;
-                  }
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Btype === "RCC"
+                ) {
+                  btype++;
                 }
+                //     }
               }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -613,177 +614,112 @@ export default class Infrastructure extends Component {
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].Infrastructure) {
-              const subdata = data[i].Infrastructure.facilities;
-              for (let index in subdata) {
-                if (subdata[index].well === true) {
-                  wellcountYes++;
-                } else if (subdata[index].well === false) {
-                  wellcountNo++;
-                }
-              }
-            }
-            // }
-          }
-          console.log("All chartplace  here Playground");
-        } else if (
-          this.state.selecteddatatypeoption.value === "Chart" &&
-          selectedOption.value !== "All Places" &&
-          this.state.selectedchartoption.value === 9
-        ) {
-          var i;
-          for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].well === true) {
-                    wellcountYes++;
-                  } else if (subdata[index].well === false) {
-                    wellcountNo++;
-                  }
-                }
-              }
-            }
-            // }
-          }
-          console.log("specific place chart Playground");
-        } else if (
-          this.state.selecteddatatypeoption.value === "Chart" &&
-          selectedOption.value === "All Places" &&
-          this.state.selectedchartoption.value === 10
-        ) {
-          var i;
-          for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].Infrastructure) {
-              const subdata = data[i].Infrastructure.facilities;
-              for (let index in subdata) {
-                if (subdata[index].Panchayath === true) {
-                  punchaythcountYes++;
-                } else if (subdata[index].Panchayath === false) {
-                  punchaythcountNo++;
-                }
-              }
-            }
-            // }
-          }
-          console.log("All chartplace  here Playground");
-        } else if (
-          this.state.selecteddatatypeoption.value === "Chart" &&
-          selectedOption.value !== "All Places" &&
-          this.state.selectedchartoption.value === 10
-        ) {
-          var i;
-          for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Panchayath === true) {
-                    punchaythcountYes++;
-                  } else if (subdata[index].Panchayath === false) {
-                    punchaythcountNo++;
-                  }
-                }
-              }
-            }
-            // }
-          }
-          console.log("specific place chart Playground");
-        } else if (
-          this.state.selecteddatatypeoption.value === "Chart" &&
-          selectedOption.value === "All Places" &&
-          this.state.selectedchartoption.value === 11
-        ) {
-          var i;
-          for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.facilities;
               for (let index in subdata) {
                 if (subdata[index].Borewell === true) {
-                  borecoutYes++;
-                } else if (subdata[index].Borewell === false) {
-                  borecoutNo++;
+                  borecount++;
+                } else if (subdata[index].well === true) {
+                  wellcount++;
+                } else if (subdata[index].Panchayath === true) {
+                  punchayathcount++;
                 }
+                //       }
               }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
           this.state.selecteddatatypeoption.value === "Chart" &&
           selectedOption.value !== "All Places" &&
-          this.state.selectedchartoption.value === 11
+          this.state.selectedchartoption.value === 9
         ) {
+          well = false;
+          bore = false;
+          punch = false;
+
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.facilities;
-                for (let index in subdata) {
-                  if (subdata[index].Borewell === true) {
-                    borecoutYes++;
-                  } else if (subdata[index].Borewell === false) {
-                    borecoutNo++;
-                  }
+            // if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.facilities;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].well === true
+                ) {
+                  well = true;
+                } else if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Borewell === true
+                ) {
+                  bore = true;
+                } else if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].Panchayath === true
+                ) {
+                  punch = true;
                 }
               }
+              //  }
             }
-            // }
           }
           console.log("specific place chart Playground");
         } else if (
           this.state.selecteddatatypeoption.value === "Chart" &&
           selectedOption.value === "All Places" &&
-          this.state.selectedchartoption.value === 12
+          this.state.selectedchartoption.value === 10
         ) {
           var i;
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
+            //  if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
             if (data[i].Infrastructure) {
               const subdata = data[i].Infrastructure.buildingstatus;
               for (let index in subdata) {
-                if (subdata[index].option === "Owned") {
-                  bstatusOwn++;
+                if (subdata[index].option === "Gifted") {
+                  giftcount++;
+                } else if (subdata[index].option === "Owned") {
+                  owncount++;
                 } else if (subdata[index].option === "Rented") {
-                  bstatusRent++;
-                } else if (subdata[index].option === "Gifted") {
-                  bstatusGift++;
+                  rentcount++;
                 }
               }
+              //  }
             }
-            // }
           }
           console.log("All chartplace  here Playground");
         } else if (
           this.state.selecteddatatypeoption.value === "Chart" &&
           selectedOption.value !== "All Places" &&
-          this.state.selectedchartoption.value === 12
+          this.state.selectedchartoption.value === 10
         ) {
           var i;
+          bstatus = "";
           for (i = 0; i < data.length; i++) {
-            // if (data[i].anganwadidetails.supervisorid === currentsupervisorid) {
-            if (data[i].anganwadidetails.villagename === selectedOption.value) {
-              if (data[i].Infrastructure) {
-                const subdata = data[i].Infrastructure.buildingstatus;
-                for (let index in subdata) {
-                  if (subdata[index].option === "Owned") {
-                    bstatusOwn++;
-                  } else if (subdata[index].option === "Rented") {
-                    bstatusRent++;
-                  } else if (subdata[index].option === "Gifted") {
-                    bstatusGift++;
-                  }
+            //   if (data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo) {
+            if (data[i].Infrastructure) {
+              const subdata = data[i].Infrastructure.buildingstatus;
+              for (let index in subdata) {
+                if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].option === "Gifted"
+                ) {
+                  bstatus = "Gifted";
+                } else if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].option === "Owned"
+                ) {
+                  bstatus = "Owned";
+                } else if (
+                  data[i].anganwadidetails.awcplace === selectedOption.value &&
+                  subdata[index].option === "Rented"
+                ) {
+                  bstatus = "Rented";
                 }
               }
             }
-            // }
+            //   }
           }
           console.log("specific place chart Playground");
         } else if (
@@ -792,10 +728,9 @@ export default class Infrastructure extends Component {
         ) {
           for (i = 0; i < data.length; i++) {
             if (
-              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              //   data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo &&
               data[i].Infrastructure
             ) {
-              // console.log(data[i].anganwadicode, data[i].Timeline);
               const subdata = data[i].Infrastructure.facilities;
 
               for (let index in subdata) {
@@ -831,8 +766,8 @@ export default class Infrastructure extends Component {
         ) {
           for (i = 0; i < data.length; i++) {
             if (
-              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-              data[i].anganwadidetails.villagename === selectedOption.value
+              //  data[i].anganwadidetails.cdpoAcdpo === cdpoAcdpo &&
+              data[i].anganwadidetails.awcplace === selectedOption.value
             ) {
               // console.log(data[i].anganwadicode, data[i].Timeline);
               const subdata = data[i].Infrastructure.facilities;
@@ -867,6 +802,14 @@ export default class Infrastructure extends Component {
         }
 
         this.setState({
+          water: water,
+          play: play,
+          toilet: toilet,
+          power: power,
+          winfant: winfant,
+          wmother: wmother,
+          medicine: medicine,
+          btype: btype,
           Infra_Water_Facility_Yes: watercountYes,
           Infra_Water_Facility_No: watercountNo,
           Infra_Btype_Tile: countTile,
@@ -883,15 +826,16 @@ export default class Infrastructure extends Component {
           Infra_play_No: playcountNo,
           Infra_medicine_Yes: medicinecountYes,
           Infra_medicine_No: medicinecountNo,
-          Infra_wellcountYes: wellcountYes,
-          Infra_wellcountNo: wellcountNo,
-          Infra_borecoutYes: borecoutYes,
-          Infra_borecoutNo: borecoutNo,
-          Infra_punchaythcountYes: punchaythcountYes,
-          Infra_punchaythcountNo: punchaythcountNo,
-          Infra_bstatusRent: bstatusRent,
-          Infra_bstatusGift: bstatusGift,
-          Infra_bstatusOwn: bstatusOwn
+          Infra_wellcount: wellcount,
+          Infra_borecount: borecount,
+          Infra_punchayathcount: punchayathcount,
+          Infra_bore: bore,
+          Infra_well: well,
+          Infra_punch: punch,
+          Infra_rentcount: rentcount,
+          Infra_owncount: owncount,
+          Infra_giftcount: giftcount,
+          Infra_bstatus: bstatus
         });
       })
       .catch(e => {
@@ -907,7 +851,7 @@ export default class Infrastructure extends Component {
   render() {
     return (
       <CEO_DD_DCLayout>
-        <Select
+            <Select
           onChange={this.handleChangedatatype}
           value={this.state.selecteddatatypeoption}
           options={datatypeoption}
@@ -953,7 +897,7 @@ export default class Infrastructure extends Component {
             <br /> <br />
             {this.state.selectedchartoption.value === 1 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
@@ -978,6 +922,22 @@ export default class Infrastructure extends Component {
             ) : null}
             <br />
             <br />
+            {this.state.selectedchartoption.value === 1 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Drinking Water Facility?
+                </div>
+                {this.state.water === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
+              </div>
+            ) : null}
           </div>
         ) : null}
         {/* water facility */}
@@ -1001,7 +961,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 2 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
@@ -1022,6 +982,22 @@ export default class Infrastructure extends Component {
                   height={"400px"}
                   legend_toggle
                 />
+              </div>
+            ) : null}
+            {this.state.selectedchartoption.value === 2 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Playground Facility?
+                </div>
+                {this.state.play === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1047,7 +1023,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 3 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 {" "}
                 <Chart
@@ -1069,6 +1045,22 @@ export default class Infrastructure extends Component {
                   height={"400px"}
                   legend_toggle
                 />
+              </div>
+            ) : null}
+            {this.state.selectedchartoption.value === 3 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Toilet Facility?
+                </div>
+                {this.state.toilet === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1094,7 +1086,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 4 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 {" "}
                 <Chart
@@ -1116,6 +1108,22 @@ export default class Infrastructure extends Component {
                   height={"400px"}
                   legend_toggle
                 />
+              </div>
+            ) : null}
+            {this.state.selectedchartoption.value === 4 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Electricity Facility?
+                </div>
+                {this.state.power === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1141,7 +1149,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 5 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 {" "}
                 <Chart
@@ -1163,6 +1171,22 @@ export default class Infrastructure extends Component {
                   height={"400px"}
                   legend_toggle
                 />
+              </div>
+            ) : null}
+            {this.state.selectedchartoption.value === 5 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Weighing scale for Infant
+                </div>
+                {this.state.winfant === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1188,7 +1212,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 6 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
@@ -1209,6 +1233,22 @@ export default class Infrastructure extends Component {
                   height={"400px"}
                   legend_toggle
                 />
+              </div>
+            ) : null}
+            {this.state.selectedchartoption.value === 6 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Weighing scale for Mother
+                </div>
+                {this.state.wmother === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1234,7 +1274,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 7 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
@@ -1255,6 +1295,22 @@ export default class Infrastructure extends Component {
                   height={"400px"}
                   legend_toggle
                 />
+              </div>
+            ) : null}
+            {this.state.selectedchartoption.value === 7 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  Does {this.state.selectedOption.value} Anganwadi center has
+                  Medicine Kit Facility
+                </div>
+                {this.state.medicine === 0 ? (
+                  <div className="divindbox1">No</div>
+                ) : (
+                  <div className="divindbox2">Yes</div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1280,7 +1336,7 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 8 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
@@ -1303,16 +1359,32 @@ export default class Infrastructure extends Component {
                 />
               </div>
             ) : null}
+            {this.state.selectedchartoption.value === 8 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  What type of Building {this.state.selectedOption.value}{" "}
+                  Anganwadi center has
+                </div>
+                {this.state.btype === 0 ? (
+                  <div className="divindbox1">Tile</div>
+                ) : (
+                  <div className="divindbox2">RCC</div>
+                )}
+              </div>
+            ) : null}
           </div>
         ) : null}
         {/* building type facility */}
 
-        {/* Well water type facility */}
+        {/* Water Resource */}
         {this.state.selectedchartoption.value === 9 &&
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-            <div className="heading"> Well water Source</div>
+            <div className="heading"> Building Type</div>
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
@@ -1326,19 +1398,23 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 9 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
                   data={[
                     ["title", "value"],
                     [
-                      "Number of Anganwadi's with Well water Source",
-                      this.state.Infra_wellcountYes
+                      "Number of Anganwadi's with Well Water",
+                      this.state.Infra_wellcount
                     ],
                     [
-                      "Number of Anganwadi's with out Well water Source",
-                      this.state.Infra_wellcountNo
+                      "Number of Anganwadi's with BoreWell Water",
+                      this.state.Infra_borecount
+                    ],
+                    [
+                      "Number of Anganwadi's with Punchayath Water",
+                      this.state.Infra_punchayathcount
                     ]
                   ]}
                   options={pieOptions}
@@ -1349,16 +1425,48 @@ export default class Infrastructure extends Component {
                 />
               </div>
             ) : null}
+            {this.state.selectedchartoption.value === 9 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  {this.state.selectedOption.value} Anganwadi center has these
+                  water Resources:
+                </div>
+                {this.state.Infra_bore === false &&
+                this.state.Infra_well === false &&
+                this.state.Infra_punch === false ? (
+                  <div className="divindbox1">No Water resourses</div>
+                ) : this.state.Infra_bore === true ? (
+                  <div className="divindbox1">Borewell</div>
+                ) : null}
+                {this.state.Infra_bore === false &&
+                this.state.Infra_well === false &&
+                this.state.Infra_punch === false ? (
+                  <div className="divindbox1">No Water resourses</div>
+                ) : this.state.Infra_well === true ? (
+                  <div className="divindbox1">Well</div>
+                ) : null}
+                {this.state.Infra_bore === false &&
+                this.state.Infra_well === false &&
+                this.state.Infra_punch === false ? (
+                  <div className="divindbox1">No Water resourses</div>
+                ) : this.state.Infra_punch === true ? (
+                  <div className="divindbox1">Punchayath</div>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         ) : null}
-        {/* Well water  facility */}
+        {/*  Water Resource */}
 
-        {/* punchayath water  facility */}
+        {/* Building Status */}
         {this.state.selectedchartoption.value === 10 &&
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-            <div className="heading"> Punchayath water Source</div>
+            <div className="heading">Building Status</div>
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
@@ -1372,115 +1480,23 @@ export default class Infrastructure extends Component {
             <br />
             {this.state.selectedchartoption.value === 10 &&
             this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
+            this.state.selectedOption.value === "All Places" ? (
               <div class="divbox">
                 <Chart
                   chartType="PieChart"
                   data={[
                     ["title", "value"],
                     [
-                      "Number of Anganwadi's with Punchayath water Source",
-                      this.state.Infra_punchaythcountYes
+                      "Number of Anganwadi's with Own Building",
+                      this.state.Infra_owncount
                     ],
                     [
-                      "Number of Anganwadi's with without Punchayath water Source",
-                      this.state.Infra_punchaythcountNo
-                    ]
-                  ]}
-                  options={pieOptions}
-                  graph_id="PieChart"
-                  width={"100%"}
-                  height={"400px"}
-                  legend_toggle
-                />
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-        {/* punchayath water facility */}
-
-        {/* borewell water  facility */}
-        {this.state.selectedchartoption.value === 11 &&
-        this.state.selecteddatatypeoption.value === "Chart" ? (
-          <div>
-            {" "}
-            <div className="heading"> Borewell water Source</div>
-            <Select
-              value={this.state.selectedOption}
-              onChange={this.handleChangeYear}
-              options={this.state.options}
-            />
-            {console.log(
-              this.state.selectedOption.value,
-              "seleted chart value here"
-            )}
-            <br />
-            <br />
-            {this.state.selectedchartoption.value === 11 &&
-            this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
-              <div class="divbox">
-                <Chart
-                  chartType="PieChart"
-                  data={[
-                    ["title", "value"],
-                    [
-                      "Number of Anganwadi's with Borewell water Source",
-                      this.state.Infra_borecoutYes
+                      "Number of Anganwadi's with Gifted Building ",
+                      this.state.Infra_giftcount
                     ],
-                    [
-                      "Number of Anganwadi's with No BreWell water Source",
-                      this.state.Infra_borecoutNo
-                    ]
-                  ]}
-                  options={pieOptions}
-                  graph_id="PieChart"
-                  width={"100%"}
-                  height={"400px"}
-                  legend_toggle
-                />
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-        {/* borewell water facility */}
-
-        {/* Bstatus   facility */}
-        {this.state.selectedchartoption.value === 12 &&
-        this.state.selecteddatatypeoption.value === "Chart" ? (
-          <div>
-            {" "}
-            <div className="heading"> Building Status</div>
-            <Select
-              value={this.state.selectedOption}
-              onChange={this.handleChangeYear}
-              options={this.state.options}
-            />
-            {console.log(
-              this.state.selectedOption.value,
-              "seleted chart value here"
-            )}
-            <br />
-            <br />
-            {this.state.selectedchartoption.value === 12 &&
-            this.state.selecteddatatypeoption.value === "Chart" &&
-            this.state.selectedOption.value !== undefined ? (
-              <div class="divbox">
-                <Chart
-                  chartType="PieChart"
-                  data={[
-                    ["title", "value"],
                     [
                       "Number of Anganwadi's with Rented Building",
-                      this.state.Infra_bstatusRent
-                    ],
-                    [
-                      "Number of Anganwadi's with Own  Building",
-                      this.state.Infra_bstatusOwn
-                    ],
-                    [
-                      "Number of Anganwadi's with  Gifted Building",
-                      this.state.Infra_bstatusGift
+                      this.state.Infra_rentcount
                     ]
                   ]}
                   options={pieOptions}
@@ -1491,9 +1507,23 @@ export default class Infrastructure extends Component {
                 />
               </div>
             ) : null}
+            {this.state.selectedchartoption.value === 10 &&
+            this.state.selecteddatatypeoption.value === "Chart" &&
+            this.state.selectedOption.value !== "All Places" &&
+            this.state.selectedOption.value !== undefined ? (
+              <div className="divbox">
+                <div className="text">
+                  What type of Building {this.state.selectedOption.value}{" "}
+                  Anganwadi center has:
+                </div>
+                {this.state.Infra_bstatus === "" ? null : (
+                  <div className="divindbox1">{this.state.Infra_bstatus} </div>
+                )}
+              </div>
+            ) : null}
           </div>
         ) : null}
-        {/* Bstatus  facility */}
+        {/* Building Status */}
 
         <br />
       </CEO_DD_DCLayout>
