@@ -81,14 +81,42 @@ class Create extends Component {
       assignedawcenters_supervisorid: "",
       anganwadicenteroptions: null,
       anganwadiworkeroptions: null,
-      supervisorkey: ""
+      supervisorkey: "",
+      anganwadicenterkey:""
     };
   }
 
   handleChange1 = value1 => {
     this.setState({ value1 });
     console.log(value1.label);
+    console.log("1111111111snapshotanganwadicentersnapshotanganwadicentersnapshotanganwadicenter");
+     
     const anganwadicentercode = value1.label;
+    firebase
+    .database()
+    .ref("anganwadicenter")
+    .once("value")
+    .then(snapshotanganwadicenter => {
+      console.log("snapshotanganwadicentersnapshotanganwadicentersnapshotanganwadicenter");
+        
+       var dataanganwadicenter = this.centerkeygenerator(snapshotanganwadicenter);
+       
+       for(var b=0;b<dataanganwadicenter.length;b++)
+       {
+        if(dataanganwadicenter[b].anganwadicenter_code==anganwadicentercode)
+        {
+          console.log(dataanganwadicenter[b].anganwadicenterkey);
+          var anganwadicenterkey=dataanganwadicenter[b].anganwadicenterkey;
+          this.setState({
+            anganwadicenterkey: anganwadicenterkey
+          });
+        }
+       }
+
+    })
+    .catch(error => {
+      console.error("Error : ", error);
+    });
     firebase
       .database()
       .ref("assignedawcenters_supervisor")
@@ -114,14 +142,26 @@ class Create extends Component {
             }
           }
         }
-      })
+      })  
       .catch(error => {
         console.error("Error : ", error);
       });
-
+     
   };
   handleChange2 = value2 => this.setState({ value2 });
 
+  centerkeygenerator = snapshot => {
+    let data = [];
+    snapshot.forEach(childSnapshot => {
+
+        data.push({
+          ...childSnapshot.val(),
+          anganwadicenterkey: childSnapshot.key
+        });
+      
+    });
+    return data;
+  };
   firebaseLooper = snapshot => {
     let data = [];
     snapshot.forEach(childSnapshot => {
@@ -252,6 +292,8 @@ class Create extends Component {
     var i;
 
     var successindicator = 0;
+    var anganwadicenterkey=this.state.anganwadicenterkey;
+    //console.log(this.state.anganwadicenterkey,"anganwadicenterkey");
     firebase
       .database()
       .ref("anganwadicenter")
@@ -290,6 +332,15 @@ class Create extends Component {
               .update({
                 assign_to_worker_status: 1
               });
+              //anganwadicenter_workerassignstatus
+
+              firebase
+              .database()
+              .ref(`anganwadicenter/${anganwadicenterkey}`)
+              .update({
+                anganwadicenter_workerassignstatus: 1
+              });
+
             firebase
               .database()
               .ref(`anganwadiworker/${selected_anganwadiworkerid}`)

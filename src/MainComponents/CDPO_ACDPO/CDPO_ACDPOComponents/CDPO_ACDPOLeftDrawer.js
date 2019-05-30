@@ -78,7 +78,7 @@ const LeftDrawer = props => {
           !navDrawerOpen && classes.avatarRootMini
         )}
       >
-        Here{" "}
+      {" "}
         {/* <Avatar
                       
                       size={navDrawerOpen ? 48 : 32}
