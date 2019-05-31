@@ -3,6 +3,11 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import SupervisorLayout from "../../../../OtherComponents/Layout/SupervisorLayout";
 import { Link } from "react-router-dom";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import firebase from "../../../../Firebase";
 import plusImage from "../../../../Resources/Images/elements/plus_button.png";
 import globalStyles from "../../../styles";
@@ -18,6 +23,19 @@ export const firebaseLooper = snapshot => {
     });
   });
   return data;
+};
+const logoutHandler = () => {
+  firebase
+    .auth()
+    .signOut()
+    .then(
+      () => {
+        console.log("Log out succesfull");
+      },
+      error => {
+        console.log("Error logging out");
+      }
+    );
 };
 const styles = {
   saveButton: {
@@ -51,11 +69,43 @@ export default class addanganwadiworker extends Component {
     super(props);
     this.state = {
       supervisors: [],
-      datatotables: []
+      datatotables: [],
+      currentuserflag:"",
+      data:""
     };
   }
 
   componentDidMount() {
+    console.log(this.props.user.uid, "CURRENT UID");
+    const currentuser=this.props.user.uid;
+    let finaldata=[];
+    firebase
+      .database()
+      .ref("assignedawcenters_supervisor")
+      .once("value")
+      .then(snapshot => {
+        const supervisordata = firebaseLooper(snapshot);
+        var supervisorcircle = "";
+        var currentuserflag=0;
+        var supervisoranganwadiarray=[];
+        for (var b = 0; b < supervisordata.length; b++) {
+          if(currentuser==supervisordata[b].supervisorid)
+          {
+            supervisoranganwadiarray[b]=supervisordata[b].anganwadicenter_code.toString();
+            currentuserflag++;
+          }
+         
+        }
+        this.setState({
+          currentuserflag:currentuserflag,
+          data:'yes'
+        });
+      })
+      .catch(e => {
+        console.log("error returned - ", e);
+      });
+
+
     firebase
       .database()
       .ref("anganwadiworker")
@@ -106,6 +156,9 @@ export default class addanganwadiworker extends Component {
     });
   }
   render() {
+    if (!this.state.data) {
+      return <div />
+  }
     return (
       <SupervisorLayout>
         <h3 style={globalStyles.navigation}>
@@ -125,6 +178,47 @@ export default class addanganwadiworker extends Component {
         </Link>
         <br /> <br />
         <table className="display" width="100%" ref={el => (this.el = el)} />
+        <Dialog
+       // fullScreen={fullScreen}
+      open={this.state.currentuserflag==0}
+      style={{
+        backgroundColor: 'rgba(255, 40, 0, 0.8)'
+      }}
+      //  onClose={handleClose}
+      //  aria-labelledby="responsive-dialog-title"
+      >
+      
+      <DialogTitle id="responsive-dialog-title">{"YOU ARE NOT AUTHORIZED TO USE THIS PANEL!!!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+                 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>    
+        <Link to="/" style={{ textDecoration: "none" }}>   
+        <Button
+        onClick={() => logoutHandler()}
+        style={{
+        backgroundColor: '#008CBA',
+        color:'white'
+
+      }}>
+            HOME
+          </Button>
+          </Link>
+
+          <Link to="/supervisor/login" style={{ textDecoration: "none" }}>  
+          <Button style={{
+        backgroundColor: '#008CBA',
+        color:'white'
+
+      }}  onClick={() => logoutHandler()}
+      autoFocus>
+             LOGIN AGAIN
+          </Button>
+          </Link>
+        </DialogActions>
+      </Dialog>
       </SupervisorLayout>
     );
   }

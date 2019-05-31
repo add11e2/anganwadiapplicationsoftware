@@ -19,14 +19,14 @@ class InfoBox extends React.Component {
         color: grey[800]
       },
       text: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 300,
         color: grey[800]
       },
       iconSpan: {
         float: "left",
-        height: 90,
-        width: 90,
+        height: 80,
+        width: 80,
         textAlign: "center",
         backgroundColor: color
       },
