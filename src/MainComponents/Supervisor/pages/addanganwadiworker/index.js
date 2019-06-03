@@ -30,10 +30,10 @@ const logoutHandler = () => {
     .signOut()
     .then(
       () => {
-        console.log("Log out succesfull");
+        //console.log("Log out succesfull");
       },
       error => {
-        console.log("Error logging out");
+        //console.log("Error logging out");
       }
     );
 };
@@ -44,25 +44,7 @@ const styles = {
   }
 };
 //FU tstatus: childSnapshot.val().tstatus === 0 ? "NOT ASSIGNED" : "ASSIGNED",
-export const datatablecreator = snapshot => {
-  let data = [];
-  snapshot.forEach(childSnapshot => {
-    data.push({
-      anganwadiworker_assignto_center_status:
-        childSnapshot.val().anganwadiworker_assignto_center_status === 0
-          ? "<font color=red>NOT ASSIGNED</font>"
-          : "<font color=blue>ASSIGNED</font>",
-      anganwadiworker_name: childSnapshot.val().anganwadiworker_name,
-      anganwadiworker_emailid: childSnapshot.val().anganwadiworker_emailid,
-      //  supervisor_dateofbirth: childSnapshot.val().supervisor_dateofbirth,
-      anganwadiworker_mobileno: childSnapshot.val().anganwadiworker_mobileno,
-      anganwadworker_password: childSnapshot.val().anganwadiworker_password,
-      anganwadiworker_edit: "addanganwadiworkerShow/" + childSnapshot.key
-    });
-  });
 
-  return data;
-};
 
 export default class addanganwadiworker extends Component {
   constructor(props) {
@@ -71,13 +53,40 @@ export default class addanganwadiworker extends Component {
       supervisors: [],
       datatotables: [],
       currentuserflag:"",
-      data:""
+      data:"",
+      currentuser_supervisor: ""
     };
   }
-
+   datatablecreator = snapshot => {
+    let data = [];
+  
+    snapshot.forEach(childSnapshot => {
+      ////console.log(childSnapshot.val().supervisorid,this.state.currentuser_supervisor,"Final comparison","IJc8Wxj2zfesWdAEHFGG3y9x3ti2");
+      if(childSnapshot.val().supervisorid==this.state.currentuser_supervisor){
+       
+      data.push({
+        anganwadiworker_assignto_center_status:
+          childSnapshot.val().anganwadiworker_assignto_center_status === 0
+            ? "<font color=red>NOT ASSIGNED</font>"
+            : "<font color=blue>ASSIGNED</font>",
+        anganwadiworker_name: childSnapshot.val().anganwadiworker_name,
+        anganwadiworker_emailid: childSnapshot.val().anganwadiworker_emailid,
+        //  supervisor_dateofbirth: childSnapshot.val().supervisor_dateofbirth,
+        anganwadiworker_mobileno: childSnapshot.val().anganwadiworker_mobileno,
+        anganwadworker_password: childSnapshot.val().anganwadiworker_password,
+        anganwadiworker_edit: "addanganwadiworkerShow/" + childSnapshot.key
+      });
+    }
+    });
+  
+    return data;
+  };
   componentDidMount() {
-    console.log(this.props.user.uid, "CURRENT UID");
+    //console.log(this.props.user.uid, "CURRENT UID");
     const currentuser=this.props.user.uid;
+    this.setState({
+      currentuser_supervisor:currentuser
+    });
     let finaldata=[];
     firebase
       .database()
@@ -102,7 +111,7 @@ export default class addanganwadiworker extends Component {
         });
       })
       .catch(e => {
-        console.log("error returned - ", e);
+        //console.log("error returned - ", e);
       });
 
 
@@ -112,11 +121,11 @@ export default class addanganwadiworker extends Component {
       .once("value")
       .then(snapshot => {
         const orignaldata = firebaseLooper(snapshot);
-        console.log(snapshot.val());
-        const filteredata = datatablecreator(snapshot);
+        //console.log(snapshot.val());
+        const filteredata = this.datatablecreator(snapshot);
         var filteredarray = Object.values(filteredata);
         var datatotables = filteredarray.map(el => Object.values(el));
-        console.log(orignaldata);
+        //console.log(orignaldata);
         this.setState({
           anganwadiworkers: orignaldata,
           datatotables: datatotables
@@ -124,7 +133,7 @@ export default class addanganwadiworker extends Component {
         this.callDataTable();
       })
       .catch(e => {
-        console.log("error returned - ", e);
+        //console.log("error returned - ", e);
       });
   }
   // supervisor_name: childSnapshot.val().supervisor_name,

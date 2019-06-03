@@ -55,7 +55,7 @@ class Show extends Component {
 
   componentDidMount() {
     var editid = this.props.match.params.id;
-    console.log(editid);
+    //console.log(editid);
     firebase
       .database()
       .ref(`anganwadiworker/${editid}`)

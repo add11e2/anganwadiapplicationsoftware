@@ -276,12 +276,12 @@ export class MapDashboard extends Component {
     const button = (
       <a
         href={"anganwadidetails/" + result.anganwadicode}
-        className={"backButton"}
+      
         style={{
           textDecoration: "none",
           backgroundColor: "#f44336",
           color: "white",
-          border: "none"
+          padding: 10
         }}
       >
         Get Details
@@ -306,8 +306,13 @@ export class MapDashboard extends Component {
           "," +
           this.state.selectedPlace.position.lng
         }
-        className={"backButton"}
-        style={{ backgroundColor: "#008CBA", color: "white", border: "none" }}
+       
+        style={{
+          textDecoration: "none",
+          backgroundColor: "#1b85b8",
+          color: "white",
+          padding: 10
+        }}
       >
         Get Direction
       </a>

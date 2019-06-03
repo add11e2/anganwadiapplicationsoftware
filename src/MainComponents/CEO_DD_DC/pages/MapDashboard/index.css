@@ -8,9 +8,7 @@ body {
   display: flex;
   flex-direction: row;
 }
-#awcname {
-  color: #ffff;
-}
+
 .header {
   display: flex;
   justify-content: center;

@@ -27,10 +27,10 @@ const logoutHandler = () => {
     .signOut()
     .then(
       () => {
-        console.log("Log out succesfull");
+        //console.log("Log out succesfull");
       },
       error => {
-        console.log("Error logging out");
+        //console.log("Error logging out");
       }
     );
 };
@@ -137,7 +137,8 @@ const INITIAL_STATE = {
 class Create extends Component {
   constructor() {
     super();
-    this.state = { ...INITIAL_STATE };
+    this.state = { ...INITIAL_STATE,
+      currentuser:"" };
     this.handleChange = this.handleChange.bind(this);
     this.submituserRegistrationForm = this.submituserRegistrationForm.bind(
       this
@@ -152,14 +153,18 @@ class Create extends Component {
   }
   componentWillMount() {
     const currentuser = this.props.user.uid;
-    //console.log(this.props.user.uid);
+    //console.log(this.props,this.props.user.uid);
+    this.setState({
+      currentuser: currentuser
+            });
+    ////console.log(this.props.user.uid);
     // firebase
     //   .database()
     //   .ref(`cdpo_acdpo/${currentuser}`)
     //   .once("value")
     //   .then(snapshot => {
     //     const data = snapshot.val();
-    //     //console.log(snapshot.val());
+    //     ////console.log(snapshot.val());
     //     if (data) {
     //       this.setState({
     //         talukid: data.talukid,
@@ -171,7 +176,8 @@ class Create extends Component {
   handleChange1 = value => this.setState({ value });
   submituserRegistrationForm(e) {
     e.preventDefault();
-
+    //console.log(this.state.currentuser,"this.state.currentuser","this.state.currentuser");
+    const currentuser_supervisor=this.state.currentuser;
     const username = this.state.username;
     const emailid = this.state.emailid;
     const mobileno = this.state.mobileno;
@@ -193,6 +199,7 @@ class Create extends Component {
     }
     var existflag = 0;
     var successindicator = 0;
+    //console.log(currentuser_supervisor);
 
     firebase
       .database()
@@ -211,13 +218,13 @@ class Create extends Component {
         }
 
         if (existflag >= 1) {
-          console.log("found");
+          //console.log("found");
 
           this.setState({
             foundwithcurrentrole: "found"
           });
         } else if (existflag === 0) {
-          console.log("not found");
+          //console.log("not found");
           this.setState({
             foundwithcurrentrole: ""
           });
@@ -230,7 +237,7 @@ class Create extends Component {
             .catch(error => this.setState({ errorMessage: error.message }))
             .then(function(user) {
               var user = firebase.auth().currentUser;
-              console.log("2");
+              //console.log("2");
               logUser(user);
             });
           function logUser(user) {
@@ -247,7 +254,8 @@ class Create extends Component {
               anganwadiworker_emailid: emailid,
               anganwadiworker_mobileno: mobileno,
               anganwadiworker_password: password,
-              anganwadiworker_assignto_center_status: 0
+              anganwadiworker_assignto_center_status: 0,
+              supervisorid:currentuser_supervisor
             };
 
             //can use push but it creates new tokens
@@ -255,11 +263,11 @@ class Create extends Component {
           }
           successindicator++;
           this.setState({ successindicator: successindicator });
-          console.log(this.state.successindicator, "---------------");
+          //console.log(this.state.successindicator, "---------------");
           // this.setState({ ...INITIAL_STATE });
         }
-      });
-    // .catch(error => this.setState({ errorMessage: error.message }))
+      })
+    .catch(error => this.setState({ errorMessage: error.message }))
   }
 
   render() {
