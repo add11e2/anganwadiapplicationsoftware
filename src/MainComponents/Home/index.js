@@ -87,7 +87,7 @@ class Home extends Component {
                 <h3>Anganwadi</h3>
                 <p>
                   Commented for documentation plagrism purpose
-                  {/* Anganwadi centres are one of the earliest education medium
+                  Anganwadi centres are one of the earliest education medium
                   which needs to be completed before pre-school education level.
                   This includes various fun activities along with the learning
                   process. Along with that this, centres having a teacher to
@@ -104,7 +104,7 @@ class Home extends Component {
                   issues we are proposed to develop a system which intends to
                   automate the manual which is done by Anganwadi centres and
                   make data accessible for higher authority from the remote
-                  location. */}
+                  location.
                 </p>
               </div>
             </div>

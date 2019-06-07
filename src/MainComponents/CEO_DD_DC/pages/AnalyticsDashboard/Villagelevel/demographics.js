@@ -25,9 +25,6 @@ $(document).ready(function() {
   });
 });
 
-// require("datatables.net-buttons")(window, $);
-// require("datatables.net-buttons/js/buttons.print.js")(window, $);
-// require("datatables.net-buttons/js/buttons.colVis.js")(window, $);
 let options = [];
 let index = 4;
 options[0] = {};
@@ -192,7 +189,7 @@ export const subdatacreator = snapshot => {
   });
   return data;
 };
-export default class Demographics extends Component {
+export default class Demographics extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -230,15 +227,27 @@ export default class Demographics extends Component {
         for (i = 0; i < data.length; i++) {
           if (
             //  data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-            data[i].anganwadidetails.awcplace
+            data[i].anganwadidetails.villagename
           ) {
             optionplace[j] = {};
-            optionplace[j].value = data[i].anganwadidetails.awcplace;
-            optionplace[j].label = data[i].anganwadidetails.awcplace;
+            optionplace[j].value = data[i].anganwadidetails.villagename;
+            optionplace[j].label = data[i].anganwadidetails.villagename;
             j++;
           }
         }
-        this.setState({ optionplace: optionplace });
+        var array = [];
+        var index = 0;
+        var optionsplace1 = [];
+        for (i = 0; i < optionplace.length; i++) {
+          if (array.indexOf(optionplace[i].value) === -1) {
+            array.push(optionplace[i].value);
+            optionsplace1[index] = {};
+            optionsplace1[index].value = optionplace[i].value;
+            optionsplace1[index].label = optionplace[i].value;
+            index++;
+          }
+        }
+        this.setState({ optionplace: optionsplace1 });
       });
   }
 
@@ -257,8 +266,8 @@ export default class Demographics extends Component {
     let Disability = [];
     let Incomes = [];
 
-    // const selectedplace = this.state.selectedOptionplace.value;
-    // if (selectedplace === "All Places") {
+    const selectedplace = this.state.selectedOptionplace.value;
+    if (selectedplace === "All Places") {
       if (selectedOption.value === "none" || selectedOption.value === "All") {
         firebase
           .database()
@@ -449,7 +458,7 @@ export default class Demographics extends Component {
             var Deliverycount = 0;
             var Nursing = 0;
             var countfemale = 0;
-            var TotalCountFemale=0;
+            var TotalCountFemale = 0;
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth() + 1;
@@ -485,26 +494,24 @@ export default class Demographics extends Component {
                     ddate = ebinifitt.substring(8, 10);
                     domonth = ebinifitt.substring(5, 7);
                     ddYear = ebinifitt.substring(0, 4);
-                    console.log(ebinifitt,"ebinifitt count here");
+                    console.log(ebinifitt, "ebinifitt count here");
                     var GivenDate = ebinifitt;
                     var CurrentDate = new Date();
                     GivenDate = new Date(GivenDate);
-                   if (GivenDate > CurrentDate) {
+                    if (GivenDate > CurrentDate) {
                       Nursing++;
                       Nursing1++;
-                      console.log(Nursing1,"nursing count here");
+                      console.log(Nursing1, "nursing count here");
                     }
                   }
                 }
-               
 
-               
                 const subdata = data[i].Demographic.Pregnancy;
                 for (let index in subdata) {
                   if (subdata[index].Delivery === "No") {
                     Deliverycount++;
                     Deliverycount1++;
-                  } 
+                  }
                 }
                 for (const obj in data[i].Demographic.HouseholdMember) {
                   for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
@@ -520,7 +527,7 @@ export default class Demographics extends Component {
                     }
                   }
                 }
-                console.log(Nursing1,"nursing count here");
+                console.log(Nursing1, "nursing count here");
 
                 Pregnancy.push({
                   //donot delete the below comment
@@ -720,7 +727,7 @@ export default class Demographics extends Component {
             var Fifty = 0;
             var TotalHousesChart = 0;
             var Lakh = 0;
-          var Income = 0;
+            var Income = 0;
 
             for (i = 0; i < data.length; i++) {
               var TotalHouse = 0;
@@ -731,7 +738,7 @@ export default class Demographics extends Component {
                 var Ten1 = 0;
                 var Twentyfive1 = 0;
                 var Fifty1 = 0;
-               
+
                 var Lakh1 = 0;
                 for (const obj in data[i].Demographic.HouseHold) {
                   console.log("Total Houses", TotalHouse);
@@ -795,7 +802,7 @@ export default class Demographics extends Component {
               NursingMothercount: Nursing,
               countmale: countmale,
               countfemale: countfemale,
-              TCount:TotalCountFemale,
+              TCount: TotalCountFemale,
               value1: HighSchool,
               value2: sslc,
               value3: puc,
@@ -1064,7 +1071,7 @@ export default class Demographics extends Component {
                 var Deliverycount1 = 0;
                 var Nursing1 = 0;
                 var countfemale1 = 0;
-                
+                var cdob = "";
                 const subdata = data[i].Demographic.Pregnancy;
                 const subdata1 = data[i].Maternal.ChildRegistration;
                 for (let index in subdata1) {
@@ -1076,18 +1083,18 @@ export default class Demographics extends Component {
                     ddate = ebinifitt.substring(8, 10);
                     domonth = ebinifitt.substring(5, 7);
                     ddYear = ebinifitt.substring(0, 4);
-                    console.log(ebinifitt,"ebinifitt count here");
+                    console.log(ebinifitt, "ebinifitt count here");
                     var GivenDate = ebinifitt;
                     var CurrentDate = new Date();
                     GivenDate = new Date(GivenDate);
-                   if (GivenDate > CurrentDate) {
+                    if (GivenDate > CurrentDate) {
                       Nursing++;
                       Nursing1++;
-                      console.log(Nursing1,"nursing count here");
+                      console.log(Nursing1, "nursing count here");
                     }
                   }
                 }
-
+                
                 for (let index in subdata) {
                   //code for today Pregnancy
 
@@ -1119,7 +1126,6 @@ export default class Demographics extends Component {
                     ) {
                       TotalCountFemale++;
                       countfemale1++;
-                     
                     }
                   }
                 }
@@ -1167,8 +1173,6 @@ export default class Demographics extends Component {
                 var countfemale11 = 0;
                 for (const obj in data[i].Demographic.HouseholdMember) {
                   for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-                    
-
                     console.log("today", today, "dobyear", dobyear);
                     if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
                       var dobyear =
@@ -1461,7 +1465,7 @@ export default class Demographics extends Component {
               NursingMothercount: Nursing,
               countmale: countmale,
               countfemale: countfemale,
-              TCount:TotalCountFemale,
+              TCount: TotalCountFemale,
               value1: HighSchool,
               value2: sslc,
               value3: puc,
@@ -1736,27 +1740,24 @@ export default class Demographics extends Component {
             var Deliverycount = 0;
             var Nursing = 0;
             var countfemale;
-            var TotalCountFemale=0;
-            
-           
+            var TotalCountFemale = 0;
+
             for (i = 0; i < data.length; i++) {
               //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
               if (data[i].Demographic && data[i].Maternal) {
                 var Deliverycount1 = 0;
                 var Nursing1 = 0;
                 var countfemale1 = 0;
-                var ebinifitt=0;
-                
+                var ebinifitt = 0;
 
-              var ddate=0;
-              var domonth=0;
-              var ddYear=0;
+                var ddate = 0;
+                var domonth = 0;
+                var ddYear = 0;
                 const subdata = data[i].Demographic.Pregnancy;
                 const subdata1 = data[i].Maternal.ChildRegistration;
 
                 for (const obj in data[i].Demographic.HouseholdMember) {
                   for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-                   
                     if (
                       data[i].Demographic.HouseholdMember[obj][obj1].sex ===
                       "Female"
@@ -1767,6 +1768,7 @@ export default class Demographics extends Component {
                   }
                 }
 
+                var cdob = "";
                 for (let index in subdata1) {
                   //today code
 
@@ -1776,18 +1778,18 @@ export default class Demographics extends Component {
                     ddate = ebinifitt.substring(8, 10);
                     domonth = ebinifitt.substring(5, 7);
                     ddYear = ebinifitt.substring(0, 4);
-                    console.log(ebinifitt,"ebinifitt count here");
+                    console.log(ebinifitt, "ebinifitt count here");
                     var GivenDate = ebinifitt;
                     var CurrentDate = new Date();
                     GivenDate = new Date(GivenDate);
-                   if (GivenDate > CurrentDate) {
+                    if (GivenDate > CurrentDate) {
                       Nursing++;
                       Nursing1++;
-                      console.log(Nursing1,"nursing count here");
+                      console.log(Nursing1, "nursing count here");
                     }
                   }
                 }
-               
+
                 for (let index in subdata) {
                   // code for
 
@@ -1805,7 +1807,6 @@ export default class Demographics extends Component {
                   var str = subdata[index].LPerioddate;
                   var Pgyyear = str.substring(0, 4);
                   var dobmonth = str.substring(5, 7);
-
                   if (
                     subdata[index].Delivery === "No" &&
                     dobmonth == mm &&
@@ -1815,7 +1816,6 @@ export default class Demographics extends Component {
                     Deliverycount1++;
                   }
                 }
-               
 
                 Pregnancy.push({
                   //donot delete the below comment
@@ -2171,7 +2171,7 @@ export default class Demographics extends Component {
               NursingMothercount: Nursing,
               countmale: countmale,
               countfemale: countfemale,
-              TCount:TotalCountFemale,
+              TCount: TotalCountFemale,
               value1: HighSchool,
               value2: sslc,
               value3: puc,
@@ -2385,7 +2385,7 @@ export default class Demographics extends Component {
                         Designation === "UnEmployed" &&
                         data[i].Demographic.HouseholdMember[obj][obj1]
                           .LiteracyRate !== "illiterate" &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         countUnemployment++;
                         unemployed1++;
@@ -2397,7 +2397,7 @@ export default class Demographics extends Component {
                         (dobmonth == dt1 ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         Agriculturecount++;
                         Agriculturecount1++;
@@ -2407,7 +2407,7 @@ export default class Demographics extends Component {
                         (dobmonth == dt1 ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         HouseWifecount++;
                         HouseWifecount1++;
@@ -2417,7 +2417,7 @@ export default class Demographics extends Component {
                         (dobmonth == dt1 ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         Teachercount++;
                         Teachercount1++;
@@ -2427,7 +2427,7 @@ export default class Demographics extends Component {
                         (dobmonth == dt1 ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         Paultrycount++;
                         Paultrycount1++;
@@ -2437,7 +2437,7 @@ export default class Demographics extends Component {
                         (dobmonth == dt1 ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         Othercount++;
                         Othercount1++;
@@ -2475,18 +2475,18 @@ export default class Demographics extends Component {
             //pregnancy code
             var Deliverycount = 0;
             var Nursing = 0;
-            var countfemale=0;
-            var TotalCountFemale=0;
+            var countfemale = 0;
+            var TotalCountFemale = 0;
             for (i = 0; i < data.length; i++) {
               //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
               if (data[i].Demographic) {
                 var Deliverycount1 = 0;
                 var Nursing1 = 0;
                 var countfemale1 = 0;
-                var ebinifitt=0;
-                var ddate=0;
-                var domonth=0;
-                var ddYear=0;
+                var ebinifitt = 0;
+                var ddate = 0;
+                var domonth = 0;
+                var ddYear = 0;
                 const subdata = data[i].Demographic.Pregnancy;
                 const subdata1 = data[i].Maternal.ChildRegistration;
 
@@ -2499,17 +2499,26 @@ export default class Demographics extends Component {
                     ddate = ebinifitt.substring(8, 10);
                     domonth = ebinifitt.substring(5, 7);
                     ddYear = ebinifitt.substring(0, 4);
-                    console.log(ebinifitt,"ebinifitt count here");
+                    console.log(ebinifitt, "ebinifitt count here");
                     var GivenDate = ebinifitt;
                     var CurrentDate = new Date();
-                   
+
                     GivenDate = new Date(GivenDate);
-                    console.log(GivenDate,"given deatecount here","dt1 dt2  dt3 ",dt1 ,dt2 ,dt3);
-                   if ((dt1 ==domonth || dt2 ==domonth || dt3 ==domonth) && year ==ddYear)
-                   {
+                    console.log(
+                      GivenDate,
+                      "given deatecount here",
+                      "dt1 dt2  dt3 ",
+                      dt1,
+                      dt2,
+                      dt3
+                    );
+                    if (
+                      (dt1 == domonth || dt2 == domonth || dt3 == domonth) &&
+                      year == ddYear
+                    ) {
                       Nursing++;
                       Nursing1++;
-                      console.log(Nursing1,"nursing count here");
+                      console.log(Nursing1, "nursing count here");
                     }
                   }
                 }
@@ -2517,23 +2526,22 @@ export default class Demographics extends Component {
                 for (let index in subdata) {
                   var str = subdata[index].LPerioddate;
                   var dobmonth = str.substring(5, 7);
-                  var doyear=str.substring(0,4);
+                  var doyear = str.substring(0, 4);
                   if (
-                    subdata[index].Delivery === "No" && (dobmonth == dt1 ||
-                    dobmonth == dt2 ||
-                    dobmonth == dt3) && doyear ==year
+                    subdata[index].Delivery === "No" &&
+                    (dobmonth == dt1 || dobmonth == dt2 || dobmonth == dt3) &&
+                    doyear == year
                   ) {
                     Deliverycount++;
                     Deliverycount1++;
-                  } 
+                  }
                 }
                 for (const obj in data[i].Demographic.HouseholdMember) {
                   for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-                    
                     if (
                       data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-                        "Female")
-                     {
+                      "Female"
+                    ) {
                       TotalCountFemale++;
                       countfemale1++;
                     }
@@ -2761,7 +2769,7 @@ export default class Demographics extends Component {
                           dobmonth == dt1) ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         DisbaledYes++;
                         Disbaled1Yes++;
@@ -2771,7 +2779,7 @@ export default class Demographics extends Component {
                           dobmonth == dt1) ||
                           dobmonth == dt2 ||
                           dobmonth == dt3) &&
-                          year == dobyear
+                        year == dobyear
                       ) {
                         DisbaledNo++;
                         Disbaled1No++;
@@ -2877,7 +2885,7 @@ export default class Demographics extends Component {
               NursingMothercount: Nursing,
               countmale: countmale,
               countfemale: countfemale,
-              TCount:TotalCountFemale,
+              TCount: TotalCountFemale,
               value1: HighSchool,
               value2: sslc,
               value3: puc,
@@ -2918,7 +2926,6 @@ export default class Demographics extends Component {
                 var Nodiseasecount1 = 0;
                 for (const obj in data[i].Demographic.HouseholdMember) {
                   for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-                    
                     if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
                       var str =
                         data[i].Demographic.HouseholdMember[obj][obj1].DOE;
@@ -2934,7 +2941,7 @@ export default class Demographics extends Component {
                             .Disease2 === "Diabetes" ||
                           data[i].Demographic.HouseholdMember[obj][obj1]
                             .Disease3 === "Diabetes") &&
-                            dobyear == selectedOption.value
+                        dobyear == selectedOption.value
                       ) {
                         Diabitescount++;
                         Diabitescount1++;
@@ -2945,7 +2952,7 @@ export default class Demographics extends Component {
                             .Disease2 === "HIV" ||
                           data[i].Demographic.HouseholdMember[obj][obj1]
                             .Disease3 === "HIV") &&
-                            dobyear == selectedOption.value
+                        dobyear == selectedOption.value
                       ) {
                         HIVcount++;
                         HIVcount1++;
@@ -2956,7 +2963,7 @@ export default class Demographics extends Component {
                             .Disease2 === "Asthama" ||
                           data[i].Demographic.HouseholdMember[obj][obj1]
                             .Disease3 === "Asthama") &&
-                            dobyear == selectedOption.value
+                        dobyear == selectedOption.value
                       ) {
                         Asthamacount++;
                         Asthamacount1++;
@@ -2967,7 +2974,7 @@ export default class Demographics extends Component {
                             .Disease2 === " No disease" ||
                           data[i].Demographic.HouseholdMember[obj][obj1]
                             .Disease3 === " No disease") &&
-                            dobyear == selectedOption.value
+                        dobyear == selectedOption.value
                       ) {
                         Nodiseasecount++;
                         Nodiseasecount1++;
@@ -3113,32 +3120,32 @@ export default class Demographics extends Component {
             //pregnancy code
             var Deliverycount = 0;
             var Nursing = 0;
+            var TotalCountFemale = 0;
             for (i = 0; i < data.length; i++) {
               //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
               if (data[i].Demographic) {
                 var Deliverycount1 = 0;
                 var Nursing1 = 0;
                 var countfemale1 = 0;
-                var ebinifitt=0;
-                var ddYear=0;
+                var ebinifitt = 0;
+                var ddYear = 0;
                 const subdata = data[i].Demographic.Pregnancy;
-                const subdata1=data[i].Maternal.ChildRegistration;
+                const subdata1 = data[i].Maternal.ChildRegistration;
                 for (let index in subdata1) {
                   //today code
 
                   if (subdata1[index].ebenifit) {
                     ebinifitt = subdata1[index].ebenifit;
 
-                   
                     ddYear = ebinifitt.substring(0, 4);
-                    console.log(ebinifitt,"ebinifitt count here");
+                    console.log(ebinifitt, "ebinifitt count here");
                     var GivenDate = ebinifitt;
                     var CurrentDate = new Date();
                     GivenDate = new Date(GivenDate);
-                   if (ddYear ==selectedOption.value) {
+                    if (ddYear == selectedOption.value) {
                       Nursing++;
                       Nursing1++;
-                      console.log(Nursing1,"nursing count here");
+                      console.log(Nursing1, "nursing count here");
                     }
                   }
                 }
@@ -3148,8 +3155,8 @@ export default class Demographics extends Component {
                   // console.log("year", str);
 
                   var dobyear = str.substring(0, 4);
-                  console.log("ddate", dobyear); 
-                  if (subdata[index].Delivery === "No" && dobYear == selectedOption.value ) {
+                  console.log("ddate", dobyear);
+                  if (subdata[index].Delivery === "No" && dobYear == selectedOption.value) {
                     Deliverycount++;
                     Deliverycount1++;
                   }
@@ -3163,6 +3170,7 @@ export default class Demographics extends Component {
                       data[i].Demographic.HouseholdMember[obj][obj1].sex ===
                       "Female"
                     ) {
+                      TotalCountFemale++;
                       countfemale1++;
                     }
                   }
@@ -3500,6 +3508,7 @@ export default class Demographics extends Component {
               NursingMothercount: Nursing,
               countmale: countmale,
               countfemale: countfemale,
+              TCount: TotalCountFemale,
               value1: HighSchool,
               value2: sslc,
               value3: puc,
@@ -3510,8 +3519,7 @@ export default class Demographics extends Component {
               Incomea: Ten,
               Incomeb: Twentyfive,
               Incomec: Fifty,
-              Incomed: Lakh,
-
+              Incomed: Lakh
             });
           })
 
@@ -3521,3325 +3529,3324 @@ export default class Demographics extends Component {
       }
 
       console.log("All places");
-    // } else if (!(selectedplace === "All Places")) {
-    //   if (selectedOption.value === "none" || selectedOption.value === "All") {
-    //     firebase
-    //       .database()
-    //       .ref("users")
-    //       .once("value")
-    //       .then(snapshot => {
-    //         const data = firebaseLooper(snapshot);
-
-    //         var i;
-    //         var Diabitescount = 0;
-    //         var HIVcount = 0;
-    //         var Asthamacount = 0;
-    //         var Nodiseasecount = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           console.log(data[i]);
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Diabitescount1 = 0;
-    //             var HIVcount1 = 0;
-    //             var Asthamacount1 = 0;
-    //             var Nodiseasecount1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-
-    //                   // var dobyear = str.substring(0, 4);
-    //                   // console.log("dob", dobyear);
-    //                   // console.log(
-    //                   //   data[i].Demographic.HouseholdMember[obj][obj1].Disease1
-    //                   // );
-    //                   // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Diabetes" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease2 === "Diabetes" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease3 === "Diabetes"
-    //                   ) {
-    //                     Diabitescount++;
-    //                     Diabitescount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "HIV" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease2 === "HIV" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease3 === "HIV"
-    //                   ) {
-    //                     HIVcount++;
-    //                     HIVcount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Asthama" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease2 === "Asthama" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease3 === "Asthama"
-    //                   ) {
-    //                     Asthamacount++;
-    //                     Asthamacount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === " No disease" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease2 === " No disease" ||
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease3 === " No disease"
-    //                   ) {
-    //                     Nodiseasecount++;
-    //                     Nodiseasecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             diseasedata.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               diseaseanganwadicode: data[i].anganwadicode,
-    //               diseaseDiabetes: Diabitescount1,
-    //               diseaseHIV: HIVcount1,
-    //               diseaseAsthama: Asthamacount1,
-    //               diseaseNodisease: Nodiseasecount1
-    //             });
-    //           }
-    //           // var Diabitescount = 0;
-    //           // var HIVcount = 0;
-    //           // var Asthamacount = 0;
-    //           // var Nodiseasecount = 0;
-
-    //           var diseasefilteredarray = Object.values(diseasedata);
-    //           var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
-    //             Object.values(diseaseel)
-    //           );
-    //           this.setState({
-    //             diseasedata: diseasedatatotables
-    //           });
-    //           //
-    //         }
-    //         this.callDataTableDisease();
-
-    //         var Agriculturecount = 0;
-    //         var HouseWifecount = 0;
-    //         var Teachercount = 0;
-    //         var Paultrycount = 0;
-    //         var Othercount = 0;
-    //         var Designation = "";
-    //         var Literate = "";
-    //         var countUnemployment = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Agriculturecount1 = 0;
-    //             var HouseWifecount1 = 0;
-    //             var Teachercount1 = 0;
-    //             var Paultrycount1 = 0;
-    //             var Othercount1 = 0;
-    //             var unemployed1 = 0;
-
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // unemployment code
-    //                 Designation =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation;
-    //                 Literate =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate;
-
-    //                 if (
-    //                   Designation === "UnEmployed" &&
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate !== "illiterate"
-    //                 ) {
-    //                   countUnemployment++;
-    //                   unemployed1++;
-    //                 }
-    //                 //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation === "Agriculture"
-    //                 ) {
-    //                   Agriculturecount++;
-    //                   Agriculturecount1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation === "HouseWife"
-    //                 ) {
-    //                   HouseWifecount++;
-    //                   HouseWifecount1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation === "Teacher"
-    //                 ) {
-    //                   Teachercount++;
-    //                   Teachercount1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation === "Poultry"
-    //                 ) {
-    //                   Paultrycount++;
-    //                   Paultrycount1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation === "Other"
-    //                 ) {
-    //                   Othercount++;
-    //                   Othercount1++;
-    //                 }
-    //               }
-    //             }
-
-    //             Occupations.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Occupationanganwadicode: data[i].anganwadicode,
-    //               Occupation1: Agriculturecount1,
-    //               Occupation2: HouseWifecount1,
-    //               Occupation3: Teachercount1,
-    //               Occupation4: Paultrycount1,
-    //               Occupation5: Othercount1,
-    //               Occupation6: unemployed1
-    //             });
-    //           }
-
-    //           var Occupationfilteredarray = Object.values(Occupations);
-    //           var Occupationtotables = Occupationfilteredarray.map(
-    //             Occupationsel => Object.values(Occupationsel)
-    //           );
-    //           this.setState({
-    //             Occupations: Occupationtotables
-    //           });
-    //         }
-    //         this.callDataTableOccupation();
-
-    //         //pregnancy code
-    //         var Deliverycount = 0;
-    //         var Nursing = 0;
-    //         var countfemale = 0;
-    //         var TotalCountFemale=0;
-    //         var today = new Date();
-    //         var dd = today.getDate();
-    //         var mm = today.getMonth() + 1;
-    //         var yyyy = today.getFullYear();
-    //         if (dd < 10) {
-    //           dd = "0" + dd;
-    //         }
-    //         if (mm < 10) {
-    //           mm = "0" + mm;
-    //         }
-    //         today = yyyy + "-" + mm + "-" + dd;
-    //         console.log("today ", today, "d", dd, "m", mm, "y", yyyy);
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             data[i].Maternal &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Deliverycount1 = 0;
-    //             var Nursing1 = 0;
-    //             var ebinifitt = 0;
-    //             var countfemale1 = 0;
-    //             var ebdate = "";
-    //             var domonth = "";
-    //             var ddate = "";
-    //             var ddYear = "";
-
-    //             const subdata1 = data[i].Maternal.ChildRegistration;
-    //             for (let index in subdata1) {
-    //               //today code
-
-    //               if (subdata1[index].ebenifit) {
-    //                 ebinifitt = subdata1[index].ebenifit;
-
-                   
-    //                 ddYear = ebinifitt.substring(0, 4);
-    //                 console.log(ebinifitt,"ebinifitt count here");
-    //                 var GivenDate = ebinifitt;
-    //                 var CurrentDate = new Date();
-    //                 GivenDate = new Date(GivenDate);
-    //                if (GivenDate > CurrentDate) {
-    //                   Nursing++;
-    //                   Nursing1++;
-    //                   console.log(Nursing1,"nursing count here");
-    //                 }
-    //               }
-    //             }
-    //             console.log(
-    //               parseInt(dd) + parseInt(mm) + parseInt(yyyy),
-    //               parseInt(ddate) + parseInt(domonth) + parseInt(ddYear),
-    //               "today dat here",
-    //               "ebdate here"
-    //             );
-               
-    //             const subdata = data[i].Demographic.Pregnancy;
-    //             for (let index in subdata) {
-    //               if (subdata[index].Delivery === "No") {
-    //                 Deliverycount++;
-    //                 Deliverycount1++;
-    //               }
-    //             }
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                   "Female"
-    //                 ) {
-    //                   TotalCountFemale++;
-    //                   countfemale1++;
-    //                 }
-    //               }
-    //             }
-
-    //             Pregnancy.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Pregnancyanganwadicode: data[i].anganwadicode,
-    //               TotalFemale: countfemale1,
-    //               ExpectantWomen: Deliverycount1,
-    //               NursingMother: Nursing1
-    //             });
-    //           }
-    //           var Pregnancyfilteredarray = Object.values(Pregnancy);
-    //           var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
-    //             Object.values(Pregnancyel)
-    //           );
-    //           this.setState({
-    //             Pregnancy: Pregnancytotables
-    //           });
-    //         }
-
-    //         this.callDataTablePregnency();
-
-    //         // Gender
-    //         var countmale = 0;
-    //         var countfemale = 0;
-    //         var total = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var countmale1 = 0;
-    //             var countfemale11 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                   "Male"
-    //                 ) {
-    //                   countmale++;
-    //                   countmale1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                   "Female"
-    //                 ) {
-    //                   countfemale++;
-    //                   countfemale11++;
-    //                 }
-    //                 total = countfemale11 + countmale1;
-    //               }
-    //             }
-
-    //             Gender.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Genderanganwadicode: data[i].anganwadicode,
-    //               GenderMale: countmale1,
-    //               GenderFemale: countfemale11,
-    //               GenderTotal: total
-    //             });
-    //           }
-    //           var Genderfilteredarray = Object.values(Gender);
-    //           var Gendertotables = Genderfilteredarray.map(Genderel =>
-    //             Object.values(Genderel)
-    //           );
-    //           this.setState({
-    //             Gender: Gendertotables
-    //           });
-    //         }
-
-    //         this.callDataTableGender();
-    //         // Literacy var LiteracyRate = 0;
-    //         var Illiteratecount = 0;
-    //         var sslc = 0;
-    //         var puc = 0;
-    //         var HighSchool = 0;
-    //         var Graduvated = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Illiteratecount1 = 0;
-    //             var sslc1 = 0;
-    //             var puc1 = 0;
-    //             var HighSchool1 = 0;
-    //             var Graduvated1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate === "SSLC"
-    //                 ) {
-    //                   sslc++;
-    //                   sslc1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate === "PUC"
-    //                 ) {
-    //                   puc++;
-    //                   puc1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate === "Primary"
-    //                 ) {
-    //                   HighSchool++;
-    //                   HighSchool1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate === "Graduvated"
-    //                 ) {
-    //                   Graduvated++;
-    //                   Graduvated1++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate === "illiterate"
-    //                 ) {
-    //                   Illiteratecount++;
-    //                   Illiteratecount1++;
-    //                 }
-    //               }
-    //             }
-    //             LiteracyRatio.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               LiteracyRatioanganwadicode: data[i].anganwadicode,
-    //               HighSchool: HighSchool1,
-    //               sslc: sslc1,
-    //               puc: puc1,
-    //               Graduvated: Graduvated1,
-    //               Illiterate: Illiteratecount1
-    //             });
-    //           }
-    //           var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
-    //           var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
-    //             LiteracyRatioel => Object.values(LiteracyRatioel)
-    //           );
-    //           this.setState({
-    //             LiteracyRatio: LiteracyRatiototables
-    //           });
-    //         }
-
-    //         this.callDataTableLiteracy();
-
-    //         //Disbality
-    //         var total1 = 0;
-    //         var DisbaledYes = 0;
-    //         var DisbaledNo = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Disbaled1Yes = 0;
-    //             var Disbaled1No = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Disability === "Yes"
-    //                 ) {
-    //                   DisbaledYes++;
-    //                   Disbaled1Yes++;
-    //                 } else if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Disability === "No"
-    //                 ) {
-    //                   DisbaledNo++;
-    //                   Disbaled1No++;
-    //                 }
-    //               }
-    //               total1 = Disbaled1Yes + Disbaled1No;
-    //             }
-    //             Disability.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Disabilityanganwadicode: data[i].anganwadicode,
-    //               Disabled: Disbaled1Yes,
-    //               DisabledNo: Disbaled1No,
-    //               Total1: total1
-    //             });
-    //           }
-    //           var Disabilityfilteredarray = Object.values(Disability);
-    //           var Disabilitytotables = Disabilityfilteredarray.map(
-    //             Disabilityel => Object.values(Disabilityel)
-    //           );
-    //           this.setState({
-    //             Disability: Disabilitytotables
-    //           });
-    //         }
-
-    //         this.callDataTableDisabled();
-
-    //         //Income of The familiy Year
-    //         var Ten = 0;
-    //         var Twentyfive = 0;
-    //         var Fifty = 0;
-    //         var TotalHousesChart = 0;
-    //         var Lakh = 0;
-    //         var Income = "";
-
-    //         for (i = 0; i < data.length; i++) {
-    //           var TotalHouse = 0;
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Ten1 = 0;
-    //             var Twentyfive1 = 0;
-    //             var Fifty1 = 0;
-    //             var TotalHousesChart1 = 0;
-    //             var Lakh1 = 0;
-    //             for (const obj in data[i].Demographic.HouseHold) {
-    //               console.log("Total Houses", TotalHouse);
-
-    //               Income = data[i].Demographic.HouseHold[obj].Income;
-    //               if (Income < 11000) {
-    //                 Ten++;
-    //                 Ten1++;
-    //               } else if (Income >= 11000 && Income < 35000) {
-    //                 Twentyfive++;
-    //                 Twentyfive1++;
-    //               } else if (Income >= 35000 && Income < 100000) {
-    //                 Fifty++;
-    //                 Fifty1++;
-    //               } else if (Income > 100000) {
-    //                 Lakh++;
-    //                 Lakh1++;
-    //               }
-
-    //               if (
-    //                 data[i].Demographic.HouseHold[obj].HHNumber !== undefined
-    //               ) {
-    //                 TotalHouse++;
-    //               }
-    //               //
-    //             }
-
-    //             Incomes.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Incomesanganwadicode: data[i].anganwadicode,
-    //               TotalHouses: TotalHouse,
-    //               TenT: Ten1,
-    //               TwentyfiveT: Twentyfive1,
-    //               FiftyT: Fifty1,
-    //               LakhT: Lakh1
-    //             });
-    //           }
-    //           var Incomesfilteredarray = Object.values(Incomes);
-    //           var Incomestotables = Incomesfilteredarray.map(Incomesel =>
-    //             Object.values(Incomesel)
-    //           );
-    //           this.setState({
-    //             Incomes: Incomestotables
-    //           });
-    //         }
-    //         this.callDataTableIncome();
-
-    //         this.setState({
-    //           Diabitescount: Diabitescount,
-    //           HIVcount: HIVcount,
-    //           Asthamacount: Asthamacount,
-    //           Nodiseasecount: Nodiseasecount,
-    //           Agriculturecount: Agriculturecount,
-    //           HouseWifecount: HouseWifecount,
-    //           Teachercount: Teachercount,
-    //           Paultrycount: Paultrycount,
-    //           Othercount: Othercount,
-    //           UnEmployed: countUnemployment,
-    //           expectantwomencount: Deliverycount,
-    //           NursingMothercount: Nursing,
-    //           countmale: countmale,
-    //           countfemale: countfemale,
-    //           TCount:TotalCountFemale,
-    //           value1: HighSchool,
-    //           value2: sslc,
-    //           value3: puc,
-    //           value4: Graduvated,
-    //           value5: Illiteratecount,
-    //           Disableded: DisbaledYes,
-    //           D: DisbaledNo,
-    //           Incomea: Ten,
-    //           Incomeb: Twentyfive,
-    //           Incomec: Fifty,
-    //           Incomed: Lakh
-    //           // TotalFemaleC:countfemale,
-    //         });
-    //       });
-
-    //     // .catch(e => {
-    //     //   console.log("error returned - ", e);
-    //     // });
-    //   }
-    //   // code for Today
-    //   else if (selectedOption.value === "Today") {
-    //     //code  today
-
-    //     firebase
-    //       .database()
-    //       .ref("users")
-    //       .once("value")
-    //       .then(snapshot => {
-    //         const data = firebaseLooper(snapshot);
-
-    //         var i;
-    //         var Diabitescount = 0;
-    //         var HIVcount = 0;
-    //         var Asthamacount = 0;
-    //         var Nodiseasecount = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           console.log(data[i]);
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Diabitescount1 = 0;
-    //             var HIVcount1 = 0;
-    //             var Asthamacount1 = 0;
-    //             var Nodiseasecount1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 console.log("year");
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 today = yyyy + "-" + mm + "-" + dd;
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var dobyear =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   console.log(today, "todays date");
-
-    //                   if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Diabetes") &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Diabitescount++;
-    //                     Diabitescount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "HIV") &&
-    //                     dobyear == today
-    //                   ) {
-    //                     HIVcount++;
-    //                     HIVcount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Asthama") &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Asthamacount++;
-    //                     Asthamacount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === " No disease") &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Nodiseasecount++;
-    //                     Nodiseasecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             diseasedata.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               diseaseanganwadicode: data[i].anganwadicode,
-    //               diseaseDiabetes: Diabitescount1,
-    //               diseaseHIV: HIVcount1,
-    //               diseaseAsthama: Asthamacount1,
-    //               diseaseNodisease: Nodiseasecount1
-    //             });
-    //           }
-    //           // var Diabitescount = 0;
-    //           // var HIVcount = 0;
-    //           // var Asthamacount = 0;
-    //           // var Nodiseasecount = 0;
-
-    //           var diseasefilteredarray = Object.values(diseasedata);
-    //           var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
-    //             Object.values(diseaseel)
-    //           );
-    //           this.setState({
-    //             diseasedata: diseasedatatotables
-    //           });
-    //           //
-    //         }
-
-    //         this.callDataTableDisease();
-
-    //         var Agriculturecount = 0;
-    //         var HouseWifecount = 0;
-    //         var Teachercount = 0;
-    //         var Paultrycount = 0;
-    //         var Othercount = 0;
-    //         var Designation = "";
-    //         var Literate = "";
-    //         var countUnemployment = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Agriculturecount1 = 0;
-    //             var HouseWifecount1 = 0;
-    //             var Teachercount1 = 0;
-    //             var Paultrycount1 = 0;
-    //             var Othercount1 = 0;
-    //             var unemployed1 = 0;
-
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // unemployment code
-    //                 Designation =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation;
-    //                 Literate =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate;
-
-    //                 /*code for litreacy*/
-
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 today = yyyy + "-" + mm + "-" + dd;
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var dobyear =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   if (
-    //                     Designation === "UnEmployed" &&
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate !== "illiterate" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     countUnemployment++;
-    //                     unemployed1++;
-    //                   }
-    //                   //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Agriculture" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Agriculturecount++;
-    //                     Agriculturecount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "HouseWife" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     HouseWifecount++;
-    //                     HouseWifecount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Teacher" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Teachercount++;
-    //                     Teachercount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Poultry" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Paultrycount++;
-    //                     Paultrycount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Other" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Othercount++;
-    //                     Othercount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-
-    //             Occupations.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Occupationanganwadicode: data[i].anganwadicode,
-    //               Occupation1: Agriculturecount1,
-    //               Occupation2: HouseWifecount1,
-    //               Occupation3: Teachercount1,
-    //               Occupation4: Paultrycount1,
-    //               Occupation5: Othercount1,
-    //               Occupation6: unemployed1
-    //             });
-    //           }
-
-    //           var Occupationfilteredarray = Object.values(Occupations);
-    //           var Occupationtotables = Occupationfilteredarray.map(
-    //             Occupationsel => Object.values(Occupationsel)
-    //           );
-    //           this.setState({
-    //             Occupations: Occupationtotables
-    //           });
-    //         }
-
-    //         this.callDataTableOccupation();
-
-    //         //pregnancy code
-    //         var Deliverycount = 0;
-    //         var Nursing = 0;
-    //         var TotalCountFemale = 0;
-    //         var ebinifitt=0;
-    //         var ddate=0;
-    //         var domonth=0;
-    //         var ddYear=0;
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             data[i].Maternal &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Deliverycount1 = 0;
-    //             var Nursing1 = 0;
-    //             var countfemale1 = 0;
-    //             var cdob = "";
-    //             const subdata = data[i].Demographic.Pregnancy;
-    //             const subdata1 = data[i].Maternal.ChildRegistration;
-    //             for (let index in subdata1) {
-    //               //today code
-
-    //               if (subdata1[index].ebenifit) {
-    //                 ebinifitt = subdata1[index].ebenifit;
-
-    //                 ddate = ebinifitt.substring(8, 10);
-    //                 domonth = ebinifitt.substring(5, 7);
-    //                 ddYear = ebinifitt.substring(0, 4);
-    //                 console.log(ebinifitt,"ebinifitt count here");
-    //                 var GivenDate = ebinifitt;
-    //                 var CurrentDate = new Date();
-    //                 GivenDate = new Date(GivenDate);
-    //                if (GivenDate > CurrentDate) {
-    //                   Nursing++;
-    //                   Nursing1++;
-    //                   console.log(Nursing1,"nursing count here");
-    //                 }
-    //               }
-    //             }
-    //             for (let index in subdata) {
-    //               //code for today Pregnancy
-
-    //               var today = new Date();
-    //               var dd = today.getDate();
-    //               var mm = today.getMonth() + 1;
-    //               var yyyy = today.getFullYear();
-    //               if (dd < 10) {
-    //                 dd = "0" + dd;
-    //               }
-    //               if (mm < 10) {
-    //                 mm = "0" + mm;
-    //               }
-    //               today = yyyy + "-" + mm + "-" + dd;
-    //               var Dddate = subdata[index].LPerioddate;
-    //               if (subdata[index].Delivery === "No" && Dddate == today) {
-    //                 Deliverycount++;
-    //                 Deliverycount1++;
-    //               } else if (subdata[index].Delivery === "Yes") {
-    //                 Nursing++;
-    //                 Nursing1++;
-    //                 console.log("today", Nursing1, Nursing);
-    //               }
-    //             }
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                   "Female"
-    //                 ) {
-    //                   countfemale1++;
-    //                   TotalCountFemale++;
-    //                 }
-    //               }
-    //             }
-
-    //             Pregnancy.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Pregnancyanganwadicode: data[i].anganwadicode,
-    //               TotalFemale: countfemale1,
-    //               ExpectantWomen: Deliverycount1,
-    //               NursingMother: Nursing1
-    //             });
-    //           }
-    //           var Pregnancyfilteredarray = Object.values(Pregnancy);
-    //           var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
-    //             Object.values(Pregnancyel)
-    //           );
-    //           this.setState({
-    //             Pregnancy: Pregnancytotables
-    //           });
-    //         }
-
-    //         this.callDataTablePregnency();
-
-    //         // Gender
-    //         var countmale = 0;
-    //         var countfemale = 0;
-    //         var total = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var countmale1 = 0;
-    //             var countfemale11 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 today = yyyy + "-" + mm + "-" + dd;
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var dobyear =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Male" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     countmale++;
-    //                     countmale1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Female" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     countfemale++;
-    //                     countfemale11++;
-    //                   }
-    //                   total = countfemale11 + countmale1;
-    //                 }
-    //               }
-    //             }
-
-    //             Gender.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Genderanganwadicode: data[i].anganwadicode,
-    //               GenderMale: countmale1,
-    //               GenderFemale: countfemale11,
-    //               GenderTotal: total
-    //             });
-    //           }
-    //           var Genderfilteredarray = Object.values(Gender);
-    //           var Gendertotables = Genderfilteredarray.map(Genderel =>
-    //             Object.values(Genderel)
-    //           );
-    //           this.setState({
-    //             Gender: Gendertotables
-    //           });
-    //         }
-
-    //         // Literacy var LiteracyRate = 0;
-    //         var Illiteratecount = 0;
-    //         var sslc = 0;
-    //         var puc = 0;
-    //         var HighSchool = 0;
-    //         var Graduvated = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Illiteratecount1 = 0;
-    //             var sslc1 = 0;
-    //             var puc1 = 0;
-    //             var HighSchool1 = 0;
-    //             var Graduvated1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 today = yyyy + "-" + mm + "-" + dd;
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var dobyear =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "SSLC" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     sslc++;
-    //                     sslc1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "PUC" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     puc++;
-    //                     puc1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "Primary" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     HighSchool++;
-    //                     HighSchool1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "Graduvated" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Graduvated++;
-    //                     Graduvated1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "illiterate" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     Illiteratecount++;
-    //                     Illiteratecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             LiteracyRatio.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               LiteracyRatioanganwadicode: data[i].anganwadicode,
-    //               HighSchool: HighSchool1,
-    //               sslc: sslc1,
-    //               puc: puc1,
-    //               Graduvated: Graduvated1,
-    //               Illiterate: Illiteratecount1
-    //             });
-    //           }
-    //           var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
-    //           var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
-    //             LiteracyRatioel => Object.values(LiteracyRatioel)
-    //           );
-    //           this.setState({
-    //             LiteracyRatio: LiteracyRatiototables
-    //           });
-    //         }
-
-    //         //Disbality
-    //         var total1 = 0;
-    //         var DisbaledYes = 0;
-    //         var DisbaledNo = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Disbaled1Yes = 0;
-    //             var Disbaled1No = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 today = yyyy + "-" + mm + "-" + dd;
-    //                 if (
-    //                   (dobyear = data[i].Demographic.HouseholdMember[obj].DOE)
-    //                 ) {
-    //                   var dobyear =
-    //                     data[i].Demographic.HouseholdMember[obj].DOE;
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "Yes" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     DisbaledYes++;
-    //                     Disbaled1Yes++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "No" &&
-    //                     dobyear == today
-    //                   ) {
-    //                     DisbaledNo++;
-    //                     Disbaled1No++;
-    //                   }
-    //                 }
-    //                 total1 = Disbaled1Yes + Disbaled1No;
-    //               }
-    //             }
-    //             Disability.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Disabilityanganwadicode: data[i].anganwadicode,
-    //               Disabled: Disbaled1Yes,
-    //               DisabledNo: Disbaled1No,
-    //               Total1: total1
-    //             });
-    //           }
-    //           var Disabilityfilteredarray = Object.values(Disability);
-    //           var Disabilitytotables = Disabilityfilteredarray.map(
-    //             Disabilityel => Object.values(Disabilityel)
-    //           );
-    //           this.setState({
-    //             Disability: Disabilitytotables
-    //           });
-    //         }
-
-    //         this.callDataTableDisabled();
-
-    //         //Income of The familiy
-
-    //         var Ten = 0;
-    //         var Twentyfive = 0;
-    //         var Fifty = 0;
-    //         var TotalHousesChart = 0;
-    //         var Lakh = 0;
-    //         var Income = "";
-
-    //         for (i = 0; i < data.length; i++) {
-    //           var TotalHouse = 0;
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
-    //             data[i].Demographic
-    //           ) {
-    //             var Ten1 = 0;
-    //             var Twentyfive1 = 0;
-    //             var Fifty1 = 0;
-    //             var TotalHousesChart1 = 0;
-    //             var Lakh1 = 0;
-    //             for (const obj in data[i].Demographic.HouseHold) {
-    //               console.log("Total Houses", TotalHouse);
-
-    //               Income = data[i].Demographic.HouseHold[obj].Income;
-    //               if (Income > 10000 && Income < 25000) {
-    //                 Ten++;
-    //                 Ten1++;
-    //               } else if (Income >= 25000 && Income < 50000) {
-    //                 Twentyfive++;
-    //                 Twentyfive1++;
-    //               } else if (Income >= 50000 && Income < 100000) {
-    //                 Lakh++;
-    //                 Lakh1++;
-    //               }
-    //               if (
-    //                 data[i].Demographic.HouseHold[obj].HHNumber !== undefined
-    //               ) {
-    //                 TotalHouse++;
-    //               }
-    //               //
-    //             }
-
-    //             Incomes.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Incomesanganwadicode: data[i].anganwadicode,
-    //               TotalHouses: TotalHouse,
-    //               TenT: Ten1,
-    //               TwentyfiveT: Twentyfive1,
-    //               FiftyT: Fifty1,
-    //               LakhT: Lakh1
-    //             });
-    //           }
-    //           var Incomesfilteredarray = Object.values(Incomes);
-    //           var Incomestotables = Incomesfilteredarray.map(Incomesel =>
-    //             Object.values(Incomesel)
-    //           );
-    //           this.setState({
-    //             Incomes: Incomestotables
-    //           });
-    //         }
-    //         this.callDataTableIncome();
-
-    //         this.setState({
-    //           Diabitescount: Diabitescount,
-    //           HIVcount: HIVcount,
-    //           Asthamacount: Asthamacount,
-    //           Nodiseasecount: Nodiseasecount,
-    //           Agriculturecount: Agriculturecount,
-    //           HouseWifecount: HouseWifecount,
-    //           Teachercount: Teachercount,
-    //           Paultrycount: Paultrycount,
-    //           Othercount: Othercount,
-    //           UnEmployed: countUnemployment,
-    //           expectantwomencount: Deliverycount,
-    //           NursingMothercount: Nursing,
-    //           countmale: countmale,
-    //           countfemale: countfemale,
-    //           TCount:TotalCountFemale,
-    //           value1: HighSchool,
-    //           value2: sslc,
-    //           value3: puc,
-    //           value4: Graduvated,
-    //           value5: Illiteratecount,
-    //           Disableded: DisbaledYes,
-    //           D: DisbaledNo,
-    //           Incomea: Ten,
-    //           Incomeb: Twentyfive,
-    //           Incomec: Fifty,
-    //           Incomed: Lakh
-    //           // :TotalCountFemale,
-    //         });
-    //       })
-
-    //       .catch(e => {
-    //         console.log("error returned - ", e);
-    //       });
-    //   }
-    //   // month wise code
-    //   else if (selectedOption.value === "This Month") {
-    //     firebase
-    //       .database()
-    //       .ref("users")
-    //       .once("value")
-    //       .then(snapshot => {
-    //         const data = firebaseLooper(snapshot);
-
-    //         var i;
-    //         var Diabitescount = 0;
-    //         var HIVcount = 0;
-    //         var Asthamacount = 0;
-    //         var Nodiseasecount = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           console.log(data[i]);
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Diabitescount1 = 0;
-    //             var HIVcount1 = 0;
-    //             var Asthamacount1 = 0;
-    //             var Nodiseasecount1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var domonth = str.substring(5, 7);
-    //                   var dobYear = str.substring(0, 4);
-
-    //                   // var dobyear = str.substring(0, 4);
-    //                   // console.log("dob", dobyear);
-    //                   // console.log(
-    //                   //   data[i].Demographic.HouseholdMember[obj][obj1].Disease1
-    //                   // );
-    //                   // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
-    //                   if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Diabetes") &&
-    //                     domonth == mm &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     Diabitescount++;
-    //                     Diabitescount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "HIV") &&
-    //                     domonth == mm &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     HIVcount++;
-    //                     HIVcount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Asthama") &&
-    //                     domonth == mm &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     Asthamacount++;
-    //                     Asthamacount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === " No disease") &&
-    //                     domonth == mm &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     Nodiseasecount++;
-    //                     Nodiseasecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             diseasedata.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               diseaseanganwadicode: data[i].anganwadicode,
-    //               diseaseDiabetes: Diabitescount1,
-    //               diseaseHIV: HIVcount1,
-    //               diseaseAsthama: Asthamacount1,
-    //               diseaseNodisease: Nodiseasecount1
-    //             });
-    //           }
-    //           // var Diabitescount = 0;
-    //           // var HIVcount = 0;
-    //           // var Asthamacount = 0;
-    //           // var Nodiseasecount = 0;
-
-    //           var diseasefilteredarray = Object.values(diseasedata);
-    //           var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
-    //             Object.values(diseaseel)
-    //           );
-    //           this.setState({
-    //             diseasedata: diseasedatatotables
-    //           });
-    //           //
-    //         }
-    //         this.callDataTableDisease();
-    //         // code
-
-    //         var Agriculturecount = 0;
-    //         var HouseWifecount = 0;
-    //         var Teachercount = 0;
-    //         var Paultrycount = 0;
-    //         var Othercount = 0;
-    //         var Designation = "";
-    //         var Literate = "";
-    //         var countUnemployment = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Agriculturecount1 = 0;
-    //             var HouseWifecount1 = 0;
-    //             var Teachercount1 = 0;
-    //             var Paultrycount1 = 0;
-    //             var Othercount1 = 0;
-    //             var unemployed1 = 0;
-
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // unemployment code
-    //                 Designation =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation;
-    //                 Literate =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate;
-    //                 //month code
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobyear = str.substring(0, 4);
-    //                   var dobmonth = str.substring(5, 7);
-    //                   //to here
-    //                   if (
-    //                     Designation === "UnEmployed" &&
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate !== "illiterate" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     countUnemployment++;
-    //                     unemployed1++;
-    //                   }
-    //                   //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Agriculture" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Agriculturecount++;
-    //                     Agriculturecount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "HouseWife" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     HouseWifecount++;
-    //                     HouseWifecount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Teacher" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Teachercount++;
-    //                     Teachercount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Poultry" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Paultrycount++;
-    //                     Paultrycount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Other" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Othercount++;
-    //                     Othercount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-
-    //             Occupations.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Occupationanganwadicode: data[i].anganwadicode,
-    //               Occupation1: Agriculturecount1,
-    //               Occupation2: HouseWifecount1,
-    //               Occupation3: Teachercount1,
-    //               Occupation4: Paultrycount1,
-    //               Occupation5: Othercount1,
-    //               Occupation6: unemployed1
-    //             });
-    //           }
-
-    //           var Occupationfilteredarray = Object.values(Occupations);
-    //           var Occupationtotables = Occupationfilteredarray.map(
-    //             Occupationsel => Object.values(Occupationsel)
-    //           );
-    //           this.setState({
-    //             Occupations: Occupationtotables
-    //           });
-    //         }
-
-    //         /*code for occupation */
-
-    //         this.callDataTableOccupation();
-
-    //         /*           */
-
-    //         //pregnancy code
-    //         var Deliverycount = 0;
-    //         var Nursing = 0;
-    //         var TotalCountFemale=0;
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             data[i].Maternal &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Deliverycount1 = 0;
-    //             var Nursing1 = 0;
-    //             var countfemale1 = 0;
-    //             var ebinifitt=0;
-                
-    //             const subdata = data[i].Demographic.Pregnancy;
-    //             const subdata1 = data[i].Maternal.ChildRegistration;
-    //             var cdob = "";
-    //             for (let index in subdata1) {
-    //               //today code
-
-    //               if (subdata1[index].ebenifit) {
-    //                 ebinifitt = subdata1[index].ebenifit;
-    //                 console.log(ebinifitt,"ebinifitt count here");
-    //                 var GivenDate = ebinifitt;
-    //                 var CurrentDate = new Date();
-    //                 GivenDate = new Date(GivenDate);
-    //                if (GivenDate > CurrentDate) {
-    //                   Nursing++;
-    //                   Nursing1++;
-    //                   console.log(Nursing1,"nursing count here");
-    //                 }
-    //               }
-    //             }
-
-    //             for (let index in subdata) {
-    //               // code for
-
-    //               var today = new Date();
-    //               var dd = today.getDate();
-    //               var mm = today.getMonth() + 1;
-    //               var yyyy = today.getFullYear();
-    //               if (dd < 10) {
-    //                 dd = "0" + dd;
-    //               }
-    //               if (mm < 10) {
-    //                 mm = "0" + mm;
-    //               }
-
-    //               var str = subdata[index].LPerioddate;
-    //               var Pgyyear = str.substring(0, 4);
-    //               var dobmonth = str.substring(5, 7);
-
-    //               if (
-    //                 subdata[index].Delivery === "No" &&
-    //                 dobmonth == mm &&
-    //                 Pgyyear == yyyy
-    //               ) {
-    //                 Deliverycount++;
-    //                 Deliverycount1++;
-    //               }
-    //             }
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                   "Female"
-    //                 ) {
-    //                   TotalCountFemale++;
-    //                   countfemale1++;
-    //                 }
-    //               }
-    //             }
-
-    //             Pregnancy.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Pregnancyanganwadicode: data[i].anganwadicode,
-    //               TotalFemale: countfemale1,
-    //               ExpectantWomen: Deliverycount1,
-    //               NursingMother: Nursing1
-    //             });
-    //           }
-    //           var Pregnancyfilteredarray = Object.values(Pregnancy);
-    //           var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
-    //             Object.values(Pregnancyel)
-    //           );
-    //           this.setState({
-    //             Pregnancy: Pregnancytotables
-    //           });
-    //         }
-
-    //         /*code  */
-
-    //         this.callDataTablePregnency();
-    //         /* code ends   */
-
-    //         // Gender
-    //         var countmale = 0;
-    //         var countfemale = 0;
-    //         var total = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var countmale1 = 0;
-    //             var countfemale11 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-
-    //                 //code start
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobyear = str.substring(0, 4);
-    //                   var dobmonth = str.substring(5, 7);
-
-    //                   // code ends
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Male" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     countmale++;
-    //                     countmale1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Female" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     countfemale++;
-    //                     countfemale11++;
-    //                   }
-    //                   total = countfemale11 + countmale1;
-    //                 }
-    //               }
-    //             }
-    //             Gender.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Genderanganwadicode: data[i].anganwadicode,
-    //               GenderMale: countmale1,
-    //               GenderFemale: countfemale11,
-    //               GenderTotal: total
-    //             });
-    //           }
-    //           var Genderfilteredarray = Object.values(Gender);
-    //           var Gendertotables = Genderfilteredarray.map(Genderel =>
-    //             Object.values(Genderel)
-    //           );
-    //           this.setState({
-    //             Gender: Gendertotables
-    //           });
-    //         }
-    //         /* call function gender this month */
-    //         this.callDataTableGender();
-    //         /* code ends*/
-
-    //         // Literacy var LiteracyRate = 0;
-    //         var Illiteratecount = 0;
-    //         var sslc = 0;
-    //         var puc = 0;
-    //         var HighSchool = 0;
-    //         var Graduvated = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Illiteratecount1 = 0;
-    //             var sslc1 = 0;
-    //             var puc1 = 0;
-    //             var HighSchool1 = 0;
-    //             var Graduvated1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 //code for month
-    //                 var today = new Date();
-    //                 var dd = today.getDate();
-    //                 var mm = today.getMonth() + 1;
-    //                 var yyyy = today.getFullYear();
-    //                 if (dd < 10) {
-    //                   dd = "0" + dd;
-    //                 }
-    //                 if (mm < 10) {
-    //                   mm = "0" + mm;
-    //                 }
-
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobyear = str.substring(0, 4);
-    //                   var dobmonth = str.substring(5, 7);
-    //                   //ends here
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "SSLC" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     sslc++;
-    //                     sslc1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "PUC" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     puc++;
-    //                     puc1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "Primary" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     HighSchool++;
-    //                     HighSchool1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "Graduvated" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Graduvated++;
-    //                     Graduvated1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "illiterate" &&
-    //                     dobmonth == mm &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Illiteratecount++;
-    //                     Illiteratecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             LiteracyRatio.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               LiteracyRatioanganwadicode: data[i].anganwadicode,
-    //               HighSchool: HighSchool1,
-    //               sslc: sslc1,
-    //               puc: puc1,
-    //               Graduvated: Graduvated1,
-    //               Illiterate: Illiteratecount1
-    //             });
-    //           }
-    //           var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
-    //           var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
-    //             LiteracyRatioel => Object.values(LiteracyRatioel)
-    //           );
-    //           this.setState({
-    //             LiteracyRatio: LiteracyRatiototables
-    //           });
-    //         }
-
-    //         /*call litreacy*/
-    //         this.callDataTableLiteracy();
-    //         /* code ends*/
-
-    //         //Disbality
-    //         var total1 = 0;
-    //         var DisbaledYes = 0;
-    //         var DisbaledNo = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Disbaled1Yes = 0;
-    //             var Disbaled1No = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobyear = str.substring(0, 4);
-    //                   var dobmonth = str.substring(5, 7);
-
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "Yes" &&
-    //                     mm == dobmonth &&
-    //                     yyyy == dobyear
-    //                   ) {
-    //                     DisbaledYes++;
-    //                     Disbaled1Yes++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "No" &&
-    //                     mm == dobmonth &&
-    //                     yyyy == dobyear
-    //                   ) {
-    //                     DisbaledNo++;
-    //                     Disbaled1No++;
-    //                   }
-    //                 }
-    //                 total1 = Disbaled1Yes + Disbaled1No;
-    //               }
-    //             }
-    //             Disability.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Disabilityanganwadicode: data[i].anganwadicode,
-    //               Disabled: Disbaled1Yes,
-    //               DisabledNo: Disbaled1No,
-    //               Total1: total1
-    //             });
-    //           }
-    //           var Disabilityfilteredarray = Object.values(Disability);
-    //           var Disabilitytotables = Disabilityfilteredarray.map(
-    //             Disabilityel => Object.values(Disabilityel)
-    //           );
-    //           this.setState({
-    //             Disability: Disabilitytotables
-    //           });
-    //         }
-
-    //         /* call for disabled   */
-
-    //         this.callDataTableDisabled();
-    //         /*code ends*/
-
-    //         //Income of The familiy
-
-    //         var Ten = 0;
-    //         var Twentyfive = 0;
-    //         var Fifty = 0;
-    //         var TotalHousesChart = 0;
-    //         var Lakh = 0;
-    //         var Income = "";
-
-    //         for (i = 0; i < data.length; i++) {
-    //           var TotalHouse = 0;
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
-    //             data[i].Demographic
-    //           ) {
-    //             var Ten1 = 0;
-    //             var Twentyfive1 = 0;
-    //             var Fifty1 = 0;
-    //             var TotalHousesChart1 = 0;
-    //             var Lakh1 = 0;
-    //             for (const obj in data[i].Demographic.HouseHold) {
-    //               console.log("Total Houses", TotalHouse);
-
-    //               Income = data[i].Demographic.HouseHold[obj].Income;
-    //               if (Income > 10000 && Income < 25000) {
-    //                 Ten++;
-    //                 Ten1++;
-    //               } else if (Income >= 25000 && Income < 50000) {
-    //                 Twentyfive++;
-    //                 Twentyfive1++;
-    //               } else if (Income >= 50000 && Income < 100000) {
-    //                 Lakh++;
-    //                 Lakh1++;
-    //               }
-    //               if (
-    //                 data[i].Demographic.HouseHold[obj].HHNumber !== undefined
-    //               ) {
-    //                 TotalHouse++;
-    //               }
-    //               //
-    //             }
-
-    //             Incomes.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Incomesanganwadicode: data[i].anganwadicode,
-    //               TotalHouses: TotalHouse,
-    //               TenT: Ten1,
-    //               TwentyfiveT: Twentyfive1,
-    //               FiftyT: Fifty1,
-    //               LakhT: Lakh1
-    //             });
-    //           }
-    //           var Incomesfilteredarray = Object.values(Incomes);
-    //           var Incomestotables = Incomesfilteredarray.map(Incomesel =>
-    //             Object.values(Incomesel)
-    //           );
-    //           this.setState({
-    //             Incomes: Incomestotables
-    //           });
-    //         }
-    //         this.callDataTableIncome();
-
-    //         this.setState({
-    //           Diabitescount: Diabitescount,
-    //           HIVcount: HIVcount,
-    //           Asthamacount: Asthamacount,
-    //           Nodiseasecount: Nodiseasecount,
-    //           Agriculturecount: Agriculturecount,
-    //           HouseWifecount: HouseWifecount,
-    //           Teachercount: Teachercount,
-    //           Paultrycount: Paultrycount,
-    //           Othercount: Othercount,
-    //           UnEmployed: countUnemployment,
-    //           expectantwomencount: Deliverycount,
-    //           NursingMothercount: Nursing,
-    //           countmale: countmale,
-    //           countfemale: countfemale,
-    //           TCount:TotalCountFemale,
-    //           value1: HighSchool,
-    //           value2: sslc,
-    //           value3: puc,
-    //           value4: Graduvated,
-    //           value5: Illiteratecount,
-    //           Disableded: DisbaledYes,
-    //           D: DisbaledNo,
-    //           Incomea: Ten,
-    //           Incomeb: Twentyfive,
-    //           Incomec: Fifty,
-    //           Incomed: Lakh
-    //         });
-    //       })
-
-    //       .catch(e => {
-    //         console.log("error returned - ", e);
-    //       });
-    //   }
-    //   //3 months code here
-    //   else if (selectedOption.value === "Last 3 Month") {
-    //     // from here ******************************************
-    //     var today = new Date();
-    //     var year=today.getFullYear();
-    //     var dt1 = 0;
-    //     var dt2 = 0;
-    //     var dt3 = 0;
-    //     var c = 0;
-    //     var mm = today.getMonth() + 1;
-    //     var yyyy = today.getFullYear();
-    //     if (mm < 10) {
-    //       mm = "0" + mm;
-    //     }
-
-    //     var array = [10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    //     for (var i = array.length - 1; i >= 0; i--) {
-    //       if (array[i] == mm) {
-    //         for (var j = i - 1; j > i - 4; j--) {
-    //           if (c === 0) {
-    //             dt1 = array[j];
-    //           }
-    //           if (c === 1) {
-    //             dt2 = array[j];
-    //           }
-    //           if (c === 2) {
-    //             dt3 = array[j];
-    //           }
-    //           c++;
-    //         }
-    //         break;
-    //       }
-    //     }
-
-    //     firebase
-    //       .database()
-    //       .ref("users")
-    //       .once("value")
-    //       .then(snapshot => {
-    //         const data = firebaseLooper(snapshot);
-
-    //         var i;
-    //         var Diabitescount = 0;
-    //         var HIVcount = 0;
-    //         var Asthamacount = 0;
-    //         var Nodiseasecount = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           console.log(data[i]);
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Diabitescount1 = 0;
-    //             var HIVcount1 = 0;
-    //             var Asthamacount1 = 0;
-    //             var Nodiseasecount1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobmonth = str.substring(5, 7);
-    //                   var dobYear = str.substring(0, 4);
-
-    //                   // var dobyear = str.substring(0, 4);
-    //                   // console.log("dob", dobyear);
-    //                   // console.log(
-    //                   //   data[i].Demographic.HouseholdMember[obj][obj1].Disease1
-    //                   // );
-    //                   // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
-    //                   if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Diabetes") &&
-    //                     (dobmonth == dt1 ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     Diabitescount++;
-    //                     Diabitescount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "HIV") &&
-    //                     (dobmonth == dt1 ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     HIVcount++;
-    //                     HIVcount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease3 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease1 === "Asthama") &&
-    //                     (dobmonth == dt1 ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     Asthamacount++;
-    //                     Asthamacount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === " No disease") &&
-    //                     (dobmonth == dt1 ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     yyyy == dobYear
-    //                   ) {
-    //                     Nodiseasecount++;
-    //                     Nodiseasecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             diseasedata.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               diseaseanganwadicode: data[i].anganwadicode,
-    //               diseaseDiabetes: Diabitescount1,
-    //               diseaseHIV: HIVcount1,
-    //               diseaseAsthama: Asthamacount1,
-    //               diseaseNodisease: Nodiseasecount1
-    //             });
-    //           }
-    //           // var Diabitescount = 0;
-    //           // var HIVcount = 0;
-    //           // var Asthamacount = 0;
-    //           // var Nodiseasecount = 0;
-
-    //           var diseasefilteredarray = Object.values(diseasedata);
-    //           var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
-    //             Object.values(diseaseel)
-    //           );
-    //           this.setState({
-    //             diseasedata: diseasedatatotables
-    //           });
-    //           //
-    //         }
-
-    //         /* call for diesease 3 moths*/
-    //         this.callDataTableDisease();
-
-    //         var Agriculturecount = 0;
-    //         var HouseWifecount = 0;
-    //         var Teachercount = 0;
-    //         var Paultrycount = 0;
-    //         var Othercount = 0;
-    //         var Designation = "";
-    //         var Literate = "";
-    //         var countUnemployment = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Agriculturecount1 = 0;
-    //             var HouseWifecount1 = 0;
-    //             var Teachercount1 = 0;
-    //             var Paultrycount1 = 0;
-    //             var Othercount1 = 0;
-    //             var unemployed1 = 0;
-
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // unemployment code
-    //                 Designation =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .Designation;
-    //                 Literate =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1]
-    //                     .LiteracyRate;
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobmonth = str.substring(5, 7);
-    //                   var dobyear = str.substring(0, 4);
-    //                   if (
-    //                     Designation === "UnEmployed" &&
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate !== "illiterate" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     countUnemployment++;
-    //                     unemployed1++;
-    //                   }
-    //                   //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
-    //                   if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Agriculture" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Agriculturecount++;
-    //                     Agriculturecount1++;
-    //                   } else if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "HouseWife" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     HouseWifecount++;
-    //                     HouseWifecount1++;
-    //                   } else if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Teacher" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Teachercount++;
-    //                     Teachercount1++;
-    //                   } else if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Poultry" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Paultrycount++;
-    //                     Paultrycount1++;
-    //                   } else if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Other" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     Othercount++;
-    //                     Othercount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-
-    //             Occupations.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Occupationanganwadicode: data[i].anganwadicode,
-    //               Occupation1: Agriculturecount1,
-    //               Occupation2: HouseWifecount1,
-    //               Occupation3: Teachercount1,
-    //               Occupation4: Paultrycount1,
-    //               Occupation5: Othercount1,
-    //               Occupation6: unemployed1
-    //             });
-    //           }
-
-    //           var Occupationfilteredarray = Object.values(Occupations);
-    //           var Occupationtotables = Occupationfilteredarray.map(
-    //             Occupationsel => Object.values(Occupationsel)
-    //           );
-    //           this.setState({
-    //             Occupations: Occupationtotables
-    //           });
-    //         }
-
-    //         /*call occupation*/
-
-    //         this.callDataTableOccupation();
-
-    //         //pregnancy code
-    //         var Deliverycount = 0;
-    //         var Nursing = 0;
-    //        var  TotalCountFemale=0;
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Deliverycount1 = 0;
-    //             var Nursing1 = 0;
-    //             var countfemale1 = 0;
-    //             var ebinifitt=0;
-    //             var ddate=0;
-    //             var domonth=0;
-    //             var ddYear=0;
-    //             const subdata = data[i].Demographic.Pregnancy;
-    //             const subdata1 = data[i].Maternal.ChildRegistration;
-
-    //             for (let index in subdata1) {
-    //               //today code
-
-    //               if (subdata1[index].ebenifit) {
-    //                 ebinifitt = subdata1[index].ebenifit;
-
-    //                 ddate = ebinifitt.substring(8, 10);
-    //                 domonth = ebinifitt.substring(5, 7);
-    //                 ddYear = ebinifitt.substring(0, 4);
-                   
-    //                 console.log(ebinifitt,"ebinifitt count here");
-    //                 var GivenDate = ebinifitt;
-    //                 var CurrentDate = new Date();
-    //                 GivenDate = new Date(GivenDate);
-    //                if ((dt1 ==domonth || dt2 ==domonth || dt3 ==domonth) && year == dobYear) {
-    //                   Nursing++;
-    //                   Nursing1++;
-    //                   console.log(Nursing1,"nursing count here");
-    //                 }
-    //               }
-    //             }
-
-    //             for (let index in subdata) {
-    //               var str = subdata[index].LPerioddate;
-    //               var dobmonth = str.substring(5, 7);
-    //               var dobyear =str.substring(0,4);
-    //               if (
-    //                 subdata[index].Delivery === "No" && (dobmonth == dt1 ||
-    //                 dobmonth == dt2 ||
-    //                 dobmonth == dt3) && dobyear == year
-    //               ) {
-    //                 Deliverycount++;
-    //                 Deliverycount1++;
-    //               } 
-    //             }
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-
-    //                 var str =
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].DOB;
-    //                 var dobmonth = str.substring(5, 7);
-    //                 if (
-    //                   (data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                     "Female" &&
-    //                     dobmonth == dt1) ||
-    //                   dobmonth == dt2 ||
-    //                   dobmonth == dt3
-    //                 ) {
-    //                   TotalCountFemale++;
-    //                   countfemale1++;
-    //                 }
-    //               }
-    //             }
-
-    //             Pregnancy.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Pregnancyanganwadicode: data[i].anganwadicode,
-    //               TotalFemale: countfemale1,
-    //               ExpectantWomen: Deliverycount1,
-    //               NursingMother: Nursing1
-    //             });
-    //           }
-    //           var Pregnancyfilteredarray = Object.values(Pregnancy);
-    //           var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
-    //             Object.values(Pregnancyel)
-    //           );
-    //           this.setState({
-    //             Pregnancy: Pregnancytotables
-    //           });
-    //         }
-    //         /*call pregnancy*/
-
-    //         this.callDataTablePregnency();
-
-    //         // Gender
-    //         var countmale = 0;
-    //         var countfemale = 0;
-    //         var total = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var countmale1 = 0;
-    //             var countfemale11 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobmonth = str.substring(5, 7);
-    //                   var dobyear = str.substring(0, 4);
-    //                   console.log(
-    //                     "DObMonth",
-    //                     dobmonth,
-    //                     " dt1",
-    //                     dt1,
-    //                     "dt2",
-    //                     dt2,
-    //                     "dt3",
-    //                     dt3
-    //                   );
-    //                   if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Male" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     countmale++;
-    //                     countmale1++;
-    //                   } else if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Female" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     countfemale++;
-    //                     countfemale11++;
-    //                   }
-    //                   total = countfemale11 + countmale1;
-    //                 }
-    //               }
-
-    //               Gender.push({
-    //                 //donot delete the below comment
-    //                 //  ...childSnapshot.val(),
-    //                 Genderanganwadicode: data[i].anganwadicode,
-    //                 GenderMale: countmale1,
-    //                 GenderFemale: countfemale11,
-    //                 GenderTotal: total
-    //               });
-    //             }
-    //             var Genderfilteredarray = Object.values(Gender);
-    //             var Gendertotables = Genderfilteredarray.map(Genderel =>
-    //               Object.values(Genderel)
-    //             );
-    //             this.setState({
-    //               Gender: Gendertotables
-    //             });
-    //           }
-    //           /*call gender*/
-    //           this.callDataTableGender();
-
-    //           // Literacy var LiteracyRate = 0;
-    //           var Illiteratecount = 0;
-    //           var sslc = 0;
-    //           var puc = 0;
-    //           var HighSchool = 0;
-    //           var Graduvated = 0;
-
-    //           for (i = 0; i < data.length; i++) {
-    //             if (
-    //               // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
-    //               data[i].Demographic &&
-    //               selectedplace === data[i].anganwadidetails.awcplace
-    //             ) {
-    //               var Illiteratecount1 = 0;
-    //               var sslc1 = 0;
-    //               var puc1 = 0;
-    //               var HighSchool1 = 0;
-    //               var Graduvated1 = 0;
-    //               for (const obj in data[i].Demographic.HouseholdMember) {
-    //                 for (const obj1 in data[i].Demographic.HouseholdMember[
-    //                   obj
-    //                 ]) {
-    //                   if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                     var str =
-    //                       data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                     var dobmonth = str.substring(5, 7);
-    //                     var dobyear = str.substring(0, 4);
-    //                     if (
-    //                       ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .LiteracyRate === "SSLC" &&
-    //                         dobmonth == dt1) ||
-    //                         dobmonth == dt2 ||
-    //                         dobmonth == dt3) &&
-    //                       dobyear == yyyy
-    //                     ) {
-    //                       sslc++;
-    //                       sslc1++;
-    //                     } else if (
-    //                       ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .LiteracyRate === "PUC" &&
-    //                         dobmonth == dt1) ||
-    //                         dobmonth == dt2 ||
-    //                         dobmonth == dt3) &&
-    //                       dobyear == yyyy
-    //                     ) {
-    //                       puc++;
-    //                       puc1++;
-    //                     } else if (
-    //                       ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .LiteracyRate === "Primary" &&
-    //                         dobmonth == dt1) ||
-    //                         dobmonth == dt2 ||
-    //                         dobmonth == dt3) &&
-    //                       dobyear == yyyy
-    //                     ) {
-    //                       HighSchool++;
-    //                       HighSchool1++;
-    //                     } else if (
-    //                       ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .LiteracyRate === "Graduvated" &&
-    //                         dobmonth == dt1) ||
-    //                         dobmonth == dt2 ||
-    //                         dobmonth == dt3) &&
-    //                       dobyear == yyyy
-    //                     ) {
-    //                       Graduvated++;
-    //                       Graduvated1++;
-    //                     } else if (
-    //                       ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .LiteracyRate === "illiterate" &&
-    //                         dobmonth == dt1) ||
-    //                         dobmonth == dt2 ||
-    //                         dobmonth == dt3) &&
-    //                       dobyear == yyyy
-    //                     ) {
-    //                       Illiteratecount++;
-    //                       Illiteratecount1++;
-    //                     }
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             LiteracyRatio.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               LiteracyRatioanganwadicode: data[i].anganwadicode,
-    //               HighSchool: HighSchool1,
-    //               sslc: sslc1,
-    //               puc: puc1,
-    //               Graduvated: Graduvated1,
-    //               Illiterate: Illiteratecount1
-    //             });
-    //           }
-    //           var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
-    //           var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
-    //             LiteracyRatioel => Object.values(LiteracyRatioel)
-    //           );
-    //           this.setState({
-    //             LiteracyRatio: LiteracyRatiototables
-    //           });
-    //         }
-
-    //         this.callDataTableLiteracy();
-
-    //         //Disbality
-    //         var total1 = 0;
-    //         var DisbaledYes = 0;
-    //         var DisbaledNo = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Disbaled1Yes = 0;
-    //             var Disbaled1No = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   var dobmonth = str.substring(5, 7);
-    //                   var dobyear = str.substring(0, 4);
-    //                   if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "Yes" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     DisbaledYes++;
-    //                     Disbaled1Yes++;
-    //                   } else if (
-    //                     ((data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "No" &&
-    //                       dobmonth == dt1) ||
-    //                       dobmonth == dt2 ||
-    //                       dobmonth == dt3) &&
-    //                     dobyear == yyyy
-    //                   ) {
-    //                     DisbaledNo++;
-    //                     Disbaled1No++;
-    //                   }
-    //                 }
-    //                 total1 = Disbaled1Yes + Disbaled1No;
-    //               }
-    //             }
-    //             Disability.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Disabilityanganwadicode: data[i].anganwadicode,
-    //               Disabled: Disbaled1Yes,
-    //               DisabledNo: Disbaled1No,
-    //               Total1: total1
-    //             });
-    //           }
-    //           var Disabilityfilteredarray = Object.values(Disability);
-    //           var Disabilitytotables = Disabilityfilteredarray.map(
-    //             Disabilityel => Object.values(Disabilityel)
-    //           );
-    //           this.setState({
-    //             Disability: Disabilitytotables
-    //           });
-    //         }
-
-    //         this.callDataTableDisabled();
-
-    //         //Income of The familiy
-
-    //         var Ten = 0;
-    //         var Twentyfive = 0;
-    //         var Fifty = 0;
-    //         var TotalHousesChart = 0;
-    //         var Lakh = 0;
-    //         var Income = "";
-
-    //         for (i = 0; i < data.length; i++) {
-    //           var TotalHouse = 0;
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
-    //             data[i].Demographic
-    //           ) {
-    //             var Ten1 = 0;
-    //             var Twentyfive1 = 0;
-    //             var Fifty1 = 0;
-    //             var TotalHousesChart1 = 0;
-    //             var Lakh1 = 0;
-    //             for (const obj in data[i].Demographic.HouseHold) {
-    //               console.log("Total Houses", TotalHouse);
-
-    //               Income = data[i].Demographic.HouseHold[obj].Income;
-    //               if (Income > 10000 && Income < 25000) {
-    //                 Ten++;
-    //                 Ten1++;
-    //               } else if (Income >= 25000 && Income < 50000) {
-    //                 Twentyfive++;
-    //                 Twentyfive1++;
-    //               } else if (Income >= 50000 && Income < 100000) {
-    //                 Lakh++;
-    //                 Lakh1++;
-    //               }
-    //               if (
-    //                 data[i].Demographic.HouseHold[obj].HHNumber !== undefined
-    //               ) {
-    //                 TotalHouse++;
-    //               }
-    //               //
-    //             }
-
-    //             Incomes.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Incomesanganwadicode: data[i].anganwadicode,
-    //               TotalHouses: TotalHouse,
-    //               TenT: Ten1,
-    //               TwentyfiveT: Twentyfive1,
-    //               FiftyT: Fifty1,
-    //               LakhT: Lakh1
-    //             });
-    //           }
-    //           var Incomesfilteredarray = Object.values(Incomes);
-    //           var Incomestotables = Incomesfilteredarray.map(Incomesel =>
-    //             Object.values(Incomesel)
-    //           );
-    //           this.setState({
-    //             Incomes: Incomestotables
-    //           });
-    //         }
-    //         this.callDataTableIncome();
-
-    //         this.setState({
-    //           Diabitescount: Diabitescount,
-    //           HIVcount: HIVcount,
-    //           Asthamacount: Asthamacount,
-    //           Nodiseasecount: Nodiseasecount,
-    //           Agriculturecount: Agriculturecount,
-    //           HouseWifecount: HouseWifecount,
-    //           Teachercount: Teachercount,
-    //           Paultrycount: Paultrycount,
-    //           Othercount: Othercount,
-    //           UnEmployed: countUnemployment,
-    //           expectantwomencount: Deliverycount,
-    //           NursingMothercount: Nursing,
-    //           countmale: countmale,
-    //           countfemale: countfemale,
-    //           TCount:TotalCountFemale,
-    //           value1: HighSchool,
-    //           value2: sslc,
-    //           value3: puc,
-    //           value4: Graduvated,
-    //           value5: Illiteratecount,
-    //           Disableded: DisbaledYes,
-    //           D: DisbaledNo,
-    //           Incomea: Ten,
-    //           Incomeb: Twentyfive,
-    //           Incomec: Fifty,
-    //           Incomed: Lakh
-    //         });
-    //       });
-    //   }
-    //   // Year wise code
-    //   else {
-    //     //copy code
-
-    //     firebase
-    //       .database()
-    //       .ref("users")
-    //       .once("value")
-    //       .then(snapshot => {
-    //         const data = firebaseLooper(snapshot);
-
-    //         var i;
-    //         var Diabitescount = 0;
-    //         var HIVcount = 0;
-    //         var Asthamacount = 0;
-    //         var Nodiseasecount = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           console.log(data[i]);
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Diabitescount1 = 0;
-    //             var HIVcount1 = 0;
-    //             var Asthamacount1 = 0;
-    //             var Nodiseasecount1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 console.log(
-    //                   "year",
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].DOB
-    //                 );
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   // console.log("year", str);
-
-    //                   var dobyear = str.substring(0, 4);
-    //                   console.log("dob", dobyear);
-    //                   // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
-    //                   if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Diabetes" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Diabetes") &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Diabitescount++;
-    //                     Diabitescount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "HIV" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "HIV") &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     HIVcount++;
-    //                     HIVcount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === "Asthama" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === "Asthama") &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Asthamacount++;
-    //                     Asthamacount1++;
-    //                   } else if (
-    //                     (data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disease1 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease2 === " No disease" ||
-    //                       data[i].Demographic.HouseholdMember[obj][obj1]
-    //                         .Disease3 === " No disease") &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Nodiseasecount++;
-    //                     Nodiseasecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             diseasedata.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               diseaseanganwadicode: data[i].anganwadicode,
-    //               diseaseDiabetes: Diabitescount1,
-    //               diseaseHIV: HIVcount1,
-    //               diseaseAsthama: Asthamacount1,
-    //               diseaseNodisease: Nodiseasecount1
-    //             });
-    //           }
-    //           // var Diabitescount = 0;
-    //           // var HIVcount = 0;
-    //           // var Asthamacount = 0;
-    //           // var Nodiseasecount = 0;
-
-    //           var diseasefilteredarray = Object.values(diseasedata);
-    //           var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
-    //             Object.values(diseaseel)
-    //           );
-    //           this.setState({
-    //             diseasedata: diseasedatatotables
-    //           });
-    //           //
-    //         }
-
-    //         this.callDataTableDisease();
-
-    //         var Agriculturecount = 0;
-    //         var HouseWifecount = 0;
-    //         var Teachercount = 0;
-    //         var Paultrycount = 0;
-    //         var Othercount = 0;
-    //         var Designation = "";
-    //         var Literate = "";
-    //         var countUnemployment = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Agriculturecount1 = 0;
-    //             var HouseWifecount1 = 0;
-    //             var Teachercount1 = 0;
-    //             var Paultrycount1 = 0;
-    //             var Othercount1 = 0;
-    //             var unemployed1 = 0;
-
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   // console.log("year", str);
-
-    //                   var dobyear = str.substring(0, 4);
-    //                   console.log("dob", dobyear);
-    //                   // unemployment code
-    //                   Designation =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation;
-    //                   Literate =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate;
-    //                   if (
-    //                     Designation === "UnEmployed" &&
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate !== "illiterate" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     countUnemployment++;
-    //                     unemployed1++;
-    //                   }
-    //                   //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Agriculture" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Agriculturecount++;
-    //                     Agriculturecount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "HouseWife" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     HouseWifecount++;
-    //                     HouseWifecount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Teacher" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Teachercount++;
-    //                     Teachercount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Poultry" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Paultrycount++;
-    //                     Paultrycount1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Designation === "Other" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Othercount++;
-    //                     Othercount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-
-    //             Occupations.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Occupationanganwadicode: data[i].anganwadicode,
-    //               Occupation1: Agriculturecount1,
-    //               Occupation2: HouseWifecount1,
-    //               Occupation3: Teachercount1,
-    //               Occupation4: Paultrycount1,
-    //               Occupation5: Othercount1,
-    //               Occupation6: unemployed1
-    //             });
-    //           }
-
-    //           var Occupationfilteredarray = Object.values(Occupations);
-    //           var Occupationtotables = Occupationfilteredarray.map(
-    //             Occupationsel => Object.values(Occupationsel)
-    //           );
-    //           this.setState({
-    //             Occupations: Occupationtotables
-    //           });
-    //         }
-    //         this.callDataTableOccupation();
-
-    //         //pregnancy code
-    //         var Deliverycount = 0;
-    //         var Nursing = 0;
-    //         var TotalCountFemale=0;
-    //         for (i = 0; i < data.length; i++) {
-    //           //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Deliverycount1 = 0;
-    //             var Nursing1 = 0;
-    //             var countfemale1 = 0;
-    //             var ebinifitt=0;
-    //             var ddYear=0;
-    //             const subdata = data[i].Demographic.Pregnancy;
-    //             const subdata1=data[i].Maternal.ChildRegistration;
-    //             for (let index in subdata1) {
-    //               //today code
-
-    //               if (subdata1[index].ebenifit) {
-    //                 ebinifitt = subdata1[index].ebenifit;
-
-                   
-    //                 ddYear = ebinifitt.substring(0, 4);
-    //                 console.log(ebinifitt,"ebinifitt count here");
-    //                 var GivenDate = ebinifitt;
-    //                 var CurrentDate = new Date();
-    //                 GivenDate = new Date(GivenDate);
-    //                if (ddYear ==selectedOption.value) {
-    //                   Nursing++;
-    //                   Nursing1++;
-    //                   console.log(Nursing1,"nursing count here");
-    //                 }
-    //               }
-    //             }
-    //             for (let index in subdata) {
-    //               var str = subdata[index].LPerioddate;
-    //               // console.log("year", str);
-
-    //               var dobyear = str.substring(0, 4);
-    //               console.log("ddate", dobyear);
-    //               if (subdata[index].Delivery === "No" && selectedOption.value == ddYear) {
-    //                 Deliverycount++;
-    //                 Deliverycount1++;
-    //               } 
-    //             }
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 // console.log(
-    //                 //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                 // );
-    //                 if (
-    //                   data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                   "Female"
-    //                 ) {
-    //                   TotalCountFemale++;
-    //                   countfemale1++;
-    //                 }
-    //               }
-    //             }
-    //             Pregnancy.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Pregnancyanganwadicode: data[i].anganwadicode,
-    //               TotalFemale: countfemale1,
-    //               ExpectantWomen: Deliverycount1,
-    //               NursingMother: Nursing1
-    //             });
-    //           }
-    //           var Pregnancyfilteredarray = Object.values(Pregnancy);
-    //           var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
-    //             Object.values(Pregnancyel)
-    //           );
-    //           this.setState({
-    //             Pregnancy: Pregnancytotables
-    //           });
-    //         }
-    //         this.callDataTablePregnency();
-
-    //         // Gender
-    //         var countmale = 0;
-    //         var countfemale = 0;
-    //         var total = 0;
-    //         for (i = 0; i < data.length; i++) {
-    //           // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var countmale1 = 0;
-    //             var countfemale11 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   // console.log("year", str);
-
-    //                   var dobyear = str.substring(0, 4);
-    //                   console.log("dob", dobyear);
-    //                   // console.log(
-    //                   //   data[i].Demographic.HouseholdMember[obj][obj1].Status
-    //                   // );
-    //                   //else
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Male" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     countmale++;
-    //                     countmale1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].sex ===
-    //                       "Female" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     countfemale++;
-    //                     countfemale11++;
-    //                   }
-    //                   total = countfemale11 + countmale1;
-    //                 }
-    //               }
-    //             }
-
-    //             Gender.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Genderanganwadicode: data[i].anganwadicode,
-    //               GenderMale: countmale1,
-    //               GenderFemale: countfemale11,
-    //               GenderTotal: total
-    //             });
-    //           }
-    //           var Genderfilteredarray = Object.values(Gender);
-    //           var Gendertotables = Genderfilteredarray.map(Genderel =>
-    //             Object.values(Genderel)
-    //           );
-    //           this.setState({
-    //             Gender: Gendertotables
-    //           });
-    //         }
-    //         this.callDataTableGender();
-
-    //         // Literacy var LiteracyRate = 0;
-    //         var Illiteratecount = 0;
-    //         var sslc = 0;
-    //         var puc = 0;
-    //         var HighSchool = 0;
-    //         var Graduvated = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Illiteratecount1 = 0;
-    //             var sslc1 = 0;
-    //             var puc1 = 0;
-    //             var HighSchool1 = 0;
-    //             var Graduvated1 = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                   // console.log("year", str);
-
-    //                   var dobyear = str.substring(0, 4);
-    //                   console.log("dob", dobyear);
-
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "SSLC" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     sslc++;
-    //                     sslc1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "PUC" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     puc++;
-    //                     puc1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "Primary" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     HighSchool++;
-    //                     HighSchool1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "Graduvated" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Graduvated++;
-    //                     Graduvated1++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .LiteracyRate === "illiterate" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     Illiteratecount++;
-    //                     Illiteratecount1++;
-    //                   }
-    //                 }
-    //               }
-    //             }
-    //             LiteracyRatio.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               LiteracyRatioanganwadicode: data[i].anganwadicode,
-    //               HighSchool: HighSchool1,
-    //               sslc: sslc1,
-    //               puc: puc1,
-    //               Graduvated: Graduvated1,
-    //               Illiterate: Illiteratecount1
-    //             });
-    //           }
-    //           var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
-    //           var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
-    //             LiteracyRatioel => Object.values(LiteracyRatioel)
-    //           );
-    //           this.setState({
-    //             LiteracyRatio: LiteracyRatiototables
-    //           });
-    //         }
-
-    //         this.callDataTableLiteracy();
-
-    //         //Disbality
-    //         var total1 = 0;
-    //         var DisbaledYes = 0;
-    //         var DisbaledNo = 0;
-
-    //         for (i = 0; i < data.length; i++) {
-    //           if (
-    //             data[i].Demographic &&
-    //             selectedplace === data[i].anganwadidetails.awcplace
-    //           ) {
-    //             var Disbaled1Yes = 0;
-    //             var Disbaled1No = 0;
-    //             for (const obj in data[i].Demographic.HouseholdMember) {
-    //               for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
-    //                 if (data[i].Demographic.HouseholdMember[obj][obj1].DOE)
-    //                   var str =
-    //                     data[i].Demographic.HouseholdMember[obj][obj1].DOE;
-    //                 // console.log("year", str);
-
-    //                 var dobyear = str.substring(0, 4);
-    //                 {
-    //                   if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "Yes" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     DisbaledYes++;
-    //                     Disbaled1Yes++;
-    //                   } else if (
-    //                     data[i].Demographic.HouseholdMember[obj][obj1]
-    //                       .Disability === "No" &&
-    //                     dobyear == selectedOption.value
-    //                   ) {
-    //                     DisbaledNo++;
-    //                     Disbaled1No++;
-    //                   }
-    //                 }
-    //                 total1 = Disbaled1Yes + Disbaled1No;
-    //               }
-    //             }
-    //             Disability.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Disabilityanganwadicode: data[i].anganwadicode,
-    //               Disabled: Disbaled1Yes,
-    //               DisabledNo: Disbaled1No,
-    //               Total1: total1
-    //             });
-    //           }
-    //           var Disabilityfilteredarray = Object.values(Disability);
-    //           var Disabilitytotables = Disabilityfilteredarray.map(
-    //             Disabilityel => Object.values(Disabilityel)
-    //           );
-    //           this.setState({
-    //             Disability: Disabilitytotables
-    //           });
-    //         }
-    //         this.callDataTableDisabled();
-
-    //         //Income of The familiy
-
-    //         var Ten = 0;
-    //         var Twentyfive = 0;
-    //         var Fifty = 0;
-    //         var TotalHousesChart = 0;
-    //         var Lakh = 0;
-    //         var Income = "";
-
-    //         for (i = 0; i < data.length; i++) {
-    //           var TotalHouse = 0;
-    //           if (
-    //             // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
-    //             data[i].Demographic
-    //           ) {
-    //             var Ten1 = 0;
-    //             var Twentyfive1 = 0;
-    //             var Fifty1 = 0;
-    //             var TotalHousesChart1 = 0;
-    //             var Lakh1 = 0;
-    //             for (const obj in data[i].Demographic.HouseHold) {
-    //               console.log("Total Houses", TotalHouse);
-
-    //               Income = data[i].Demographic.HouseHold[obj].Income;
-    //               if (Income < 11000) {
-    //                 Ten++;
-    //                 Ten1++;
-    //               } else if (Income >= 11000 && Income < 35000) {
-    //                 Twentyfive++;
-    //                 Twentyfive1++;
-    //               } else if (Income >= 35000 && Income < 100000) {
-    //                 Fifty++;
-    //                 Fifty1++;
-    //               } else if (Income > 100000) {
-    //                 Lakh++;
-    //                 Lakh1++;
-    //               }
-
-    //               if (
-    //                 data[i].Demographic.HouseHold[obj].HHNumber !== undefined
-    //               ) {
-    //                 TotalHouse++;
-    //               }
-    //               //
-    //             }
-
-    //             Incomes.push({
-    //               //donot delete the below comment
-    //               //  ...childSnapshot.val(),
-    //               Incomesanganwadicode: data[i].anganwadicode,
-    //               TotalHouses: TotalHouse,
-    //               TenT: Ten1,
-    //               TwentyfiveT: Twentyfive1,
-    //               FiftyT: Fifty1,
-    //               LakhT: Lakh1
-    //             });
-    //           }
-    //           var Incomesfilteredarray = Object.values(Incomes);
-    //           var Incomestotables = Incomesfilteredarray.map(Incomesel =>
-    //             Object.values(Incomesel)
-    //           );
-    //           this.setState({
-    //             Incomes: Incomestotables
-    //           });
-    //         }
-    //         this.callDataTableIncome();
-
-    //         this.setState({
-    //           Diabitescount: Diabitescount,
-    //           HIVcount: HIVcount,
-    //           Asthamacount: Asthamacount,
-    //           Nodiseasecount: Nodiseasecount,
-    //           Agriculturecount: Agriculturecount,
-    //           HouseWifecount: HouseWifecount,
-    //           Teachercount: Teachercount,
-    //           Paultrycount: Paultrycount,
-    //           Othercount: Othercount,
-    //           UnEmployed: countUnemployment,
-    //           expectantwomencount: Deliverycount,
-    //           NursingMothercount: Nursing,
-    //           countmale: countmale,
-    //           countfemale: countfemale,
-    //           TCount:TotalCountFemale,
-    //           value1: HighSchool,
-    //           value2: sslc,
-    //           value3: puc,
-    //           value4: Graduvated,
-    //           value5: Illiteratecount,
-    //           Disableded: DisbaledYes,
-    //           D: DisbaledNo,
-    //           Incomea: Ten,
-    //           Incomeb: Twentyfive,
-    //           Incomec: Fifty,
-    //           Incomed: Lakh
-    //         });
-    //       })
-
-    //       .catch(e => {
-    //         console.log("error returned - ", e);
-    //       });
-    //   }
-
-    //   // console.log("Not All places");
-    // }
+    } else if (!(selectedplace === "All Places")) {
+      if (selectedOption.value === "none" || selectedOption.value === "All") {
+        firebase
+          .database()
+          .ref("users")
+          .once("value")
+          .then(snapshot => {
+            const data = firebaseLooper(snapshot);
+
+            var i;
+            var Diabitescount = 0;
+            var HIVcount = 0;
+            var Asthamacount = 0;
+            var Nodiseasecount = 0;
+            for (i = 0; i < data.length; i++) {
+              console.log(data[i]);
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Diabitescount1 = 0;
+                var HIVcount1 = 0;
+                var Asthamacount1 = 0;
+                var Nodiseasecount1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+
+                      // var dobyear = str.substring(0, 4);
+                      // console.log("dob", dobyear);
+                      // console.log(
+                      //   data[i].Demographic.HouseholdMember[obj][obj1].Disease1
+                      // );
+                      // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Diabetes" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease2 === "Diabetes" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease3 === "Diabetes"
+                      ) {
+                        Diabitescount++;
+                        Diabitescount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "HIV" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease2 === "HIV" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease3 === "HIV"
+                      ) {
+                        HIVcount++;
+                        HIVcount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Asthama" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease2 === "Asthama" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease3 === "Asthama"
+                      ) {
+                        Asthamacount++;
+                        Asthamacount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === " No disease" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease2 === " No disease" ||
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease3 === " No disease"
+                      ) {
+                        Nodiseasecount++;
+                        Nodiseasecount1++;
+                      }
+                    }
+                  }
+                }
+                diseasedata.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  diseaseanganwadicode: data[i].anganwadicode,
+                  diseaseDiabetes: Diabitescount1,
+                  diseaseHIV: HIVcount1,
+                  diseaseAsthama: Asthamacount1,
+                  diseaseNodisease: Nodiseasecount1
+                });
+              }
+              // var Diabitescount = 0;
+              // var HIVcount = 0;
+              // var Asthamacount = 0;
+              // var Nodiseasecount = 0;
+
+              var diseasefilteredarray = Object.values(diseasedata);
+              var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
+                Object.values(diseaseel)
+              );
+              this.setState({
+                diseasedata: diseasedatatotables
+              });
+              //
+            }
+            this.callDataTableDisease();
+
+            var Agriculturecount = 0;
+            var HouseWifecount = 0;
+            var Teachercount = 0;
+            var Paultrycount = 0;
+            var Othercount = 0;
+            var Designation = "";
+            var Literate = "";
+            var countUnemployment = 0;
+
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Agriculturecount1 = 0;
+                var HouseWifecount1 = 0;
+                var Teachercount1 = 0;
+                var Paultrycount1 = 0;
+                var Othercount1 = 0;
+                var unemployed1 = 0;
+
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // unemployment code
+                    Designation =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation;
+                    Literate =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate;
+
+                    if (
+                      Designation === "UnEmployed" &&
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate !== "illiterate"
+                    ) {
+                      countUnemployment++;
+                      unemployed1++;
+                    }
+                    //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation === "Agriculture"
+                    ) {
+                      Agriculturecount++;
+                      Agriculturecount1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation === "HouseWife"
+                    ) {
+                      HouseWifecount++;
+                      HouseWifecount1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation === "Teacher"
+                    ) {
+                      Teachercount++;
+                      Teachercount1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation === "Poultry"
+                    ) {
+                      Paultrycount++;
+                      Paultrycount1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation === "Other"
+                    ) {
+                      Othercount++;
+                      Othercount1++;
+                    }
+                  }
+                }
+
+                Occupations.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Occupationanganwadicode: data[i].anganwadicode,
+                  Occupation1: Agriculturecount1,
+                  Occupation2: HouseWifecount1,
+                  Occupation3: Teachercount1,
+                  Occupation4: Paultrycount1,
+                  Occupation5: Othercount1,
+                  Occupation6: unemployed1
+                });
+              }
+
+              var Occupationfilteredarray = Object.values(Occupations);
+              var Occupationtotables = Occupationfilteredarray.map(
+                Occupationsel => Object.values(Occupationsel)
+              );
+              this.setState({
+                Occupations: Occupationtotables
+              });
+            }
+            this.callDataTableOccupation();
+
+            //pregnancy code
+            var Deliverycount = 0;
+            var Nursing = 0;
+            var TotalCountFemale = 0;
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = "0" + dd;
+            }
+            if (mm < 10) {
+              mm = "0" + mm;
+            }
+            today = yyyy + "-" + mm + "-" + dd;
+            console.log("today ", today, "d", dd, "m", mm, "y", yyyy);
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                data[i].Maternal &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Deliverycount1 = 0;
+                var Nursing1 = 0;
+                var ebinifitt = 0;
+                var countfemale1 = 0;
+                var ebdate = "";
+                var domonth = "";
+                var ddate = "";
+                var ddYear = "";
+
+                const subdata1 = data[i].Maternal.ChildRegistration;
+                for (let index in subdata1) {
+                  //today code
+
+                  if (subdata1[index].ebenifit) {
+                    ebinifitt = subdata1[index].ebenifit;
+
+                    ddYear = ebinifitt.substring(0, 4);
+                    console.log(ebinifitt, "ebinifitt count here");
+                    var GivenDate = ebinifitt;
+                    var CurrentDate = new Date();
+                    GivenDate = new Date(GivenDate);
+                    if (GivenDate > CurrentDate) {
+                      Nursing++;
+                      Nursing1++;
+                      console.log(Nursing1, "nursing count here");
+                    }
+                  }
+                }
+                console.log(
+                  parseInt(dd) + parseInt(mm) + parseInt(yyyy),
+                  parseInt(ddate) + parseInt(domonth) + parseInt(ddYear),
+                  "today dat here",
+                  "ebdate here"
+                );
+
+                const subdata = data[i].Demographic.Pregnancy;
+                for (let index in subdata) {
+                  if (subdata[index].Delivery === "No") {
+                    Deliverycount++;
+                    Deliverycount1++;
+                  }
+                }
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                      "Female"
+                    ) {
+                      TotalCountFemale++;
+                      countfemale1++;
+                    }
+                  }
+                }
+
+                Pregnancy.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Pregnancyanganwadicode: data[i].anganwadicode,
+                  TotalFemale: countfemale1,
+                  ExpectantWomen: Deliverycount1,
+                  NursingMother: Nursing1
+                });
+              }
+              var Pregnancyfilteredarray = Object.values(Pregnancy);
+              var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
+                Object.values(Pregnancyel)
+              );
+              this.setState({
+                Pregnancy: Pregnancytotables
+              });
+            }
+
+            this.callDataTablePregnency();
+
+            // Gender
+            var countmale = 0;
+            var countfemale = 0;
+            var total = 0;
+            for (i = 0; i < data.length; i++) {
+              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var countmale1 = 0;
+                var countfemale11 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                      "Male"
+                    ) {
+                      countmale++;
+                      countmale1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                      "Female"
+                    ) {
+                      countfemale++;
+                      countfemale11++;
+                    }
+                    total = countfemale11 + countmale1;
+                  }
+                }
+
+                Gender.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Genderanganwadicode: data[i].anganwadicode,
+                  GenderMale: countmale1,
+                  GenderFemale: countfemale11,
+                  GenderTotal: total
+                });
+              }
+              var Genderfilteredarray = Object.values(Gender);
+              var Gendertotables = Genderfilteredarray.map(Genderel =>
+                Object.values(Genderel)
+              );
+              this.setState({
+                Gender: Gendertotables
+              });
+            }
+
+            this.callDataTableGender();
+            // Literacy var LiteracyRate = 0;
+            var Illiteratecount = 0;
+            var sslc = 0;
+            var puc = 0;
+            var HighSchool = 0;
+            var Graduvated = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Illiteratecount1 = 0;
+                var sslc1 = 0;
+                var puc1 = 0;
+                var HighSchool1 = 0;
+                var Graduvated1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate === "SSLC"
+                    ) {
+                      sslc++;
+                      sslc1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate === "PUC"
+                    ) {
+                      puc++;
+                      puc1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate === "Primary"
+                    ) {
+                      HighSchool++;
+                      HighSchool1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate === "Graduvated"
+                    ) {
+                      Graduvated++;
+                      Graduvated1++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate === "illiterate"
+                    ) {
+                      Illiteratecount++;
+                      Illiteratecount1++;
+                    }
+                  }
+                }
+                LiteracyRatio.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  LiteracyRatioanganwadicode: data[i].anganwadicode,
+                  HighSchool: HighSchool1,
+                  sslc: sslc1,
+                  puc: puc1,
+                  Graduvated: Graduvated1,
+                  Illiterate: Illiteratecount1
+                });
+              }
+              var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
+              var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
+                LiteracyRatioel => Object.values(LiteracyRatioel)
+              );
+              this.setState({
+                LiteracyRatio: LiteracyRatiototables
+              });
+            }
+
+            this.callDataTableLiteracy();
+
+            //Disbality
+            var total1 = 0;
+            var DisbaledYes = 0;
+            var DisbaledNo = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Disbaled1Yes = 0;
+                var Disbaled1No = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Disability === "Yes"
+                    ) {
+                      DisbaledYes++;
+                      Disbaled1Yes++;
+                    } else if (
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Disability === "No"
+                    ) {
+                      DisbaledNo++;
+                      Disbaled1No++;
+                    }
+                  }
+                  total1 = Disbaled1Yes + Disbaled1No;
+                }
+                Disability.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Disabilityanganwadicode: data[i].anganwadicode,
+                  Disabled: Disbaled1Yes,
+                  DisabledNo: Disbaled1No,
+                  Total1: total1
+                });
+              }
+              var Disabilityfilteredarray = Object.values(Disability);
+              var Disabilitytotables = Disabilityfilteredarray.map(
+                Disabilityel => Object.values(Disabilityel)
+              );
+              this.setState({
+                Disability: Disabilitytotables
+              });
+            }
+
+            this.callDataTableDisabled();
+
+            //Income of The familiy Year
+            var Ten = 0;
+            var Twentyfive = 0;
+            var Fifty = 0;
+            var TotalHousesChart = 0;
+            var Lakh = 0;
+            var Income = "";
+
+            for (i = 0; i < data.length; i++) {
+              var TotalHouse = 0;
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Ten1 = 0;
+                var Twentyfive1 = 0;
+                var Fifty1 = 0;
+                var TotalHousesChart1 = 0;
+                var Lakh1 = 0;
+                for (const obj in data[i].Demographic.HouseHold) {
+                  console.log("Total Houses", TotalHouse);
+
+                  Income = data[i].Demographic.HouseHold[obj].Income;
+                  if (Income < 11000) {
+                    Ten++;
+                    Ten1++;
+                  } else if (Income >= 11000 && Income < 35000) {
+                    Twentyfive++;
+                    Twentyfive1++;
+                  } else if (Income >= 35000 && Income < 100000) {
+                    Fifty++;
+                    Fifty1++;
+                  } else if (Income > 100000) {
+                    Lakh++;
+                    Lakh1++;
+                  }
+
+                  if (
+                    data[i].Demographic.HouseHold[obj].HHNumber !== undefined
+                  ) {
+                    TotalHouse++;
+                  }
+                  //
+                }
+
+                Incomes.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Incomesanganwadicode: data[i].anganwadicode,
+                  TotalHouses: TotalHouse,
+                  TenT: Ten1,
+                  TwentyfiveT: Twentyfive1,
+                  FiftyT: Fifty1,
+                  LakhT: Lakh1
+                });
+              }
+              var Incomesfilteredarray = Object.values(Incomes);
+              var Incomestotables = Incomesfilteredarray.map(Incomesel =>
+                Object.values(Incomesel)
+              );
+              this.setState({
+                Incomes: Incomestotables
+              });
+            }
+            this.callDataTableIncome();
+
+            this.setState({
+              Diabitescount: Diabitescount,
+              HIVcount: HIVcount,
+              Asthamacount: Asthamacount,
+              Nodiseasecount: Nodiseasecount,
+              Agriculturecount: Agriculturecount,
+              HouseWifecount: HouseWifecount,
+              Teachercount: Teachercount,
+              Paultrycount: Paultrycount,
+              Othercount: Othercount,
+              UnEmployed: countUnemployment,
+              expectantwomencount: Deliverycount,
+              NursingMothercount: Nursing,
+              countmale: countmale,
+              countfemale: countfemale,
+              TCount: TotalCountFemale,
+              value1: HighSchool,
+              value2: sslc,
+              value3: puc,
+              value4: Graduvated,
+              value5: Illiteratecount,
+              Disableded: DisbaledYes,
+              D: DisbaledNo,
+              Incomea: Ten,
+              Incomeb: Twentyfive,
+              Incomec: Fifty,
+              Incomed: Lakh
+              // TotalFemaleC:countfemale,
+            });
+          });
+
+        // .catch(e => {
+        //   console.log("error returned - ", e);
+        // });
+      }
+      // code for Today
+      else if (selectedOption.value === "Today") {
+        //code  today
+
+        firebase
+          .database()
+          .ref("users")
+          .once("value")
+          .then(snapshot => {
+            const data = firebaseLooper(snapshot);
+
+            var i;
+            var Diabitescount = 0;
+            var HIVcount = 0;
+            var Asthamacount = 0;
+            var Nodiseasecount = 0;
+            for (i = 0; i < data.length; i++) {
+              console.log(data[i]);
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Diabitescount1 = 0;
+                var HIVcount1 = 0;
+                var Asthamacount1 = 0;
+                var Nodiseasecount1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    console.log("year");
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    today = yyyy + "-" + mm + "-" + dd;
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var dobyear =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      console.log(today, "todays date");
+
+                      if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Diabetes") &&
+                        dobyear == today
+                      ) {
+                        Diabitescount++;
+                        Diabitescount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "HIV") &&
+                        dobyear == today
+                      ) {
+                        HIVcount++;
+                        HIVcount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Asthama") &&
+                        dobyear == today
+                      ) {
+                        Asthamacount++;
+                        Asthamacount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === " No disease") &&
+                        dobyear == today
+                      ) {
+                        Nodiseasecount++;
+                        Nodiseasecount1++;
+                      }
+                    }
+                  }
+                }
+                diseasedata.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  diseaseanganwadicode: data[i].anganwadicode,
+                  diseaseDiabetes: Diabitescount1,
+                  diseaseHIV: HIVcount1,
+                  diseaseAsthama: Asthamacount1,
+                  diseaseNodisease: Nodiseasecount1
+                });
+              }
+              // var Diabitescount = 0;
+              // var HIVcount = 0;
+              // var Asthamacount = 0;
+              // var Nodiseasecount = 0;
+
+              var diseasefilteredarray = Object.values(diseasedata);
+              var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
+                Object.values(diseaseel)
+              );
+              this.setState({
+                diseasedata: diseasedatatotables
+              });
+              //
+            }
+
+            this.callDataTableDisease();
+
+            var Agriculturecount = 0;
+            var HouseWifecount = 0;
+            var Teachercount = 0;
+            var Paultrycount = 0;
+            var Othercount = 0;
+            var Designation = "";
+            var Literate = "";
+            var countUnemployment = 0;
+
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Agriculturecount1 = 0;
+                var HouseWifecount1 = 0;
+                var Teachercount1 = 0;
+                var Paultrycount1 = 0;
+                var Othercount1 = 0;
+                var unemployed1 = 0;
+
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // unemployment code
+                    Designation =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation;
+                    Literate =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate;
+
+                    /*code for litreacy*/
+
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    today = yyyy + "-" + mm + "-" + dd;
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var dobyear =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      if (
+                        Designation === "UnEmployed" &&
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate !== "illiterate" &&
+                        dobyear == today
+                      ) {
+                        countUnemployment++;
+                        unemployed1++;
+                      }
+                      //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Agriculture" &&
+                        dobyear == today
+                      ) {
+                        Agriculturecount++;
+                        Agriculturecount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "HouseWife" &&
+                        dobyear == today
+                      ) {
+                        HouseWifecount++;
+                        HouseWifecount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Teacher" &&
+                        dobyear == today
+                      ) {
+                        Teachercount++;
+                        Teachercount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Poultry" &&
+                        dobyear == today
+                      ) {
+                        Paultrycount++;
+                        Paultrycount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Other" &&
+                        dobyear == today
+                      ) {
+                        Othercount++;
+                        Othercount1++;
+                      }
+                    }
+                  }
+                }
+
+                Occupations.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Occupationanganwadicode: data[i].anganwadicode,
+                  Occupation1: Agriculturecount1,
+                  Occupation2: HouseWifecount1,
+                  Occupation3: Teachercount1,
+                  Occupation4: Paultrycount1,
+                  Occupation5: Othercount1,
+                  Occupation6: unemployed1
+                });
+              }
+
+              var Occupationfilteredarray = Object.values(Occupations);
+              var Occupationtotables = Occupationfilteredarray.map(
+                Occupationsel => Object.values(Occupationsel)
+              );
+              this.setState({
+                Occupations: Occupationtotables
+              });
+            }
+
+            this.callDataTableOccupation();
+
+            //pregnancy code
+            var Deliverycount = 0;
+            var Nursing = 0;
+
+            var TotalCountFemale = 0;
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                data[i].Maternal &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Deliverycount1 = 0;
+                var Nursing1 = 0;
+                var countfemale1 = 0;
+                var ebinifitt=0;
+                var ddate=0;
+                var domonth=0;
+                var ddYear=0;
+                var cdob = "";
+                const subdata = data[i].Demographic.Pregnancy;
+                const subdata1 = data[i].Maternal.ChildRegistration;
+                for (let index in subdata1) {
+                  //today code
+
+                  if (subdata1[index].ebenifit) {
+                    ebinifitt = subdata1[index].ebenifit;
+
+                    ddate = ebinifitt.substring(8, 10);
+                    domonth = ebinifitt.substring(5, 7);
+                    ddYear = ebinifitt.substring(0, 4);
+                    console.log(ebinifitt, "ebinifitt count here");
+                    var GivenDate = ebinifitt;
+                    var CurrentDate = new Date();
+                    GivenDate = new Date(GivenDate);
+                    if (GivenDate > CurrentDate) {
+                      Nursing++;
+                      Nursing1++;
+                      console.log(Nursing1, "nursing count here");
+                    }
+                  }
+                }
+                for (let index in subdata) {
+                  //code for today Pregnancy
+
+                  var today = new Date();
+                  var dd = today.getDate();
+                  var mm = today.getMonth() + 1;
+                  var yyyy = today.getFullYear();
+                  if (dd < 10) {
+                    dd = "0" + dd;
+                  }
+                  if (mm < 10) {
+                    mm = "0" + mm;
+                  }
+                  today = yyyy + "-" + mm + "-" + dd;
+                  var Dddate = subdata[index].LPerioddate;
+                  if (subdata[index].Delivery === "No" && Dddate == today) {
+                    Deliverycount++;
+                    Deliverycount1++;
+                  } 
+                }
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                      "Female"
+                    ) {
+                      countfemale1++;
+                      TotalCountFemale++;
+                    }
+                  }
+                }
+
+                Pregnancy.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Pregnancyanganwadicode: data[i].anganwadicode,
+                  TotalFemale: countfemale1,
+                  ExpectantWomen: Deliverycount1,
+                  NursingMother: Nursing1
+                });
+              }
+              var Pregnancyfilteredarray = Object.values(Pregnancy);
+              var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
+                Object.values(Pregnancyel)
+              );
+              this.setState({
+                Pregnancy: Pregnancytotables
+              });
+            }
+
+            this.callDataTablePregnency();
+
+            // Gender
+            var countmale = 0;
+            var countfemale = 0;
+            var total = 0;
+            for (i = 0; i < data.length; i++) {
+              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var countmale1 = 0;
+                var countfemale11 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    today = yyyy + "-" + mm + "-" + dd;
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var dobyear =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Male" &&
+                        dobyear == today
+                      ) {
+                        countmale++;
+                        countmale1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Female" &&
+                        dobyear == today
+                      ) {
+                        countfemale++;
+                        countfemale11++;
+                      }
+                      total = countfemale11 + countmale1;
+                    }
+                  }
+                }
+
+                Gender.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Genderanganwadicode: data[i].anganwadicode,
+                  GenderMale: countmale1,
+                  GenderFemale: countfemale11,
+                  GenderTotal: total
+                });
+              }
+              var Genderfilteredarray = Object.values(Gender);
+              var Gendertotables = Genderfilteredarray.map(Genderel =>
+                Object.values(Genderel)
+              );
+              this.setState({
+                Gender: Gendertotables
+              });
+            }
+
+            // Literacy var LiteracyRate = 0;
+            var Illiteratecount = 0;
+            var sslc = 0;
+            var puc = 0;
+            var HighSchool = 0;
+            var Graduvated = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Illiteratecount1 = 0;
+                var sslc1 = 0;
+                var puc1 = 0;
+                var HighSchool1 = 0;
+                var Graduvated1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    today = yyyy + "-" + mm + "-" + dd;
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var dobyear =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "SSLC" &&
+                        dobyear == today
+                      ) {
+                        sslc++;
+                        sslc1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "PUC" &&
+                        dobyear == today
+                      ) {
+                        puc++;
+                        puc1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "Primary" &&
+                        dobyear == today
+                      ) {
+                        HighSchool++;
+                        HighSchool1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "Graduvated" &&
+                        dobyear == today
+                      ) {
+                        Graduvated++;
+                        Graduvated1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "illiterate" &&
+                        dobyear == today
+                      ) {
+                        Illiteratecount++;
+                        Illiteratecount1++;
+                      }
+                    }
+                  }
+                }
+                LiteracyRatio.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  LiteracyRatioanganwadicode: data[i].anganwadicode,
+                  HighSchool: HighSchool1,
+                  sslc: sslc1,
+                  puc: puc1,
+                  Graduvated: Graduvated1,
+                  Illiterate: Illiteratecount1
+                });
+              }
+              var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
+              var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
+                LiteracyRatioel => Object.values(LiteracyRatioel)
+              );
+              this.setState({
+                LiteracyRatio: LiteracyRatiototables
+              });
+            }
+
+            //Disbality
+            var total1 = 0;
+            var DisbaledYes = 0;
+            var DisbaledNo = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Disbaled1Yes = 0;
+                var Disbaled1No = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    today = yyyy + "-" + mm + "-" + dd;
+                    if (
+                      (dobyear = data[i].Demographic.HouseholdMember[obj].DOE)
+                    ) {
+                      var dobyear =
+                        data[i].Demographic.HouseholdMember[obj].DOE;
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "Yes" &&
+                        dobyear == today
+                      ) {
+                        DisbaledYes++;
+                        Disbaled1Yes++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "No" &&
+                        dobyear == today
+                      ) {
+                        DisbaledNo++;
+                        Disbaled1No++;
+                      }
+                    }
+                    total1 = Disbaled1Yes + Disbaled1No;
+                  }
+                }
+                Disability.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Disabilityanganwadicode: data[i].anganwadicode,
+                  Disabled: Disbaled1Yes,
+                  DisabledNo: Disbaled1No,
+                  Total1: total1
+                });
+              }
+              var Disabilityfilteredarray = Object.values(Disability);
+              var Disabilitytotables = Disabilityfilteredarray.map(
+                Disabilityel => Object.values(Disabilityel)
+              );
+              this.setState({
+                Disability: Disabilitytotables
+              });
+            }
+
+            this.callDataTableDisabled();
+
+            //Income of The familiy
+
+            var Ten = 0;
+            var Twentyfive = 0;
+            var Fifty = 0;
+            var TotalHousesChart = 0;
+            var Lakh = 0;
+            var Income = "";
+
+            for (i = 0; i < data.length; i++) {
+              var TotalHouse = 0;
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
+                data[i].Demographic
+              ) {
+                var Ten1 = 0;
+                var Twentyfive1 = 0;
+                var Fifty1 = 0;
+                var TotalHousesChart1 = 0;
+                var Lakh1 = 0;
+                for (const obj in data[i].Demographic.HouseHold) {
+                  console.log("Total Houses", TotalHouse);
+
+                  Income = data[i].Demographic.HouseHold[obj].Income;
+                  if (Income > 10000 && Income < 25000) {
+                    Ten++;
+                    Ten1++;
+                  } else if (Income >= 25000 && Income < 50000) {
+                    Twentyfive++;
+                    Twentyfive1++;
+                  } else if (Income >= 50000 && Income < 100000) {
+                    Lakh++;
+                    Lakh1++;
+                  }
+                  if (
+                    data[i].Demographic.HouseHold[obj].HHNumber !== undefined
+                  ) {
+                    TotalHouse++;
+                  }
+                  //
+                }
+
+                Incomes.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Incomesanganwadicode: data[i].anganwadicode,
+                  TotalHouses: TotalHouse,
+                  TenT: Ten1,
+                  TwentyfiveT: Twentyfive1,
+                  FiftyT: Fifty1,
+                  LakhT: Lakh1
+                });
+              }
+              var Incomesfilteredarray = Object.values(Incomes);
+              var Incomestotables = Incomesfilteredarray.map(Incomesel =>
+                Object.values(Incomesel)
+              );
+              this.setState({
+                Incomes: Incomestotables
+              });
+            }
+            this.callDataTableIncome();
+
+            this.setState({
+              Diabitescount: Diabitescount,
+              HIVcount: HIVcount,
+              Asthamacount: Asthamacount,
+              Nodiseasecount: Nodiseasecount,
+              Agriculturecount: Agriculturecount,
+              HouseWifecount: HouseWifecount,
+              Teachercount: Teachercount,
+              Paultrycount: Paultrycount,
+              Othercount: Othercount,
+              UnEmployed: countUnemployment,
+              expectantwomencount: Deliverycount,
+              NursingMothercount: Nursing,
+              countmale: countmale,
+              countfemale: countfemale,
+              TCount: TotalCountFemale,
+              value1: HighSchool,
+              value2: sslc,
+              value3: puc,
+              value4: Graduvated,
+              value5: Illiteratecount,
+              Disableded: DisbaledYes,
+              D: DisbaledNo,
+              Incomea: Ten,
+              Incomeb: Twentyfive,
+              Incomec: Fifty,
+              Incomed: Lakh
+              // :TotalCountFemale,
+            });
+          })
+
+          .catch(e => {
+            console.log("error returned - ", e);
+          });
+      }
+      // month wise code
+      else if (selectedOption.value === "This Month") {
+        firebase
+          .database()
+          .ref("users")
+          .once("value")
+          .then(snapshot => {
+            const data = firebaseLooper(snapshot);
+
+            var i;
+            var Diabitescount = 0;
+            var HIVcount = 0;
+            var Asthamacount = 0;
+            var Nodiseasecount = 0;
+            for (i = 0; i < data.length; i++) {
+              console.log(data[i]);
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Diabitescount1 = 0;
+                var HIVcount1 = 0;
+                var Asthamacount1 = 0;
+                var Nodiseasecount1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var domonth = str.substring(5, 7);
+                      var dobYear = str.substring(0, 4);
+
+                      // var dobyear = str.substring(0, 4);
+                      // console.log("dob", dobyear);
+                      // console.log(
+                      //   data[i].Demographic.HouseholdMember[obj][obj1].Disease1
+                      // );
+                      // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
+                      if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Diabetes") &&
+                        domonth == mm &&
+                        yyyy == dobYear
+                      ) {
+                        Diabitescount++;
+                        Diabitescount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "HIV") &&
+                        domonth == mm &&
+                        yyyy == dobYear
+                      ) {
+                        HIVcount++;
+                        HIVcount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Asthama") &&
+                        domonth == mm &&
+                        yyyy == dobYear
+                      ) {
+                        Asthamacount++;
+                        Asthamacount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === " No disease") &&
+                        domonth == mm &&
+                        yyyy == dobYear
+                      ) {
+                        Nodiseasecount++;
+                        Nodiseasecount1++;
+                      }
+                    }
+                  }
+                }
+                diseasedata.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  diseaseanganwadicode: data[i].anganwadicode,
+                  diseaseDiabetes: Diabitescount1,
+                  diseaseHIV: HIVcount1,
+                  diseaseAsthama: Asthamacount1,
+                  diseaseNodisease: Nodiseasecount1
+                });
+              }
+              // var Diabitescount = 0;
+              // var HIVcount = 0;
+              // var Asthamacount = 0;
+              // var Nodiseasecount = 0;
+
+              var diseasefilteredarray = Object.values(diseasedata);
+              var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
+                Object.values(diseaseel)
+              );
+              this.setState({
+                diseasedata: diseasedatatotables
+              });
+              //
+            }
+            this.callDataTableDisease();
+            // code
+
+            var Agriculturecount = 0;
+            var HouseWifecount = 0;
+            var Teachercount = 0;
+            var Paultrycount = 0;
+            var Othercount = 0;
+            var Designation = "";
+            var Literate = "";
+            var countUnemployment = 0;
+
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Agriculturecount1 = 0;
+                var HouseWifecount1 = 0;
+                var Teachercount1 = 0;
+                var Paultrycount1 = 0;
+                var Othercount1 = 0;
+                var unemployed1 = 0;
+
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // unemployment code
+                    Designation =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation;
+                    Literate =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate;
+                    //month code
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobyear = str.substring(0, 4);
+                      var dobmonth = str.substring(5, 7);
+                      //to here
+                      if (
+                        Designation === "UnEmployed" &&
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate !== "illiterate" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        countUnemployment++;
+                        unemployed1++;
+                      }
+                      //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Agriculture" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        Agriculturecount++;
+                        Agriculturecount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "HouseWife" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        HouseWifecount++;
+                        HouseWifecount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Teacher" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        Teachercount++;
+                        Teachercount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Poultry" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        Paultrycount++;
+                        Paultrycount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Other" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        Othercount++;
+                        Othercount1++;
+                      }
+                    }
+                  }
+                }
+
+                Occupations.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Occupationanganwadicode: data[i].anganwadicode,
+                  Occupation1: Agriculturecount1,
+                  Occupation2: HouseWifecount1,
+                  Occupation3: Teachercount1,
+                  Occupation4: Paultrycount1,
+                  Occupation5: Othercount1,
+                  Occupation6: unemployed1
+                });
+              }
+
+              var Occupationfilteredarray = Object.values(Occupations);
+              var Occupationtotables = Occupationfilteredarray.map(
+                Occupationsel => Object.values(Occupationsel)
+              );
+              this.setState({
+                Occupations: Occupationtotables
+              });
+            }
+
+            /*code for occupation */
+
+            this.callDataTableOccupation();
+
+            /*           */
+
+            //pregnancy code
+            var Deliverycount = 0;
+            var Nursing = 0;
+            var TotalCountFemale = 0;
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                data[i].Maternal &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Deliverycount1 = 0;
+                var Nursing1 = 0;
+                var countfemale1 = 0;
+                var ebinifitt = 0;
+
+                const subdata = data[i].Demographic.Pregnancy;
+                const subdata1 = data[i].Maternal.ChildRegistration;
+                var cdob = "";
+                for (let index in subdata1) {
+                  //today code
+
+                  if (subdata1[index].ebenifit) {
+                    ebinifitt = subdata1[index].ebenifit;
+
+                    console.log(ebinifitt, "ebinifitt count here");
+                    var GivenDate = ebinifitt;
+                    var CurrentDate = new Date();
+                    GivenDate = new Date(GivenDate);
+                    if (GivenDate > CurrentDate) {
+                      Nursing++;
+                      Nursing1++;
+                      console.log(Nursing1, "nursing count here");
+                    }
+                  }
+                }
+
+                for (let index in subdata) {
+                  // code for
+
+                  var today = new Date();
+                  var dd = today.getDate();
+                  var mm = today.getMonth() + 1;
+                  var yyyy = today.getFullYear();
+                  if (dd < 10) {
+                    dd = "0" + dd;
+                  }
+                  if (mm < 10) {
+                    mm = "0" + mm;
+                  }
+
+                  var str = subdata[index].LPerioddate;
+                  var Pgyyear = str.substring(0, 4);
+                  var dobmonth = str.substring(5, 7);
+                  if (
+                    subdata[index].Delivery === "No" &&
+                    dobmonth == mm &&
+                    Pgyyear == yyyy
+                  ) {
+                    Deliverycount++;
+                    Deliverycount1++;
+                  }
+                }
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                      "Female"
+                    ) {
+                      TotalCountFemale++;
+                      countfemale1++;
+                    }
+                  }
+                }
+
+                Pregnancy.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Pregnancyanganwadicode: data[i].anganwadicode,
+                  TotalFemale: countfemale1,
+                  ExpectantWomen: Deliverycount1,
+                  NursingMother: Nursing1
+                });
+              }
+              var Pregnancyfilteredarray = Object.values(Pregnancy);
+              var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
+                Object.values(Pregnancyel)
+              );
+              this.setState({
+                Pregnancy: Pregnancytotables
+              });
+            }
+
+            /*code  */
+
+            this.callDataTablePregnency();
+            /* code ends   */
+
+            // Gender
+            var countmale = 0;
+            var countfemale = 0;
+            var total = 0;
+            for (i = 0; i < data.length; i++) {
+              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var countmale1 = 0;
+                var countfemale11 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+
+                    //code start
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobyear = str.substring(0, 4);
+                      var dobmonth = str.substring(5, 7);
+
+                      // code ends
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Male" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        countmale++;
+                        countmale1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Female" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        countfemale++;
+                        countfemale11++;
+                      }
+                      total = countfemale11 + countmale1;
+                    }
+                  }
+                }
+                Gender.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Genderanganwadicode: data[i].anganwadicode,
+                  GenderMale: countmale1,
+                  GenderFemale: countfemale11,
+                  GenderTotal: total
+                });
+              }
+              var Genderfilteredarray = Object.values(Gender);
+              var Gendertotables = Genderfilteredarray.map(Genderel =>
+                Object.values(Genderel)
+              );
+              this.setState({
+                Gender: Gendertotables
+              });
+            }
+            /* call function gender this month */
+            this.callDataTableGender();
+            /* code ends*/
+
+            // Literacy var LiteracyRate = 0;
+            var Illiteratecount = 0;
+            var sslc = 0;
+            var puc = 0;
+            var HighSchool = 0;
+            var Graduvated = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Illiteratecount1 = 0;
+                var sslc1 = 0;
+                var puc1 = 0;
+                var HighSchool1 = 0;
+                var Graduvated1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    //code for month
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                      dd = "0" + dd;
+                    }
+                    if (mm < 10) {
+                      mm = "0" + mm;
+                    }
+
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobyear = str.substring(0, 4);
+                      var dobmonth = str.substring(5, 7);
+                      //ends here
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "SSLC" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        sslc++;
+                        sslc1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "PUC" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        puc++;
+                        puc1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "Primary" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        HighSchool++;
+                        HighSchool1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "Graduvated" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        Graduvated++;
+                        Graduvated1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "illiterate" &&
+                        dobmonth == mm &&
+                        dobyear == yyyy
+                      ) {
+                        Illiteratecount++;
+                        Illiteratecount1++;
+                      }
+                    }
+                  }
+                }
+                LiteracyRatio.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  LiteracyRatioanganwadicode: data[i].anganwadicode,
+                  HighSchool: HighSchool1,
+                  sslc: sslc1,
+                  puc: puc1,
+                  Graduvated: Graduvated1,
+                  Illiterate: Illiteratecount1
+                });
+              }
+              var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
+              var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
+                LiteracyRatioel => Object.values(LiteracyRatioel)
+              );
+              this.setState({
+                LiteracyRatio: LiteracyRatiototables
+              });
+            }
+
+            /*call litreacy*/
+            this.callDataTableLiteracy();
+            /* code ends*/
+
+            //Disbality
+            var total1 = 0;
+            var DisbaledYes = 0;
+            var DisbaledNo = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Disbaled1Yes = 0;
+                var Disbaled1No = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobyear = str.substring(0, 4);
+                      var dobmonth = str.substring(5, 7);
+
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "Yes" &&
+                        mm == dobmonth &&
+                        yyyy == dobyear
+                      ) {
+                        DisbaledYes++;
+                        Disbaled1Yes++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "No" &&
+                        mm == dobmonth &&
+                        yyyy == dobyear
+                      ) {
+                        DisbaledNo++;
+                        Disbaled1No++;
+                      }
+                    }
+                    total1 = Disbaled1Yes + Disbaled1No;
+                  }
+                }
+                Disability.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Disabilityanganwadicode: data[i].anganwadicode,
+                  Disabled: Disbaled1Yes,
+                  DisabledNo: Disbaled1No,
+                  Total1: total1
+                });
+              }
+              var Disabilityfilteredarray = Object.values(Disability);
+              var Disabilitytotables = Disabilityfilteredarray.map(
+                Disabilityel => Object.values(Disabilityel)
+              );
+              this.setState({
+                Disability: Disabilitytotables
+              });
+            }
+
+            /* call for disabled   */
+
+            this.callDataTableDisabled();
+            /*code ends*/
+
+            //Income of The familiy
+
+            var Ten = 0;
+            var Twentyfive = 0;
+            var Fifty = 0;
+            var TotalHousesChart = 0;
+            var Lakh = 0;
+            var Income = "";
+
+            for (i = 0; i < data.length; i++) {
+              var TotalHouse = 0;
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
+                data[i].Demographic
+              ) {
+                var Ten1 = 0;
+                var Twentyfive1 = 0;
+                var Fifty1 = 0;
+                var TotalHousesChart1 = 0;
+                var Lakh1 = 0;
+                for (const obj in data[i].Demographic.HouseHold) {
+                  console.log("Total Houses", TotalHouse);
+
+                  Income = data[i].Demographic.HouseHold[obj].Income;
+                  if (Income > 10000 && Income < 25000) {
+                    Ten++;
+                    Ten1++;
+                  } else if (Income >= 25000 && Income < 50000) {
+                    Twentyfive++;
+                    Twentyfive1++;
+                  } else if (Income >= 50000 && Income < 100000) {
+                    Lakh++;
+                    Lakh1++;
+                  }
+                  if (
+                    data[i].Demographic.HouseHold[obj].HHNumber !== undefined
+                  ) {
+                    TotalHouse++;
+                  }
+                  //
+                }
+
+                Incomes.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Incomesanganwadicode: data[i].anganwadicode,
+                  TotalHouses: TotalHouse,
+                  TenT: Ten1,
+                  TwentyfiveT: Twentyfive1,
+                  FiftyT: Fifty1,
+                  LakhT: Lakh1
+                });
+              }
+              var Incomesfilteredarray = Object.values(Incomes);
+              var Incomestotables = Incomesfilteredarray.map(Incomesel =>
+                Object.values(Incomesel)
+              );
+              this.setState({
+                Incomes: Incomestotables
+              });
+            }
+            this.callDataTableIncome();
+
+            this.setState({
+              Diabitescount: Diabitescount,
+              HIVcount: HIVcount,
+              Asthamacount: Asthamacount,
+              Nodiseasecount: Nodiseasecount,
+              Agriculturecount: Agriculturecount,
+              HouseWifecount: HouseWifecount,
+              Teachercount: Teachercount,
+              Paultrycount: Paultrycount,
+              Othercount: Othercount,
+              UnEmployed: countUnemployment,
+              expectantwomencount: Deliverycount,
+              NursingMothercount: Nursing,
+              countmale: countmale,
+              countfemale: countfemale,
+              TCount: TotalCountFemale,
+              value1: HighSchool,
+              value2: sslc,
+              value3: puc,
+              value4: Graduvated,
+              value5: Illiteratecount,
+              Disableded: DisbaledYes,
+              D: DisbaledNo,
+              Incomea: Ten,
+              Incomeb: Twentyfive,
+              Incomec: Fifty,
+              Incomed: Lakh
+            });
+          })
+
+          .catch(e => {
+            console.log("error returned - ", e);
+          });
+      }
+      //3 months code here
+      else if (selectedOption.value === "Last 3 Month") {
+        // from here ******************************************
+        var today = new Date();
+        var year = today.getFullYear();
+        var dt1 = 0;
+        var dt2 = 0;
+        var dt3 = 0;
+        var c = 0;
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (mm < 10) {
+          mm = "0" + mm;
+        }
+
+        var array = [10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        for (var i = array.length - 1; i >= 0; i--) {
+          if (array[i] == mm) {
+            for (var j = i - 1; j > i - 4; j--) {
+              if (c === 0) {
+                dt1 = array[j];
+              }
+              if (c === 1) {
+                dt2 = array[j];
+              }
+              if (c === 2) {
+                dt3 = array[j];
+              }
+              c++;
+            }
+            break;
+          }
+        }
+
+        firebase
+          .database()
+          .ref("users")
+          .once("value")
+          .then(snapshot => {
+            const data = firebaseLooper(snapshot);
+
+            var i;
+            var Diabitescount = 0;
+            var HIVcount = 0;
+            var Asthamacount = 0;
+            var Nodiseasecount = 0;
+
+            for (i = 0; i < data.length; i++) {
+              console.log(data[i]);
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Diabitescount1 = 0;
+                var HIVcount1 = 0;
+                var Asthamacount1 = 0;
+                var Nodiseasecount1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobmonth = str.substring(5, 7);
+                      var dobYear = str.substring(0, 4);
+
+                      // var dobyear = str.substring(0, 4);
+                      // console.log("dob", dobyear);
+                      // console.log(
+                      //   data[i].Demographic.HouseholdMember[obj][obj1].Disease1
+                      // );
+                      // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
+                      if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Diabetes") &&
+                        (dobmonth == dt1 ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        yyyy == dobYear
+                      ) {
+                        Diabitescount++;
+                        Diabitescount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "HIV") &&
+                        (dobmonth == dt1 ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        yyyy == dobYear
+                      ) {
+                        HIVcount++;
+                        HIVcount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease3 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease1 === "Asthama") &&
+                        (dobmonth == dt1 ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        yyyy == dobYear
+                      ) {
+                        Asthamacount++;
+                        Asthamacount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === " No disease") &&
+                        (dobmonth == dt1 ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        yyyy == dobYear
+                      ) {
+                        Nodiseasecount++;
+                        Nodiseasecount1++;
+                      }
+                    }
+                  }
+                }
+                diseasedata.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  diseaseanganwadicode: data[i].anganwadicode,
+                  diseaseDiabetes: Diabitescount1,
+                  diseaseHIV: HIVcount1,
+                  diseaseAsthama: Asthamacount1,
+                  diseaseNodisease: Nodiseasecount1
+                });
+              }
+              // var Diabitescount = 0;
+              // var HIVcount = 0;
+              // var Asthamacount = 0;
+              // var Nodiseasecount = 0;
+
+              var diseasefilteredarray = Object.values(diseasedata);
+              var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
+                Object.values(diseaseel)
+              );
+              this.setState({
+                diseasedata: diseasedatatotables
+              });
+              //
+            }
+
+            /* call for diesease 3 moths*/
+            this.callDataTableDisease();
+
+            var Agriculturecount = 0;
+            var HouseWifecount = 0;
+            var Teachercount = 0;
+            var Paultrycount = 0;
+            var Othercount = 0;
+            var Designation = "";
+            var Literate = "";
+            var countUnemployment = 0;
+
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Agriculturecount1 = 0;
+                var HouseWifecount1 = 0;
+                var Teachercount1 = 0;
+                var Paultrycount1 = 0;
+                var Othercount1 = 0;
+                var unemployed1 = 0;
+
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // unemployment code
+                    Designation =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .Designation;
+                    Literate =
+                      data[i].Demographic.HouseholdMember[obj][obj1]
+                        .LiteracyRate;
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobmonth = str.substring(5, 7);
+                      var dobyear = str.substring(0, 4);
+                      if (
+                        Designation === "UnEmployed" &&
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate !== "illiterate" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        countUnemployment++;
+                        unemployed1++;
+                      }
+                      //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
+                      if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Agriculture" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        Agriculturecount++;
+                        Agriculturecount1++;
+                      } else if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "HouseWife" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        HouseWifecount++;
+                        HouseWifecount1++;
+                      } else if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Teacher" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        Teachercount++;
+                        Teachercount1++;
+                      } else if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Poultry" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        Paultrycount++;
+                        Paultrycount1++;
+                      } else if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Other" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        Othercount++;
+                        Othercount1++;
+                      }
+                    }
+                  }
+                }
+
+                Occupations.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Occupationanganwadicode: data[i].anganwadicode,
+                  Occupation1: Agriculturecount1,
+                  Occupation2: HouseWifecount1,
+                  Occupation3: Teachercount1,
+                  Occupation4: Paultrycount1,
+                  Occupation5: Othercount1,
+                  Occupation6: unemployed1
+                });
+              }
+
+              var Occupationfilteredarray = Object.values(Occupations);
+              var Occupationtotables = Occupationfilteredarray.map(
+                Occupationsel => Object.values(Occupationsel)
+              );
+              this.setState({
+                Occupations: Occupationtotables
+              });
+            }
+
+            /*call occupation*/
+
+            this.callDataTableOccupation();
+
+            //pregnancy code
+            var Deliverycount = 0;
+            var Nursing = 0;
+            var TotalCountFemale = 0;
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Deliverycount1 = 0;
+                var Nursing1 = 0;
+                var countfemale1 = 0;
+                var ebinifitt = 0;
+                var ddate = 0;
+                var domonth = 0;
+                var ddYear = 0;
+                const subdata = data[i].Demographic.Pregnancy;
+                const subdata1 = data[i].Maternal.ChildRegistration;
+
+                for (let index in subdata1) {
+                  //today code
+
+                  if (subdata1[index].ebenifit) {
+                    ebinifitt = subdata1[index].ebenifit;
+
+                    ddate = ebinifitt.substring(8, 10);
+                    domonth = ebinifitt.substring(5, 7);
+                    ddYear = ebinifitt.substring(0, 4);
+
+                    console.log(ebinifitt, "ebinifitt count here");
+                    var GivenDate = ebinifitt;
+                    var CurrentDate = new Date();
+                    GivenDate = new Date(GivenDate);
+                    if (
+                      (dt1 == domonth || dt2 == domonth || dt3 == domonth) &&
+                      year == dobYear
+                    ) {
+                      Nursing++;
+                      Nursing1++;
+                      console.log(Nursing1, "nursing count here");
+                    }
+                  }
+                }
+
+                for (let index in subdata) {
+                  var str = subdata[index].LPerioddate;
+                  var dobmonth = str.substring(5, 7);
+                  var dobyear = str.substring(0, 4);
+                  if (
+                    subdata[index].Delivery === "No" &&
+                    (dobmonth == dt1 || dobmonth == dt2 || dobmonth == dt3) &&
+                    dobyear == year
+                  ) {
+                    Deliverycount++;
+                    Deliverycount1++;
+                  }
+                }
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+
+                    var str =
+                      data[i].Demographic.HouseholdMember[obj][obj1].DOB;
+                    var dobmonth = str.substring(5, 7);
+                    if (
+                      (data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                        "Female" &&
+                        dobmonth == dt1) ||
+                      dobmonth == dt2 ||
+                      dobmonth == dt3
+                    ) {
+                      TotalCountFemale++;
+                      countfemale1++;
+                    }
+                  }
+                }
+
+                Pregnancy.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Pregnancyanganwadicode: data[i].anganwadicode,
+                  TotalFemale: countfemale1,
+                  ExpectantWomen: Deliverycount1,
+                  NursingMother: Nursing1
+                });
+              }
+              var Pregnancyfilteredarray = Object.values(Pregnancy);
+              var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
+                Object.values(Pregnancyel)
+              );
+              this.setState({
+                Pregnancy: Pregnancytotables
+              });
+            }
+            /*call pregnancy*/
+
+            this.callDataTablePregnency();
+
+            // Gender
+            var countmale = 0;
+            var countfemale = 0;
+            var total = 0;
+            for (i = 0; i < data.length; i++) {
+              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var countmale1 = 0;
+                var countfemale11 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobmonth = str.substring(5, 7);
+                      var dobyear = str.substring(0, 4);
+                      console.log(
+                        "DObMonth",
+                        dobmonth,
+                        " dt1",
+                        dt1,
+                        "dt2",
+                        dt2,
+                        "dt3",
+                        dt3
+                      );
+                      if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Male" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        countmale++;
+                        countmale1++;
+                      } else if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Female" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        countfemale++;
+                        countfemale11++;
+                      }
+                      total = countfemale11 + countmale1;
+                    }
+                  }
+
+                  Gender.push({
+                    //donot delete the below comment
+                    //  ...childSnapshot.val(),
+                    Genderanganwadicode: data[i].anganwadicode,
+                    GenderMale: countmale1,
+                    GenderFemale: countfemale11,
+                    GenderTotal: total
+                  });
+                }
+                var Genderfilteredarray = Object.values(Gender);
+                var Gendertotables = Genderfilteredarray.map(Genderel =>
+                  Object.values(Genderel)
+                );
+                this.setState({
+                  Gender: Gendertotables
+                });
+              }
+              /*call gender*/
+              this.callDataTableGender();
+
+              // Literacy var LiteracyRate = 0;
+              var Illiteratecount = 0;
+              var sslc = 0;
+              var puc = 0;
+              var HighSchool = 0;
+              var Graduvated = 0;
+
+              for (i = 0; i < data.length; i++) {
+                if (
+                  // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
+                  data[i].Demographic &&
+                  selectedplace === data[i].anganwadidetails.villagename
+                ) {
+                  var Illiteratecount1 = 0;
+                  var sslc1 = 0;
+                  var puc1 = 0;
+                  var HighSchool1 = 0;
+                  var Graduvated1 = 0;
+                  for (const obj in data[i].Demographic.HouseholdMember) {
+                    for (const obj1 in data[i].Demographic.HouseholdMember[
+                      obj
+                    ]) {
+                      if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                        var str =
+                          data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                        var dobmonth = str.substring(5, 7);
+                        var dobyear = str.substring(0, 4);
+                        if (
+                          ((data[i].Demographic.HouseholdMember[obj][obj1]
+                            .LiteracyRate === "SSLC" &&
+                            dobmonth == dt1) ||
+                            dobmonth == dt2 ||
+                            dobmonth == dt3) &&
+                          dobyear == yyyy
+                        ) {
+                          sslc++;
+                          sslc1++;
+                        } else if (
+                          ((data[i].Demographic.HouseholdMember[obj][obj1]
+                            .LiteracyRate === "PUC" &&
+                            dobmonth == dt1) ||
+                            dobmonth == dt2 ||
+                            dobmonth == dt3) &&
+                          dobyear == yyyy
+                        ) {
+                          puc++;
+                          puc1++;
+                        } else if (
+                          ((data[i].Demographic.HouseholdMember[obj][obj1]
+                            .LiteracyRate === "Primary" &&
+                            dobmonth == dt1) ||
+                            dobmonth == dt2 ||
+                            dobmonth == dt3) &&
+                          dobyear == yyyy
+                        ) {
+                          HighSchool++;
+                          HighSchool1++;
+                        } else if (
+                          ((data[i].Demographic.HouseholdMember[obj][obj1]
+                            .LiteracyRate === "Graduvated" &&
+                            dobmonth == dt1) ||
+                            dobmonth == dt2 ||
+                            dobmonth == dt3) &&
+                          dobyear == yyyy
+                        ) {
+                          Graduvated++;
+                          Graduvated1++;
+                        } else if (
+                          ((data[i].Demographic.HouseholdMember[obj][obj1]
+                            .LiteracyRate === "illiterate" &&
+                            dobmonth == dt1) ||
+                            dobmonth == dt2 ||
+                            dobmonth == dt3) &&
+                          dobyear == yyyy
+                        ) {
+                          Illiteratecount++;
+                          Illiteratecount1++;
+                        }
+                      }
+                    }
+                  }
+                }
+                LiteracyRatio.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  LiteracyRatioanganwadicode: data[i].anganwadicode,
+                  HighSchool: HighSchool1,
+                  sslc: sslc1,
+                  puc: puc1,
+                  Graduvated: Graduvated1,
+                  Illiterate: Illiteratecount1
+                });
+              }
+              var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
+              var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
+                LiteracyRatioel => Object.values(LiteracyRatioel)
+              );
+              this.setState({
+                LiteracyRatio: LiteracyRatiototables
+              });
+            }
+
+            this.callDataTableLiteracy();
+
+            //Disbality
+            var total1 = 0;
+            var DisbaledYes = 0;
+            var DisbaledNo = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Disbaled1Yes = 0;
+                var Disbaled1No = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      var dobmonth = str.substring(5, 7);
+                      var dobyear = str.substring(0, 4);
+                      if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "Yes" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        DisbaledYes++;
+                        Disbaled1Yes++;
+                      } else if (
+                        ((data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "No" &&
+                          dobmonth == dt1) ||
+                          dobmonth == dt2 ||
+                          dobmonth == dt3) &&
+                        dobyear == yyyy
+                      ) {
+                        DisbaledNo++;
+                        Disbaled1No++;
+                      }
+                    }
+                    total1 = Disbaled1Yes + Disbaled1No;
+                  }
+                }
+                Disability.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Disabilityanganwadicode: data[i].anganwadicode,
+                  Disabled: Disbaled1Yes,
+                  DisabledNo: Disbaled1No,
+                  Total1: total1
+                });
+              }
+              var Disabilityfilteredarray = Object.values(Disability);
+              var Disabilitytotables = Disabilityfilteredarray.map(
+                Disabilityel => Object.values(Disabilityel)
+              );
+              this.setState({
+                Disability: Disabilitytotables
+              });
+            }
+
+            this.callDataTableDisabled();
+
+            //Income of The familiy
+
+            var Ten = 0;
+            var Twentyfive = 0;
+            var Fifty = 0;
+            var TotalHousesChart = 0;
+            var Lakh = 0;
+            var Income = "";
+
+            for (i = 0; i < data.length; i++) {
+              var TotalHouse = 0;
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
+                data[i].Demographic
+              ) {
+                var Ten1 = 0;
+                var Twentyfive1 = 0;
+                var Fifty1 = 0;
+                var TotalHousesChart1 = 0;
+                var Lakh1 = 0;
+                for (const obj in data[i].Demographic.HouseHold) {
+                  console.log("Total Houses", TotalHouse);
+
+                  Income = data[i].Demographic.HouseHold[obj].Income;
+                  if (Income > 10000 && Income < 25000) {
+                    Ten++;
+                    Ten1++;
+                  } else if (Income >= 25000 && Income < 50000) {
+                    Twentyfive++;
+                    Twentyfive1++;
+                  } else if (Income >= 50000 && Income < 100000) {
+                    Lakh++;
+                    Lakh1++;
+                  }
+                  if (
+                    data[i].Demographic.HouseHold[obj].HHNumber !== undefined
+                  ) {
+                    TotalHouse++;
+                  }
+                  //
+                }
+
+                Incomes.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Incomesanganwadicode: data[i].anganwadicode,
+                  TotalHouses: TotalHouse,
+                  TenT: Ten1,
+                  TwentyfiveT: Twentyfive1,
+                  FiftyT: Fifty1,
+                  LakhT: Lakh1
+                });
+              }
+              var Incomesfilteredarray = Object.values(Incomes);
+              var Incomestotables = Incomesfilteredarray.map(Incomesel =>
+                Object.values(Incomesel)
+              );
+              this.setState({
+                Incomes: Incomestotables
+              });
+            }
+            this.callDataTableIncome();
+
+            this.setState({
+              Diabitescount: Diabitescount,
+              HIVcount: HIVcount,
+              Asthamacount: Asthamacount,
+              Nodiseasecount: Nodiseasecount,
+              Agriculturecount: Agriculturecount,
+              HouseWifecount: HouseWifecount,
+              Teachercount: Teachercount,
+              Paultrycount: Paultrycount,
+              Othercount: Othercount,
+              UnEmployed: countUnemployment,
+              expectantwomencount: Deliverycount,
+              NursingMothercount: Nursing,
+              countmale: countmale,
+              countfemale: countfemale,
+              TCount: TotalCountFemale,
+              value1: HighSchool,
+              value2: sslc,
+              value3: puc,
+              value4: Graduvated,
+              value5: Illiteratecount,
+              Disableded: DisbaledYes,
+              D: DisbaledNo,
+              Incomea: Ten,
+              Incomeb: Twentyfive,
+              Incomec: Fifty,
+              Incomed: Lakh
+            });
+          });
+      }
+      // Year wise code
+      else {
+        //copy code
+
+        firebase
+          .database()
+          .ref("users")
+          .once("value")
+          .then(snapshot => {
+            const data = firebaseLooper(snapshot);
+
+            var i;
+            var Diabitescount = 0;
+            var HIVcount = 0;
+            var Asthamacount = 0;
+            var Nodiseasecount = 0;
+            for (i = 0; i < data.length; i++) {
+              console.log(data[i]);
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Diabitescount1 = 0;
+                var HIVcount1 = 0;
+                var Asthamacount1 = 0;
+                var Nodiseasecount1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    console.log(
+                      "year",
+                      data[i].Demographic.HouseholdMember[obj][obj1].DOB
+                    );
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      // console.log("year", str);
+
+                      var dobyear = str.substring(0, 4);
+                      console.log("dob", dobyear);
+                      // console.log(data[i].Demographic.HouseholdMember[obj][obj1]);
+                      if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Diabetes" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Diabetes") &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Diabitescount++;
+                        Diabitescount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "HIV" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "HIV") &&
+                        dobyear == selectedOption.value
+                      ) {
+                        HIVcount++;
+                        HIVcount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === "Asthama" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === "Asthama") &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Asthamacount++;
+                        Asthamacount1++;
+                      } else if (
+                        (data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disease1 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease2 === " No disease" ||
+                          data[i].Demographic.HouseholdMember[obj][obj1]
+                            .Disease3 === " No disease") &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Nodiseasecount++;
+                        Nodiseasecount1++;
+                      }
+                    }
+                  }
+                }
+                diseasedata.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  diseaseanganwadicode: data[i].anganwadicode,
+                  diseaseDiabetes: Diabitescount1,
+                  diseaseHIV: HIVcount1,
+                  diseaseAsthama: Asthamacount1,
+                  diseaseNodisease: Nodiseasecount1
+                });
+              }
+              // var Diabitescount = 0;
+              // var HIVcount = 0;
+              // var Asthamacount = 0;
+              // var Nodiseasecount = 0;
+
+              var diseasefilteredarray = Object.values(diseasedata);
+              var diseasedatatotables = diseasefilteredarray.map(diseaseel =>
+                Object.values(diseaseel)
+              );
+              this.setState({
+                diseasedata: diseasedatatotables
+              });
+              //
+            }
+
+            this.callDataTableDisease();
+
+            var Agriculturecount = 0;
+            var HouseWifecount = 0;
+            var Teachercount = 0;
+            var Paultrycount = 0;
+            var Othercount = 0;
+            var Designation = "";
+            var Literate = "";
+            var countUnemployment = 0;
+
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Agriculturecount1 = 0;
+                var HouseWifecount1 = 0;
+                var Teachercount1 = 0;
+                var Paultrycount1 = 0;
+                var Othercount1 = 0;
+                var unemployed1 = 0;
+
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      // console.log("year", str);
+
+                      var dobyear = str.substring(0, 4);
+                      console.log("dob", dobyear);
+                      // unemployment code
+                      Designation =
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation;
+                      Literate =
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate;
+                      if (
+                        Designation === "UnEmployed" &&
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate !== "illiterate" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        countUnemployment++;
+                        unemployed1++;
+                      }
+                      //console.log(data[i].Demographic.HouseholdMember[obj][obj1].sex);
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Agriculture" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Agriculturecount++;
+                        Agriculturecount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "HouseWife" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        HouseWifecount++;
+                        HouseWifecount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Teacher" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Teachercount++;
+                        Teachercount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Poultry" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Paultrycount++;
+                        Paultrycount1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Designation === "Other" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Othercount++;
+                        Othercount1++;
+                      }
+                    }
+                  }
+                }
+
+                Occupations.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Occupationanganwadicode: data[i].anganwadicode,
+                  Occupation1: Agriculturecount1,
+                  Occupation2: HouseWifecount1,
+                  Occupation3: Teachercount1,
+                  Occupation4: Paultrycount1,
+                  Occupation5: Othercount1,
+                  Occupation6: unemployed1
+                });
+              }
+
+              var Occupationfilteredarray = Object.values(Occupations);
+              var Occupationtotables = Occupationfilteredarray.map(
+                Occupationsel => Object.values(Occupationsel)
+              );
+              this.setState({
+                Occupations: Occupationtotables
+              });
+            }
+            this.callDataTableOccupation();
+
+            //pregnancy code
+            var Deliverycount = 0;
+            var Nursing = 0;
+            var TotalCountFemale = 0;
+            for (i = 0; i < data.length; i++) {
+              //data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Deliverycount1 = 0;
+                var Nursing1 = 0;
+                var countfemale1 = 0;
+                var ebinifitt = 0;
+                var ddYear = 0;
+                const subdata = data[i].Demographic.Pregnancy;
+                const subdata1 = data[i].Maternal.ChildRegistration;
+                for (let index in subdata1) {
+                  //today code
+
+                  if (subdata1[index].ebenifit) {
+                    ebinifitt = subdata1[index].ebenifit;
+
+                    ddYear = ebinifitt.substring(0, 4);
+                    console.log(ebinifitt, "ebinifitt count here");
+                    var GivenDate = ebinifitt;
+                    var CurrentDate = new Date();
+                    GivenDate = new Date(GivenDate);
+                    if (ddYear == selectedOption.value) {
+                      Nursing++;
+                      Nursing1++;
+                      console.log(Nursing1, "nursing count here");
+                    }
+                  }
+                }
+                for (let index in subdata) {
+                  var str = subdata[index].LPerioddate;
+                  // console.log("year", str);
+
+                  var dobyear = str.substring(0, 4);
+                  console.log("ddate", dobyear);
+                  if (
+                    subdata[index].Delivery === "No" &&
+                    selectedOption.value == ddYear
+                  ) {
+                    Deliverycount++;
+                    Deliverycount1++;
+                  }
+                }
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    // console.log(
+                    //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                    // );
+                    if (
+                      data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                      "Female"
+                    ) {
+                      TotalCountFemale++;
+                      countfemale1++;
+                    }
+                  }
+                }
+                Pregnancy.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Pregnancyanganwadicode: data[i].anganwadicode,
+                  TotalFemale: countfemale1,
+                  ExpectantWomen: Deliverycount1,
+                  NursingMother: Nursing1
+                });
+              }
+              var Pregnancyfilteredarray = Object.values(Pregnancy);
+              var Pregnancytotables = Pregnancyfilteredarray.map(Pregnancyel =>
+                Object.values(Pregnancyel)
+              );
+              this.setState({
+                Pregnancy: Pregnancytotables
+              });
+            }
+            this.callDataTablePregnency();
+
+            // Gender
+            var countmale = 0;
+            var countfemale = 0;
+            var total = 0;
+            for (i = 0; i < data.length; i++) {
+              // data[i].anganwadidetails.supervisorid === currentsupervisorid &&
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var countmale1 = 0;
+                var countfemale11 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      // console.log("year", str);
+
+                      var dobyear = str.substring(0, 4);
+                      console.log("dob", dobyear);
+                      // console.log(
+                      //   data[i].Demographic.HouseholdMember[obj][obj1].Status
+                      // );
+                      //else
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Male" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        countmale++;
+                        countmale1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1].sex ===
+                          "Female" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        countfemale++;
+                        countfemale11++;
+                      }
+                      total = countfemale11 + countmale1;
+                    }
+                  }
+                }
+
+                Gender.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Genderanganwadicode: data[i].anganwadicode,
+                  GenderMale: countmale1,
+                  GenderFemale: countfemale11,
+                  GenderTotal: total
+                });
+              }
+              var Genderfilteredarray = Object.values(Gender);
+              var Gendertotables = Genderfilteredarray.map(Genderel =>
+                Object.values(Genderel)
+              );
+              this.setState({
+                Gender: Gendertotables
+              });
+            }
+            this.callDataTableGender();
+
+            // Literacy var LiteracyRate = 0;
+            var Illiteratecount = 0;
+            var sslc = 0;
+            var puc = 0;
+            var HighSchool = 0;
+            var Graduvated = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentsupervisorid &&
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Illiteratecount1 = 0;
+                var sslc1 = 0;
+                var puc1 = 0;
+                var HighSchool1 = 0;
+                var Graduvated1 = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE) {
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                      // console.log("year", str);
+
+                      var dobyear = str.substring(0, 4);
+                      console.log("dob", dobyear);
+
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "SSLC" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        sslc++;
+                        sslc1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "PUC" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        puc++;
+                        puc1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "Primary" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        HighSchool++;
+                        HighSchool1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "Graduvated" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Graduvated++;
+                        Graduvated1++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .LiteracyRate === "illiterate" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        Illiteratecount++;
+                        Illiteratecount1++;
+                      }
+                    }
+                  }
+                }
+                LiteracyRatio.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  LiteracyRatioanganwadicode: data[i].anganwadicode,
+                  HighSchool: HighSchool1,
+                  sslc: sslc1,
+                  puc: puc1,
+                  Graduvated: Graduvated1,
+                  Illiterate: Illiteratecount1
+                });
+              }
+              var LiteracyRatiofilteredarray = Object.values(LiteracyRatio);
+              var LiteracyRatiototables = LiteracyRatiofilteredarray.map(
+                LiteracyRatioel => Object.values(LiteracyRatioel)
+              );
+              this.setState({
+                LiteracyRatio: LiteracyRatiototables
+              });
+            }
+
+            this.callDataTableLiteracy();
+
+            //Disbality
+            var total1 = 0;
+            var DisbaledYes = 0;
+            var DisbaledNo = 0;
+
+            for (i = 0; i < data.length; i++) {
+              if (
+                data[i].Demographic &&
+                selectedplace === data[i].anganwadidetails.villagename
+              ) {
+                var Disbaled1Yes = 0;
+                var Disbaled1No = 0;
+                for (const obj in data[i].Demographic.HouseholdMember) {
+                  for (const obj1 in data[i].Demographic.HouseholdMember[obj]) {
+                    if (data[i].Demographic.HouseholdMember[obj][obj1].DOE)
+                      var str =
+                        data[i].Demographic.HouseholdMember[obj][obj1].DOE;
+                    // console.log("year", str);
+
+                    var dobyear = str.substring(0, 4);
+                    {
+                      if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "Yes" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        DisbaledYes++;
+                        Disbaled1Yes++;
+                      } else if (
+                        data[i].Demographic.HouseholdMember[obj][obj1]
+                          .Disability === "No" &&
+                        dobyear == selectedOption.value
+                      ) {
+                        DisbaledNo++;
+                        Disbaled1No++;
+                      }
+                    }
+                    total1 = Disbaled1Yes + Disbaled1No;
+                  }
+                }
+                Disability.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Disabilityanganwadicode: data[i].anganwadicode,
+                  Disabled: Disbaled1Yes,
+                  DisabledNo: Disbaled1No,
+                  Total1: total1
+                });
+              }
+              var Disabilityfilteredarray = Object.values(Disability);
+              var Disabilitytotables = Disabilityfilteredarray.map(
+                Disabilityel => Object.values(Disabilityel)
+              );
+              this.setState({
+                Disability: Disabilitytotables
+              });
+            }
+            this.callDataTableDisabled();
+
+            //Income of The familiy
+
+            var Ten = 0;
+            var Twentyfive = 0;
+            var Fifty = 0;
+            var TotalHousesChart = 0;
+            var Lakh = 0;
+            var Income = "";
+
+            for (i = 0; i < data.length; i++) {
+              var TotalHouse = 0;
+              if (
+                // data[i].anganwadidetails.cdpo_acdpo === currentcdpo &&
+                data[i].Demographic
+              ) {
+                var Ten1 = 0;
+                var Twentyfive1 = 0;
+                var Fifty1 = 0;
+                var TotalHousesChart1 = 0;
+                var Lakh1 = 0;
+                for (const obj in data[i].Demographic.HouseHold) {
+                  console.log("Total Houses", TotalHouse);
+
+                  Income = data[i].Demographic.HouseHold[obj].Income;
+                  if (Income < 11000) {
+                    Ten++;
+                    Ten1++;
+                  } else if (Income >= 11000 && Income < 35000) {
+                    Twentyfive++;
+                    Twentyfive1++;
+                  } else if (Income >= 35000 && Income < 100000) {
+                    Fifty++;
+                    Fifty1++;
+                  } else if (Income > 100000) {
+                    Lakh++;
+                    Lakh1++;
+                  }
+
+                  if (
+                    data[i].Demographic.HouseHold[obj].HHNumber !== undefined
+                  ) {
+                    TotalHouse++;
+                  }
+                  //
+                }
+
+                Incomes.push({
+                  //donot delete the below comment
+                  //  ...childSnapshot.val(),
+                  Incomesanganwadicode: data[i].anganwadicode,
+                  TotalHouses: TotalHouse,
+                  TenT: Ten1,
+                  TwentyfiveT: Twentyfive1,
+                  FiftyT: Fifty1,
+                  LakhT: Lakh1
+                });
+              }
+              var Incomesfilteredarray = Object.values(Incomes);
+              var Incomestotables = Incomesfilteredarray.map(Incomesel =>
+                Object.values(Incomesel)
+              );
+              this.setState({
+                Incomes: Incomestotables
+              });
+            }
+            this.callDataTableIncome();
+
+            this.setState({
+              Diabitescount: Diabitescount,
+              HIVcount: HIVcount,
+              Asthamacount: Asthamacount,
+              Nodiseasecount: Nodiseasecount,
+              Agriculturecount: Agriculturecount,
+              HouseWifecount: HouseWifecount,
+              Teachercount: Teachercount,
+              Paultrycount: Paultrycount,
+              Othercount: Othercount,
+              UnEmployed: countUnemployment,
+              expectantwomencount: Deliverycount,
+              NursingMothercount: Nursing,
+              countmale: countmale,
+              countfemale: countfemale,
+              TCount: TotalCountFemale,
+              value1: HighSchool,
+              value2: sslc,
+              value3: puc,
+              value4: Graduvated,
+              value5: Illiteratecount,
+              Disableded: DisbaledYes,
+              D: DisbaledNo,
+              Incomea: Ten,
+              Incomeb: Twentyfive,
+              Incomec: Fifty,
+              Incomed: Lakh
+            });
+          })
+
+          .catch(e => {
+            console.log("error returned - ", e);
+          });
+      }
+
+      // console.log("Not All places");
+    }
     // place code
     // var currentsupervisorid = this.props.user.uid;
-    
   };
 
   //handle table
@@ -6998,7 +7005,7 @@ export default class Demographics extends Component {
     const { selectedOption } = this.state;
     return (
       <CEO_DD_DCLayout>
-        <Select
+     <Select
           onChange={this.handleChangedatatype}
           value={this.state.selecteddatatypeoption}
           options={datatypeoption}
@@ -7029,9 +7036,13 @@ export default class Demographics extends Component {
           "Disease rates in households" ? (
           <div>
             <br />
-            
-            
-                <br />
+            Places
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
+            <br />
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
@@ -7054,9 +7065,13 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-            
-            
-                <br />
+            Place
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
+            <br />
             Disease rates in households
             <Select
               value={this.state.selectedOption}
@@ -7087,8 +7102,12 @@ export default class Demographics extends Component {
         this.state.selectedTableoption.value === "Occupations in households" ? (
           <div>
             <br />
-            
-            
+            Place
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             <Select
               value={this.state.selectedOption}
@@ -7109,25 +7128,27 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-            
-            
+            Place
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             Occupations in households
-            
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
               options={options}
             />
-            
             <Chart
               width={"100%"}
               height={"100%"}
               chartType="BarChart"
-              chartPackages={["corechart","controls"]}
+              chartPackages={["corechart", "controls"]}
               loader={<div>Loading Chart</div>}
               data={[
-                ["Name","Occupation"],
+                ["Name", "Occupation"],
                 ["Agriculture", parseInt(this.state.Agriculturecount)],
                 ["Housewife", parseInt(this.state.HouseWifecount)],
                 ["Teacher", parseInt(this.state.Teachercount)],
@@ -7155,8 +7176,12 @@ export default class Demographics extends Component {
         this.state.selectedTableoption.value ===
           "Expectant women's in households" ? (
           <div>
-          
-            
+            Place
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             <Select
               value={this.state.selectedOption}
@@ -7178,8 +7203,12 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-          
-            
+            Place
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             Expectant women's in households
             <Select
@@ -7209,9 +7238,14 @@ export default class Demographics extends Component {
         {this.state.selecteddatatypeoption.value === "Table" &&
         this.state.selectedTableoption.value === "Sex ratio in households" ? (
           <div>
-            
+            Place
             <br />
-            
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
+            <br />
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
@@ -7230,7 +7264,11 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-           
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             Sex ratio in households
             <Select
@@ -7260,7 +7298,11 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-            
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             Literacy rate in households
             <Select
@@ -7289,8 +7331,12 @@ export default class Demographics extends Component {
         this.state.selectedTableoption.value ===
           "Literacy rate in households" ? (
           <div>
-           
-<br />
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
+            <br />
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
@@ -7311,7 +7357,11 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-            
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             Disability in households
             <Select
@@ -7337,8 +7387,12 @@ export default class Demographics extends Component {
         {this.state.selecteddatatypeoption.value === "Table" &&
         this.state.selectedTableoption.value === "Disability in households" ? (
           <div>
-          
-            
+            Places
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             <Select
               value={this.state.selectedOption}
@@ -7360,7 +7414,11 @@ export default class Demographics extends Component {
         this.state.selecteddatatypeoption.value === "Chart" ? (
           <div>
             {" "}
-           
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             Income rate in households
             <Select
@@ -7368,31 +7426,35 @@ export default class Demographics extends Component {
               onChange={this.handleChangeYear}
               options={options}
             />
-         <Chart
-  width={'800px'}
-  height={'400px'}
-  chartType="PieChart"
-  loader={<div>Loading Chart</div>}
-  data={[
-    ['Income', 'Range'],
-    ['below 11 Thoushand', this.state.Incomea],
-    ['Between  11 Thoushand to 35000', this.state.Incomeb],
-    ['Between  35 Thoushand to 1 Lakh', this.state.Incomec],
-    ['above 1 Lakh', this.state.Incomed],
-  ]}
-  options={{
-    title: 'HouseHold Income Chart',
-    //sliceVisibilityThreshold: 0.2, // 20%
-  }}
-  />
+            <Chart
+              width={"800px"}
+              height={"400px"}
+              chartType="PieChart"
+              loader={<div>Loading Chart</div>}
+              data={[
+                ["Income", "Range"],
+                ["below 11 Thoushand", this.state.Incomea],
+                ["Between  11 Thoushand to 35000", this.state.Incomeb],
+                ["Between  35 Thoushand to 1 Lakh", this.state.Incomec],
+                ["above 1 Lakh", this.state.Incomed]
+              ]}
+              options={{
+                title: "HouseHold Income Chart"
+                //sliceVisibilityThreshold: 0.2, // 20%
+              }}
+            />
           </div>
         ) : null}
 
         {this.state.selecteddatatypeoption.value === "Table" &&
         this.state.selectedTableoption.value === "Income rate in households" ? (
           <div>
-            
-            
+            Place
+            <Select
+              value={this.state.selectedOptionplace}
+              onChange={this.handleChangePlace}
+              options={this.state.optionplace}
+            />
             <br />
             <Select
               value={this.state.selectedOption}
