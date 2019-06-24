@@ -374,7 +374,7 @@ export default class Timeline extends Component {
                   totalgrams = totalgrams + parseFloat(subdata[index].grams);
                   totalgreen_gram =
                     totalgreen_gram + parseFloat(subdata[index].green_gram);
-                  totaljaggery = +parseFloat(subdata[index].jaggery);
+                  totaljaggery =totaljaggery  +parseFloat(subdata[index].jaggery);
                   totalmustard_seeds =
                     totalmustard_seeds +
                     parseFloat(subdata[index].mustard_seeds);
@@ -613,7 +613,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -882,7 +882,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -1119,7 +1119,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -1317,7 +1317,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -1503,7 +1503,7 @@ export default class Timeline extends Component {
                   totalgrams = totalgrams + parseFloat(subdata[index].grams);
                   totalgreen_gram =
                     totalgreen_gram + parseFloat(subdata[index].green_gram);
-                  totaljaggery = +parseFloat(subdata[index].jaggery);
+                  totaljaggery =totaljaggery  +parseFloat(subdata[index].jaggery);
                   totalmustard_seeds =
                     totalmustard_seeds +
                     parseFloat(subdata[index].mustard_seeds);
@@ -1741,7 +1741,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -2007,7 +2007,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -2245,7 +2245,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -2444,7 +2444,7 @@ export default class Timeline extends Component {
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                   totaljaggery =totaljaggery  +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);

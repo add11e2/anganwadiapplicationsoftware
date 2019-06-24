@@ -22,6 +22,46 @@ const datatypeoption = [
     label: "Table"
   }
 ];
+let optionsMonth =[];
+optionsMonth[0] = {};
+optionsMonth[0].value = 1;
+optionsMonth[0].label = "January";
+optionsMonth[1] = {};
+optionsMonth[1].value = 2;
+optionsMonth[1].label = "February";
+optionsMonth[2] = {};
+optionsMonth[2].label = "March";
+optionsMonth[2].value = 3;
+optionsMonth[3] = {};
+optionsMonth[3].value = 4;
+optionsMonth[3].label = "April";
+optionsMonth[4] = {};
+optionsMonth[4].value = 5;
+optionsMonth[4].label = "May";
+optionsMonth[5] = {};
+optionsMonth[5].value = 6;
+optionsMonth[5].label = "June";
+optionsMonth[6] = {};
+optionsMonth[6].value = 7;
+optionsMonth[6].label = "July";
+optionsMonth[7] = {};
+optionsMonth[7].value = 8;
+optionsMonth[7].label = "August";
+optionsMonth[8] = {};
+optionsMonth[8].value = 9;
+optionsMonth[8].label = "September";
+optionsMonth[9] = {};
+optionsMonth[9].value = 10;
+optionsMonth[9].label = "October";
+optionsMonth[10] = {};
+optionsMonth[10].value = 11;
+optionsMonth[10].label = "November";
+optionsMonth[11] = {};
+optionsMonth[11].value = 12;
+optionsMonth[11].label = "December";
+
+
+
 let options = [];
 let index = 4;
 options[0] = {};
@@ -45,6 +85,7 @@ for (let i = dt.getFullYear(); i > year; i--) {
   options[index].label = i;
   index++;
 }
+
 const chartselectoptions = [
   {
     value: "Food Consumption in anganwadi's (Year)",
@@ -155,6 +196,7 @@ export default class Timeline extends Component{
       selectedchartoption: "",
       currentsupervisorid: "",
       optionsanganwadicode: "",
+      selectedOptionMonth: "",
       yearselectedfromdropdown: 0,
       stockdata: [],
       stockdata1: [],
@@ -314,7 +356,7 @@ export default class Timeline extends Component{
                   totalgrams = totalgrams + parseFloat(subdata[index].grams);
                   totalgreen_gram =
                     totalgreen_gram + parseFloat(subdata[index].green_gram);
-                  totaljaggery = +parseFloat(subdata[index].jaggery);
+                  totaljaggery =totaljaggery +parseFloat(subdata[index].jaggery);
                   totalmustard_seeds =
                     totalmustard_seeds +
                     parseFloat(subdata[index].mustard_seeds);
@@ -547,7 +589,7 @@ export default class Timeline extends Component{
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                    totaljaggery = totaljaggery+parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -810,7 +852,7 @@ export default class Timeline extends Component{
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                    totaljaggery = totaljaggery+parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -1041,7 +1083,7 @@ export default class Timeline extends Component{
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                    totaljaggery =totaljaggery +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -1155,7 +1197,9 @@ export default class Timeline extends Component{
                   //from db
                   var datefromdb = imagedata[index].date;
                   var dobyear = datefromdb.substring(0, 4);
-                  if (dobyear == selectedOption.value) {
+                //  var dobmonth = datefromdb.substring(5, 6);
+               //   console.log(dobmonth,"dobmonth-----------------------",this.state.selectedOptionMonth);
+                  if (dobyear == selectedOption.value ) {
                     imagerecordsdata.push({
                       date: imagedata[index].date,
                       anganwadicode: data[i].anganwadicode,
@@ -1233,7 +1277,7 @@ export default class Timeline extends Component{
                     totalgrams = totalgrams + parseInt(subdata[index].grams);
                     totalgreen_gram =
                       totalgreen_gram + parseInt(subdata[index].green_gram);
-                    totaljaggery = +parseInt(subdata[index].jaggery);
+                    totaljaggery =totaljaggery +parseInt(subdata[index].jaggery);
                     totalmustard_seeds =
                       totalmustard_seeds +
                       parseInt(subdata[index].mustard_seeds);
@@ -1322,7 +1366,7 @@ export default class Timeline extends Component{
       }
     
   };
-
+  handleChangeMonth= selectedOptionMonth=>    this.setState({ selectedOptionMonth });
   handleChangeTable = selectedTableoption =>
     this.setState({ selectedTableoption });
   handleChange = selectedchartoption => this.setState({ selectedchartoption });
@@ -1778,20 +1822,29 @@ export default class Timeline extends Component{
           "Food Consumption in anganwadi's & Beneficieries of food services" &&
         this.state.selecteddatatypeoption.value === "Table" ? (
           <div>
-      
+         <Select
+              value={this.state.selectedOptionMonth}
+              onChange={this.handleChangeMonth}
+              options={optionsMonth}
+            />
             <br />
             <Select
               value={this.state.selectedOption}
               onChange={this.handleChangeYear}
               options={options}
             />
+             <br />
+         
+            
+            {(this.state.selectedOptionMonth.value)?
             <table
               className="display"
               width="100%"
               ref={dailyfoodstockel =>
                 (this.dailyfoodstockel = dailyfoodstockel)
               }
-            />
+            />:null
+            }
           </div>
         ) : null}
 
